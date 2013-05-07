@@ -107,7 +107,7 @@ class HappyrApi
 	public function getCompanies()
 	{
 		$response=$this->sendRequest('companies');
-		return  $this->deserialize($response, 'array<Happyr\ApiClient\Entity\Company>');
+		return $this->deserialize($response, 'array<Happyr\ApiClient\Entity\Company>');
 	}
 	
 	/**
@@ -203,10 +203,13 @@ class HappyrApi
 	{
 		$httpStatus=0;
 		$response=$this->sendRequest(
-					'populus/question/'.$question->id.'/answer',
-					array('answer'=>$answer->id,'user_id'=>$user->id),
-					'POST',
-					$httpStatus
+			'populus/question/'.$question->id.'/answer',
+			array(
+				'answer'=>$answer->id,
+				'user_id'=>$user->id
+			),
+			'POST',
+			$httpStatus
 		);
 		if($httpStatus==201){
 			return true;
@@ -226,7 +229,15 @@ class HappyrApi
 	public function getPopulusScore(User $user, Profile $profile)
 	{
 		$httpStatus=0;
-		$response=$this->sendRequest('populus/score', array('user_id'=>$user->id,'profile_id'=>$profile->id), 'GET',$httpStatus);
+		$response=$this->sendRequest(
+			'populus/score', 
+			array(
+				'user_id'=>$user->id,
+				'profile_id'=>$profile->id
+			), 
+			'GET',
+			$httpStatus
+		);
 		
 		$score= $this->deserialize($response, 'Happyr\ApiClient\Entity\Populus\Score');
 		
@@ -261,16 +272,18 @@ class HappyrApi
 	{
 		$httpStatus=0;
 		$response=$this->sendRequest(
-					'users',
-					array('email'=>$email),
-					'POST',
-					$httpStatus
+			'users',
+			array(
+				'email'=>$email
+			),
+			'POST',
+			$httpStatus
 		);
-		//die($response);
-		if($httpStatus==201){
+
+		if($httpStatus==201){//if success
 			return $this->deserialize($response, 'Happyr\ApiClient\Entity\User');
 		}
-		elseif($httpStatus==409){
+		elseif($httpStatus==409){//if that email was previously registered
 			throw new UserConflictException($email);
 		}
 		
@@ -290,15 +303,17 @@ class HappyrApi
 	{
 		$httpStatus=0;
 		$response=$this->sendRequest(
-					'users/confirmation/send',
-					array('email'=>$email),
-					'POST',
-					$httpStatus
+			'users/confirmation/send',
+			array(
+				'email'=>$email
+			),
+			'POST',
+			$httpStatus
 		);
+		
 		if($httpStatus==200){
 			return true;
 		}
-		
 		
 		return false;
 	}
@@ -316,11 +331,15 @@ class HappyrApi
 	{
 		$httpStatus=0;
 		$response=$this->sendRequest(
-					'users/confirmation/validate',
-					array('email'=>$email, 'token'=>$token),
-					'GET',
-					$httpStatus
+			'users/confirmation/validate',
+			array(
+				'email'=>$email, 
+				'token'=>$token
+			),
+			'GET',
+			$httpStatus
 		);
+		
 		if($httpStatus==200){
 			return $this->deserialize($response, 'Happyr\ApiClient\Entity\User');
 		}
