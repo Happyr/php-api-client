@@ -9,7 +9,7 @@ class HappyApiTest extends \PHPUnit_Framework_TestCase
 {
     public function testCompany()
     {
-    	$api=new HappyrApi('tobias.nyholm@growyn.com','api_token');
+    	$api=new HappyrApi();
         
 		$object=$api->getCompany(1);
 		
@@ -20,7 +20,7 @@ class HappyApiTest extends \PHPUnit_Framework_TestCase
 	
 	public function testCompanies()
     {
-    	$api=new HappyrApi('tobias.nyholm@growyn.com','api_token');
+    	$api=new HappyrApi();
         
 		$objects=$api->getCompanies();
 
