@@ -2,13 +2,19 @@
 
 namespace Happyr\ApiClient\Entity\Populus;
 
-
 use JMS\Serializer\Annotation as JMS;
 
-class Score
+class Answer
 {
 	/**
 	 * @JMS\Type("integer")
 	 */
-	public $score;
+	public $id;
+	
+	/**
+	 * @JMS\Type("string")
+	 */
+	public $label;
+	
+
 }

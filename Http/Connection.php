@@ -18,37 +18,7 @@ class Connection
 	{
 		$this->configuration=$configuration;
 	}
-	
-	/**
-	 * Make a POST call to the URI with $data
-	 */
-	public function post($uri, array $data=array(), &$httpStatus=null)
-	{
-		//urlify the data for the POST
-		foreach($data as $key=>$value) {
-			 $dataString .= $key.'='.$value.'&'; 
-		}
-		//remove the last '&'
-		rtrim($dataString, '&');
 		
-		
-		$ch=curl_init();	
-		
-		curl_setopt($ch,CURLOPT_POST, count($data));
-		curl_setopt($ch,CURLOPT_POSTFIELDS, $dataString);
-		
-		return $this->request($ch, $uri, $httpStatus);
-	}
-	
-	/**
-	 * Make a GET call to the URI
-	 */
-	public function get($uri, &$httpStatus=null)
-	{
-		$ch=curl_init();	
-		
-		return $this->request($ch, $uri, $httpStatus);
-	}
 	
 	/**
 	 * Send a request. This will return the response. 
@@ -56,9 +26,15 @@ class Connection
 	 * @thorw HttpException if we got a response code bigger or equal to 300
 	 * 
 	 */
-	protected function request(&$ch, $uri, &$httpStatus=null){
+	public function sendRequest($uri, array $filters=array(), array $data=array(), &$httpStatus=null){
+		$ch=curl_init();
+		
+		if(count($data)>0){
+			$this->preparePostData($ch, $data);
+		}
+		
 		//set url
-		curl_setopt($ch,CURLOPT_URL, $this->buildUrl($uri));
+		curl_setopt($ch,CURLOPT_URL, $this->buildUrl($uri, $filters));
 		
 		 // Set a referer and user agent
 		if(isset($_SERVER['HTTP_HOST'])){
@@ -98,6 +74,8 @@ class Connection
 		return $response;
 	}
 	
+	
+	
 	/**
 	 * Get the accept header. 
 	 * We specify the api version here. 
@@ -121,7 +99,36 @@ class Connection
 	/**
 	 * Build the url with baseUrl and uri
 	 */
-	protected function buildUrl($uri){
-		return $this->configuration->baseUrl.$uri;
+	protected function buildUrl($uri, array $filters= array()){
+		$filterString='';
+		
+		//add the filter on the filter string
+		if(count($filters)>0){
+			$filterString='?';
+			foreach($filters as $key=>$value){
+				$filterString.=$key.'='.$value.'&';
+			}
+			rtrim($filterString,'&');
+		}
+		
+		return $this->configuration->baseUrl.$uri.$filterString;
+	}
+	
+	/**
+	 * Load the curl object with the post data
+	 */
+	protected function preparePostData(&$ch, array $data=array())
+	{
+		$dataString='';
+		
+		//urlify the data for the POST
+		foreach($data as $key=>$value) {
+			 $dataString .= $key.'='.$value.'&'; 
+		}
+		//remove the last '&'
+		rtrim($dataString, '&');
+				
+		curl_setopt($ch,CURLOPT_POST, count($data));
+		curl_setopt($ch,CURLOPT_POSTFIELDS, $dataString);
 	}
 }
