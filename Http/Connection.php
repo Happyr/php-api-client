@@ -26,15 +26,21 @@ class Connection
 	 * @thorw HttpException if we got a response code bigger or equal to 300
 	 * 
 	 */
-	public function sendRequest($uri, array $filters=array(), array $data=array(), &$httpStatus=null){
+	public function sendRequest($uri, array $data=array(), $httpVerb='GET', &$httpStatus=null){
 		$ch=curl_init();
 		
-		if(count($data)>0){
+		if($httpVerb=='POST'){
 			$this->preparePostData($ch, $data);
+			curl_setopt($ch,CURLOPT_URL, $this->buildUrl($uri));
+		}
+		elseif($httpVerb=='GET'){
+			curl_setopt($ch,CURLOPT_URL, $this->buildUrl($uri, $data));
+		}
+		else{
+			throw new \InvalidArgumentException('httpVerb must be eihter "GET" or "POST"');
 		}
 		
-		//set url
-		curl_setopt($ch,CURLOPT_URL, $this->buildUrl($uri, $filters));
+		
 		
 		 // Set a referer and user agent
 		if(isset($_SERVER['HTTP_HOST'])){

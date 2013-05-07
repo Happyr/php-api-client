@@ -89,7 +89,12 @@ class HappyApiTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($object instanceof Question);
 		
 		$this->assertTrue(count($object->answers)==5);
-		$this->assertNotEmpty($object->answers[3]->label);
+		$answer=$object->answers[3];
+		$this->assertNotEmpty($answer->label);
+		
+		$this->assertTrue($api->postPopulusAnswer($user, $object, $answer));
+		$answer->id=18;
+		$this->assertFalse($api->postPopulusAnswer($user, $object, $answer));
     }
 	
 	public function testPopulusScore()
@@ -109,5 +114,43 @@ class HappyApiTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($object instanceof Score);*/
 		
     }
+	
+	public function testUsers()
+    {
+    	$api=new HappyrApi();
+        
+		$randomEmail='test'.time().'@test.com';
+		$object=$api->createUser($randomEmail);
+		
+		$this->assertTrue($object instanceof User);
+		$this->assertNotEmpty($object->id);
+		
+		$this->setExpectedException('Happyr\ApiClient\Exceptions\UserConflictException');
+		
+		$object=$api->createUser($randomEmail);
+		
+    }
+	
+	public function testDoubleUsers()
+    {
+    	$api=new HappyrApi();
+        
+		$email='tobias.nyholm@growyn.com';
+		/*
+		$bool=$api->sendUserConfirmation($email);
+		
+		$this->assertTrue($bool);
+		*/
+		/*
+		$token='';
+		$object=$api->validateUser($email, $token);
+		
+		$this->assertTrue($object instanceof User);
+		$this->assertNotEmpty($object->id);
+		
+		*/
+    }
+	
+	
 	
 }
