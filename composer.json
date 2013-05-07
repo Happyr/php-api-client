@@ -1,0 +1,28 @@
+{
+    "name": "happyr/api-php-client",
+    "type": "library",
+    "description": "HappyR public API client library. ",
+    "keywords": ["HappyR", "HappyRecruiting", "API", "Client"],
+    "homepage": "http://www.happyrecruiting.se",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tobias Nyholm",
+            "email": "tobias@happyrecruiting.se"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.2",
+        "jms/serializer": "0.11.*"
+    },
+   
+    "autoload": {
+        "psr-0": { "HappyR\\ApiClient": "" }
+    },
+     "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
