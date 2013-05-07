@@ -18,14 +18,26 @@ use JMS\Serializer\SerializerBuilder;
 
 /**
  * This is the API class that should be used with every api call
- * Every public function in this class represent a end point in the api
+ * Every public function in this class represent a end point in the API
  */
 class HappyrApi
 {
+	//This is the configuration class
 	private $configuration;
+	
+	//The connection is the class that is doing the actual http request
 	protected $connection;
+	
+	//If you want to debug the API it might help to set this to true
 	private $debug=false;
 	
+	/**
+	 * A standard constructor that have two optional parameters. 
+	 * You may add your API credentials as parameters or in the Configuration class.
+	 * 
+	 * @param string $username
+	 * @param string $apiToken
+	 */
 	public function __construct($username=null, $apiToken=null)
 	{
 		$this->configuration=new Configuration($username,$apiToken);
@@ -35,6 +47,15 @@ class HappyrApi
 	
 	/**
 	 * Make a request
+	 * 
+	 * @param string $uri, The uri to en endpoint. 
+	 * @param array $data, (optional) if it is a GET-request then data act as a filter. If it is a POST-request it will be the post variables
+	 * @param string $httpVerb, (optional) either GET or POST.
+	 * @param integer $httpStatus, (optional) this varialbe is sent by reference. After the call this will contain the http response code
+	 * @param boolean $suppressExceptions, (optional) if true, we will catch all HttpExceptions that might be thrown by the Connection class
+	 *
+	 * @return the response of the request
+	 * @throws HttpException
 	 */
 	protected function sendRequest($uri, array $data=array(), $httpVerb='GET', &$httpStatus=null, $suppressExceptions=true)
 	{
@@ -67,6 +88,11 @@ class HappyrApi
 	
 	/**
 	 * Deserialize an object
+	 * 
+	 * @param string $data, The raw response from the API-server
+	 * @param strign $class, The full class path to the object beeing deserialized
+	 * 
+	 * @return an instance of $class
 	 */
 	protected function deserialize($data, $class)
 	{
@@ -74,7 +100,9 @@ class HappyrApi
 	}
 	
 	/**
-	 * Returns an array with Company objects
+	 * Get the companies that are available
+	 * 
+	 * @return array<Comapny>, an array with Company objects
 	 */
 	public function getCompanies()
 	{
@@ -83,9 +111,11 @@ class HappyrApi
 	}
 	
 	/**
-	 * Returns a company
+	 * Get a company with the $id
 	 * 
-	 * @param integer id. 
+	 * @param integer id, the id of the company
+	 * 
+	 * @return Company
 	 */
 	public function getCompany($id)
 	{
@@ -95,8 +125,10 @@ class HappyrApi
 	
 	
 	/**
-	 * Returns an array with Opus objects
-	 * A Opus is a job advert
+	 * Get the current active opuses
+	 * An Opus is a job advert
+	 * 
+	 * @return array<Opus>, an array with Opus objects
 	 */
 	public function getOpuses()
 	{
@@ -105,9 +137,11 @@ class HappyrApi
 	}
 	
 	/**
-	 * Returns an opus
+	 * Get an Opus with the $id
 	 * 
-	 * @param integer id. 
+	 * @param integer id, the id of the opus
+	 * 
+	 * @return Opus
 	 */
 	public function getOpus($id)
 	{
@@ -116,9 +150,11 @@ class HappyrApi
 	}
 	
 	/**
-	 * Returns an array with populus profile objects
+	 * Get a list of available Populus Profiles
 	 * A populus profile is a pattern that we match the user potential with. A good match
-	 * gets a high populus score
+	 * gets a high Populus Score
+	 * 
+	 * @return array<Profile>, an array with Profile objects
 	 */
 	public function getPopulusProfiles()
 	{
@@ -127,9 +163,11 @@ class HappyrApi
 	}
 	
 	/**
-	 * Returns an opus
+	 * Get an Profile with the $id
 	 * 
-	 * @param integer id. 
+	 * @param integer id, the id of the Profile
+	 * 
+	 * @return Profile
 	 */
 	public function getPopulusProfile($id)
 	{
@@ -139,6 +177,11 @@ class HappyrApi
 	
 	/**
 	 * Get the next question for the user on the specific profile
+	 * 
+	 * @param User $user
+	 * @param Profile $profile
+	 * 
+	 * @return Question, a Question object. 
 	 */
 	public function getPopulusQuestion(User $user, Profile $profile)
 	{
@@ -148,6 +191,13 @@ class HappyrApi
 	
 	/**
 	 * Post an answer for the question
+	 * 
+	 * 
+	 * @param User $user
+	 * @param Profile $profile
+	 * @param Answer $answer
+	 * 
+	 * @return Boolean true if the answer was successfully posted. Otherwise false
 	 */
 	public function postPopulusAnswer(User $user, Question $question, Answer $answer)
 	{
@@ -168,8 +218,10 @@ class HappyrApi
 	/**
 	 * Get the score for the user on the specific profile
 	 * 
-	 * @return integer between 0 and 100 (inclusive). False is returned if not all the questions are answered.
+	 * @param User $user
+	 * @param Profile $profile
 	 * 
+	 * @return integer between 0 and 100 (inclusive). False is returned if not all the questions are answered.
 	 */
 	public function getPopulusScore(User $user, Profile $profile)
 	{
@@ -187,10 +239,23 @@ class HappyrApi
 	}
 	
 	/**
-	 * Create a new user. 
+	 * Create a new user. If the email is not previously registered on the API-server we will just
+	 * return a User object. If, however, the email is previously registered then you (the API client) 
+	 * have to ask the user to confirm his email. 
 	 * 
-	 * @return boolean false if error. If successful we will return a User.
-	 * @throws UserConflictException if you need to verify the users email
+	 * The first step is to ask the API-server to send an email to the user. Then you have to tell the user
+	 * to fetch new emails and find the email from HappyRecruiting. In that email there is a token that 
+	 * he should enter to the API client. Simple as pie. 
+	 * 
+	 * Use the following two functions to confrim a user's email:
+	 *  - sendUserConfirmation($email)
+	 *  - validateUser($email, $token)
+	 * 
+	 * 
+	 * @param string $email, the email of the user you want to create. 
+	 * 
+	 * @return User if successful. Boolean false if error.
+	 * @throws UserConflictException if you need to confirm the users email
 	 */
 	public function createUser($email)
 	{
@@ -216,6 +281,10 @@ class HappyrApi
 	 * Send an email to the user to ask him to confirm his email. 
 	 * The email contains a token that should be used with the 
 	 * validateUser()-function
+	 * 
+	 * @param string $email.
+	 * 
+	 * @return boolean true if successfull. Otherwise false.
 	 */
 	public function sendUserConfirmation($email)
 	{
@@ -238,7 +307,10 @@ class HappyrApi
 	 * Validate a user with the email and token. The token was email to the user
 	 * from happyrecruiting.se when the sendUserConfirmation()-function was called
 	 * 
-	 * @return boolean false if error. If successful we will return a User.
+	 * @param string $email
+	 * @param string $token, the token that was sent to the user by email
+	 * 
+	 * @return User if successful. Boolean false if error.
 	 */
 	public function validateUser($email, $token)
 	{
