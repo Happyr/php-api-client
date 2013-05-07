@@ -1,4 +1,4 @@
-api-php-client
+PHP API client
 ==============
 
 This is our public API client written i PHP. You may use this in your PHP application. 
