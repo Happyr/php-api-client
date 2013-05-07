@@ -6,15 +6,12 @@ use Happyr\ApiClient\Http\Connection;
 use Happyr\ApiClient\Exceptions\HttpException;
 use Happyr\ApiClient\Exceptions\UserConflictException;
 
-
 use Happyr\ApiClient\Entity\User;
 use Happyr\ApiClient\Entity\Populus\Profile;
 use Happyr\ApiClient\Entity\Populus\Question;
 use Happyr\ApiClient\Entity\Populus\Answer;
 
-
 use JMS\Serializer\SerializerBuilder;
-
 
 /**
  * This is the API class that should be used with every api call
@@ -43,7 +40,6 @@ class HappyrApi
 		$this->configuration=new Configuration($username,$apiToken);
 		$this->connection=new Connection($this->configuration);
 	}
-	
 	
 	/**
 	 * Make a request
@@ -84,8 +80,6 @@ class HappyrApi
 		return $response;
 	}
 	
-	
-	
 	/**
 	 * Deserialize an object
 	 * 
@@ -122,7 +116,6 @@ class HappyrApi
 		$response=$this->sendRequest('companies/'.$id);
 		return $this->deserialize($response, 'Happyr\ApiClient\Entity\Company');
 	}
-	
 	
 	/**
 	 * Get the current active opuses
