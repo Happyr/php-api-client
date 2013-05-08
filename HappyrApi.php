@@ -29,15 +29,22 @@ class HappyrApi
 	private $debug=false;
 	
 	/**
-	 * A standard constructor that have two optional parameters. 
-	 * You may add your API credentials as parameters or in the Configuration class.
+	 * A standard constructor that take an optional parameters. 
+	 * If you dont inject a configuration class in the constructor it will use
+	 * the static values written in Configuration.php
 	 * 
-	 * @param string $username
-	 * @param string $apiToken
+	 * @param Configuration $config,
 	 */
-	public function __construct($username=null, $apiToken=null)
+	public function __construct(Configuration $config=null)
 	{
-		$this->configuration=new Configuration($username,$apiToken);
+		//if we dont get a configuration object in the parameter, then create one now.
+		if($config==null){
+			$this->configuration=new Configuration();
+		}
+		else{
+			$this->configuration=$config;
+		}
+		
 		$this->connection=new Connection($this->configuration);
 	}
 	
