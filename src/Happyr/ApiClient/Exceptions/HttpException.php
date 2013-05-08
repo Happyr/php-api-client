@@ -14,8 +14,10 @@ class HttpException extends \Exception
 		
 		$message=$response;
 		try{
-			$xml = simplexml_load_string($response);
-			$message=$xml->exception['message'];
+			$xml = @simplexml_load_string($response);
+			if(is_object($xml)){
+				$message=$xml->exception['message'];
+			}
 		}
 		catch(\Exception $e){
 			$message=substr($response,0, 200);
