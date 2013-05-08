@@ -12,7 +12,7 @@ use Happyr\ApiClient\Entity\Populus\Score;
 use Happyr\ApiClient\Entity\User;
 
 
-class HappyApiTest extends \PHPUnit_Framework_TestCase
+class HappyrApiTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function testCompanies()
