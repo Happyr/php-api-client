@@ -15,7 +15,7 @@ class Opus
 	/**
 	 * @JMS\Type("string")
 	 */
-	private $headline;
+	public $headline;
 	
 	/**
 	 * @JMS\Type("string")

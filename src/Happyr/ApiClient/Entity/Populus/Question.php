@@ -14,7 +14,7 @@ class Question
 	/**
 	 * @JMS\Type("string")
 	 */
-	private $question;
+	public $question;
 	
 	/**
 	 * @JMS\Type("array<Happyr\ApiClient\Entity\Populus\Answer>")

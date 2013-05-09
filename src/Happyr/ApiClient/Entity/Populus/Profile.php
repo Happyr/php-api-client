@@ -14,7 +14,7 @@ class Profile
 	/**
 	 * @JMS\Type("string")
 	 */
-	private $name;
+	public $name;
 	
 	/**
 	 * @JMS\Type("string")
