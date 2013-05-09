@@ -181,11 +181,23 @@ class HappyrApi
 	 * @param User $user
 	 * @param Profile $profile
 	 * 
-	 * @return Question, a Question object. 
+	 * @return Question, a Question object. If no more questions is available, return null. 
 	 */
 	public function getPopulusQuestion(User $user, Profile $profile)
 	{
-		$response=$this->sendRequest('populus/question',array('user_id'=>$user->id,'profile_id'=>$profile->id));
+		$httpStatus=0;
+		$response=$this->sendRequest(
+			'populus/question',
+			array(
+				'user_id'=>$user->id,
+				'profile_id'=>$profile->id
+			),
+			'GET',
+			$httpStatus
+			);
+		if($httpStatus==204){
+			return null;
+		}
 		return  $this->deserialize($response, 'Happyr\ApiClient\Entity\Populus\Question');
 	}
 	
