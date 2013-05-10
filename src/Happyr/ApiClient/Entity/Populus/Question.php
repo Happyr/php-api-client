@@ -27,5 +27,5 @@ class Question
 	 * The number of remaining questions (including this one). If this value is 6. That
 	 * means that there is this question and 5 other left to answer. 
 	 */
-	public $remaininQuestions;
+	public $remainingQuestions;
 }
