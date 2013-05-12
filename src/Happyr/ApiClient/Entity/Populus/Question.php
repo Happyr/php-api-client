@@ -24,8 +24,8 @@ class Question
 	/**
 	 * @JMS\Type("integer")
 	 * 
-	 * The number of remaining questions (including this one). If this value is 6. That
-	 * means that there is this question and 5 other left to answer. 
+	 * the progress is a value between 0 and 100 that tells how the 
+	 * questionare progress is developing. You may use this in a progressbar. 
 	 */
-	public $remainingQuestions;
+	public $progress;
 }
