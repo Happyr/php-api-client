@@ -25,8 +25,6 @@ class HappyrApi
 	//The connection is the class that is doing the actual http request
 	protected $connection;
 	
-	//If you want to debug the API it might help to set this to true
-	private $debug=false;
 	
 	/**
 	 * A standard constructor that take an optional parameters. 
@@ -60,18 +58,18 @@ class HappyrApi
 	 * @return the response of the request
 	 * @throws HttpException
 	 */
-	protected function sendRequest($uri, array $data=array(), $httpVerb='GET', &$httpStatus=null, $suppressExceptions=true)
+	protected function sendRequest($uri, array $data=array(), $httpVerb='GET', &$httpStatus=null)
 	{
 		try{
 			$response=$this->connection->sendRequest($uri,$data,$httpVerb,$httpStatus);
 		}
 		catch(HttpException $e){
-			if($this->debug){
+			if($this->configuration->debug){
 				echo ("Exception: ".$e."\n");
 			}     
 			
-			if(!$suppressExceptions){
-				throw $e;//rethrow exception
+			if($this->configuration->enableExceptions){
+				throw $e;//re-throw exception
 			}		
 			
 			//return empty result
