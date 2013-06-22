@@ -262,7 +262,7 @@ class HappyrApi
             //We need to answer more questions
             return false;
         }
-        
+
         return $score;
     }
 

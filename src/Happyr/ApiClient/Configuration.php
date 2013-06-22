@@ -14,6 +14,10 @@ class Configuration
     public $enableExceptions=false;//if true, we will throw exceptions on error
     public $debug=false; //enables debug mode
 
+    /**
+     * @param null $username
+     * @param null $token
+     */
     public function __construct($username=null,$token=null)
     {
         if($token!=null){

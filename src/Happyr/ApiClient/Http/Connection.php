@@ -14,21 +14,27 @@ class Connection
 {
     protected $configuration;
 
-
     /**
      * Init the connection with our current configuration
+     *
+     * @param Configuration $configuration
      */
     public function __construct(Configuration $configuration)
     {
         $this->configuration=$configuration;
     }
 
-
     /**
      * Send a request. This will return the response.
      *
-     * @thorw HttpException if we got a response code bigger or equal to 300
+     * @param $uri
+     * @param array $data
+     * @param string $httpVerb
+     * @param null $httpStatus
      *
+     * @return mixed
+     * @throws \Happyr\ApiClient\Exceptions\HttpException if we got a response code bigger or equal to 300
+     * @throws \InvalidArgumentException
      */
     public function sendRequest($uri, array $data=array(), $httpVerb='GET', &$httpStatus=null){
         $ch=curl_init();
@@ -91,6 +97,8 @@ class Connection
      * We specify the api version here.
      *
      * We choose to use xml over json because of the better backwards compatibility
+     *
+     * @return array
      */
     protected function getAcceptHeader()
     {
@@ -99,15 +107,24 @@ class Connection
 
     /**
      * Get the wsse authentication header
+     *
+     *
+     * @return array
      */
     protected function getAuthenticationHeader()
     {
         $wsse=new Wsse($this->configuration->username, $this->configuration->token);
+
         return $wsse->getHeaders();
     }
 
     /**
      * Build the url with baseUrl and uri
+     *
+     * @param $uri
+     * @param array $filters
+     *
+     * @return string
      */
     protected function buildUrl($uri, array $filters= array()){
         $filterString='';
@@ -126,6 +143,10 @@ class Connection
 
     /**
      * Load the curl object with the post data
+     *
+     * @param $ch
+     * @param array $data
+     *
      */
     protected function preparePostData(&$ch, array $data=array())
     {
