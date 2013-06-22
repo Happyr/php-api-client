@@ -2,6 +2,11 @@
 
 namespace Happyr\ApiClient\Http;
 
+/**
+ * Class Wsse
+ *
+ * Handle the Wsse Security headers
+ */
 class Wsse
 {
 	protected $username;
