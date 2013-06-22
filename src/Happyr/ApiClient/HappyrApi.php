@@ -31,7 +31,7 @@ class HappyrApi
      * If you dont inject a configuration class in the constructor it will use
      * the static values written in Configuration.php
      *
-     * @param Configuration $config,
+     * @param Configuration $config
      */
     public function __construct(Configuration $config=null)
     {
@@ -49,10 +49,10 @@ class HappyrApi
     /**
      * Make a request
      *
-     * @param string $uri, The uri to en endpoint.
-     * @param array $data, (optional) if it is a GET-request then data act as a filter. If it is a POST-request it will be the post variables
-     * @param string $httpVerb, (optional) either GET or POST.
-     * @param integer $httpStatus, (optional) this varialbe is sent by reference. After the call this will contain the http response code
+     * @param string $uri The uri to en endpoint.
+     * @param array $data (optional) if it is a GET-request then data act as a filter. If it is a POST-request it will be the post variables
+     * @param var $httpVerb (optional) either GET or POST.
+     * @param var $httpStatus (optional) this varialbe is sent by reference. After the call this will contain the http response code
      * @param boolean $suppressExceptions, (optional) if true, we will catch all HttpExceptions that might be thrown by the Connection class
      *
      * @return the response of the request
@@ -88,8 +88,8 @@ class HappyrApi
     /**
      * Deserialize an object
      *
-     * @param string $data, The raw response from the API-server
-     * @param strign $class, The full class path to the object beeing deserialized
+     * @param var $data The raw response from the API-server
+     * @param var $class The full class path to the object beeing deserialized
      *
      * @return an instance of $class
      */
@@ -101,11 +101,12 @@ class HappyrApi
     /**
      * Get the companies that are available
      *
-     * @return array<Comapny>, an array with Company objects
+     * @return array<Company>, an array with Company objects
      */
     public function getCompanies()
     {
         $response=$this->sendRequest('companies');
+
         return $this->deserialize($response, 'array<Happyr\ApiClient\Entity\Company>');
     }
 
@@ -119,6 +120,7 @@ class HappyrApi
     public function getCompany($id)
     {
         $response=$this->sendRequest('companies/'.$id);
+
         return $this->deserialize($response, 'Happyr\ApiClient\Entity\Company');
     }
 
@@ -131,6 +133,7 @@ class HappyrApi
     public function getOpuses()
     {
         $response=$this->sendRequest('opuses');
+
         return  $this->deserialize($response, 'array<Happyr\ApiClient\Entity\Opus>');
     }
 
@@ -144,6 +147,7 @@ class HappyrApi
     public function getOpus($id)
     {
         $response=$this->sendRequest('opuses/'.$id);
+
         return $this->deserialize($response, 'Happyr\ApiClient\Entity\Opus');
     }
 
@@ -157,6 +161,7 @@ class HappyrApi
     public function getPopulusProfiles()
     {
         $response=$this->sendRequest('populus/profiles');
+
         return  $this->deserialize($response, 'array<Happyr\ApiClient\Entity\Populus\Profile>');
     }
 
@@ -170,6 +175,7 @@ class HappyrApi
     public function getPopulusProfile($id)
     {
         $response=$this->sendRequest('opuses/'.$id);
+
         return $this->deserialize($response, 'Happyr\ApiClient\Entity\Populus\Profile');
     }
 
@@ -196,6 +202,7 @@ class HappyrApi
         if($httpStatus==204){
             return null;
         }
+
         return  $this->deserialize($response, 'Happyr\ApiClient\Entity\Populus\Question');
     }
 
@@ -255,8 +262,8 @@ class HappyrApi
             //We need to answer more questions
             return false;
         }
+        
         return $score;
-
     }
 
     /**
