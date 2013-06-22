@@ -11,9 +11,9 @@ use JMS\Serializer\Annotation as JMS;
  */
 class ZipCode
 {
-	/**
-	 * @JMS\Type("string")
-	 */
-	public $name;
-	
+    /**
+     * @JMS\Type("string")
+     */
+    public $name;
+
 }

@@ -50,10 +50,13 @@ class HappyrApi
      * Make a request
      *
      * @param string $uri The uri to en endpoint.
-     * @param array $data (optional) if it is a GET-request then data act as a filter. If it is a POST-request it will be the post variables
-     * @param var $httpVerb (optional) either GET or POST.
-     * @param var $httpStatus (optional) this varialbe is sent by reference. After the call this will contain the http response code
-     * @param boolean $suppressExceptions, (optional) if true, we will catch all HttpExceptions that might be thrown by the Connection class
+     * @param array $data (optional) if it is a GET-request then data act as a filter. If it is a POST-request it will
+     * be the post variables
+     * @param string $httpVerb (optional) either GET or POST.
+     * @param integer &$httpStatus (optional) this varialbe is sent by reference. After the call this will contain the http
+     * response code
+     * @param boolean $suppressExceptions, (optional) if true, we will catch all HttpExceptions that might be thrown by
+     * the Connection class
      *
      * @return the response of the request
      * @throws HttpException
@@ -88,8 +91,8 @@ class HappyrApi
     /**
      * Deserialize an object
      *
-     * @param var $data The raw response from the API-server
-     * @param var $class The full class path to the object beeing deserialized
+     * @param string $data The raw response from the API-server
+     * @param string $class The full class path to the object beeing deserialized
      *
      * @return an instance of $class
      */
@@ -209,17 +212,16 @@ class HappyrApi
     /**
      * Post an answer for the question
      *
-     *
      * @param User $user
-     * @param Profile $profile
+     * @param Question $question
      * @param Answer $answer
      *
-     * @return Boolean true if the answer was successfully posted. Otherwise false
+     * @return bool true if the answer was successfully posted. Otherwise false
      */
     public function postPopulusAnswer(User $user, Question $question, Answer $answer)
     {
         $httpStatus=0;
-        $response=$this->sendRequest(
+        $this->sendRequest(
             'populus/question/'.$question->id.'/answer',
             array(
                 'answer'=>$answer->id,
@@ -280,7 +282,7 @@ class HappyrApi
      *  - validateUser($email, $token)
      *
      *
-     * @param string $email, the email of the user you want to create.
+     * @param string $email of the user you want to create.
      *
      * @return User if successful. Boolean false if error.
      * @throws UserConflictException if you need to confirm the users email
@@ -319,7 +321,7 @@ class HappyrApi
     public function sendUserConfirmation($email)
     {
         $httpStatus=0;
-        $response=$this->sendRequest(
+        $this->sendRequest(
             'users/confirmation/send',
             array(
                 'email'=>$email
@@ -340,7 +342,7 @@ class HappyrApi
      * from happyrecruiting.se when the sendUserConfirmation()-function was called
      *
      * @param string $email
-     * @param string $token, the token that was sent to the user by email
+     * @param string $token that was sent to the user by email
      *
      * @return User if successful. Boolean false if error.
      */
