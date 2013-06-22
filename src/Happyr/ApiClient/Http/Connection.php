@@ -58,10 +58,17 @@ class Connection
         }
         curl_setopt($ch, CURLOPT_USERAGENT, 'HappyrApiClient/'.$this->configuration->version);
 
-        curl_setopt($ch, CURLOPT_HEADER, 0); //do not include the http header in the result
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //return the data
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);// Timeout in seconds
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); //follow redirects
+        //do not include the http header in the result
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+        //return the data
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Timeout in seconds
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
+        //follow redirects
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
         //get headers
         $headers=array_merge(
