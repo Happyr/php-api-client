@@ -21,7 +21,7 @@ class UserConflictException extends \Exception
 
 
     /**
-     * 
+     *
      *
      * @return string
      */
