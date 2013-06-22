@@ -7,20 +7,20 @@ namespace Happyr\ApiClient\Exceptions;
  */
 class UserConflictException extends \Exception
 {
-	protected $email;
-	
-	public function __construct($email)
-	{
-		$this->email=$email;
-		
-		parent::__construct('A user with that email is already registered.');
-	}
-	
+    protected $email;
 
-	
-	public function getEmail()
-	{
-		return $this->email;
-	}
-	
+    public function __construct($email)
+    {
+        $this->email=$email;
+
+        parent::__construct('A user with that email is already registered.');
+    }
+
+
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
 }
