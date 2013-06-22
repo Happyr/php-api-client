@@ -53,7 +53,7 @@ class HappyrApi
      * @param array $data (optional) if it is a GET-request then data act as a filter. If it is a POST-request it will
      * be the post variables
      * @param string $httpVerb (optional) either GET or POST.
-     * @param int &$httpStatus (optional) this varialbe is sent by reference. After the call this
+     * @param integer &$httpStatus (optional) this varialbe is sent by reference. After the call this
      * will contain the http response code
      * @param boolean $suppressExceptions, (optional) if true, we will catch all HttpExceptions that might be thrown by
      * the Connection class
@@ -116,7 +116,7 @@ class HappyrApi
     /**
      * Get a company with the $id
      *
-     * @param integer id of the company
+     * @param integer $id of the company
      *
      * @return Company
      */
@@ -143,7 +143,7 @@ class HappyrApi
     /**
      * Get an Opus with the $id
      *
-     * @param integer id of the opus
+     * @param integer $id of the opus
      *
      * @return Opus
      */
@@ -171,7 +171,7 @@ class HappyrApi
     /**
      * Get an Profile with the $id
      *
-     * @param integer id of the Profile
+     * @param integer $id of the Profile
      *
      * @return Profile
      */

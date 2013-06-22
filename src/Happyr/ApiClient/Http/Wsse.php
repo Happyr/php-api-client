@@ -17,8 +17,8 @@ class Wsse
     protected $profile='UsernameToken';
 
     /**
-     * @param $username
-     * @param $password
+     * @param string $username
+     * @param string $password
      */
     public function __construct($username, $password){
         $this->username=$username;

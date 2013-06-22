@@ -30,7 +30,7 @@ class Connection
      * @param string $uri
      * @param array $data
      * @param string $httpVerb
-     * @param integer $httpStatus
+     * @param integer &$httpStatus
      *
      * @return mixed
      * @throws \Happyr\ApiClient\Exceptions\HttpException if we got a response code bigger or equal to 300
