@@ -16,6 +16,10 @@ class Wsse
     protected $created;
     protected $profile='UsernameToken';
 
+    /**
+     * @param $username
+     * @param $password
+     */
     public function __construct($username, $password){
         $this->username=$username;
         $this->password=$password;
@@ -36,14 +40,19 @@ class Wsse
         $this->digest=base64_encode(sha1(base64_decode($this->nonce).$this->created.$this->password, true));
     }
 
+
     /**
      * Returns the headers
+     *
+     *
+     * @return array
      */
     public function getHeaders()
     {
         return array(
             'Authorization: WSSE profile="'.$this->profile.'"',
-            'X-WSSE: '.$this->profile.' Username="'.$this->username.'", PasswordDigest="'.$this->digest.'", Nonce="'.$this->nonce.'", Created="'.$this->created.'"',
+            'X-WSSE: '.$this->profile.' Username="'.$this->username.'", PasswordDigest="'.$this->digest.
+            '", Nonce="'.$this->nonce.'", Created="'.$this->created.'"',
         );
 
     }
@@ -51,6 +60,9 @@ class Wsse
     /**
      * Return a random string.
      * This must be a good non-guessable random string
+     *
+     *
+     * @return string
      */
     protected function getRandomString()
     {
@@ -62,6 +74,7 @@ class Wsse
         for ($i = 0; $i < $length; $i++) {
             $randomString .= $characters[mt_rand(0, $charlen - 1)];
         }
+
         return $randomString;
     }
 

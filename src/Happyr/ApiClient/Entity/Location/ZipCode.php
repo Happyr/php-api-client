@@ -15,5 +15,4 @@ class ZipCode
      * @JMS\Type("string")
      */
     public $name;
-
 }

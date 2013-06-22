@@ -27,10 +27,10 @@ class Connection
     /**
      * Send a request. This will return the response.
      *
-     * @param $uri
+     * @param string $uri
      * @param array $data
      * @param string $httpVerb
-     * @param null $httpStatus
+     * @param integer $httpStatus
      *
      * @return mixed
      * @throws \Happyr\ApiClient\Exceptions\HttpException if we got a response code bigger or equal to 300
@@ -102,7 +102,9 @@ class Connection
      */
     protected function getAcceptHeader()
     {
-        return array('Accept: application/vnd.happyrecruiting-v'.$this->configuration->version.'+'.$this->configuration->format);
+        return array(
+            'Accept: application/vnd.happyrecruiting-v'.$this->configuration->version.'+'.$this->configuration->format,
+        );
     }
 
     /**
@@ -121,7 +123,7 @@ class Connection
     /**
      * Build the url with baseUrl and uri
      *
-     * @param $uri
+     * @param string $uri
      * @param array $filters
      *
      * @return string
@@ -144,7 +146,7 @@ class Connection
     /**
      * Load the curl object with the post data
      *
-     * @param $ch
+     * @param var &$ch
      * @param array $data
      *
      */

@@ -9,6 +9,9 @@ class UserConflictException extends \Exception
 {
     protected $email;
 
+    /**
+     * @param string $email
+     */
     public function __construct($email)
     {
         $this->email=$email;
@@ -17,7 +20,11 @@ class UserConflictException extends \Exception
     }
 
 
-
+    /**
+     * 
+     *
+     * @return string
+     */
     public function getEmail()
     {
         return $this->email;
