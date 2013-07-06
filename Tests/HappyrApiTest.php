@@ -114,7 +114,7 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * TEst populus score
+     * Test populus score
      */
     public function testPopulusScore()
     {
@@ -129,8 +129,10 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
         $object=$api->getPopulusScore($user, $profile);
 
         $this->assertFalse($object);
-        /*$this->assertNotNull($object);
-        $this->assertTrue($object instanceof Score);*/
+        /*
+        $this->assertNotNull($object);
+        $this->assertTrue($object instanceof Score);
+        */
 
     }
 
@@ -158,10 +160,11 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testDoubleUsers()
     {
+        /*
         $api=new HappyrApi();
 
         $email='tobias.nyholm@growyn.com';
-        /*
+
         $bool=$api->sendUserConfirmation($email);
 
         $this->assertTrue($bool);
