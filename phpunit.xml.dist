@@ -17,7 +17,7 @@
 
     <testsuites>
         <testsuite name="HappyR Api Client Test Suite">
-            <directory>./tests</directory>
+            <directory>./Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -31,6 +31,7 @@
             <directory>./</directory>
             <exclude>
                 <directory>./Tests/</directory>
+                <directory>./vendor/</directory>
             </exclude>
         </whitelist>
     </filter>
