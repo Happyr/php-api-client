@@ -10,8 +10,8 @@ use Happyr\ApiClient\Entity\User;
 use Happyr\ApiClient\Entity\Populus\Profile;
 use Happyr\ApiClient\Entity\Populus\Question;
 use Happyr\ApiClient\Entity\Populus\Answer;
+use Happyr\ApiClient\Serializer\SerializerInterface;
 
-use JMS\Serializer\SerializerBuilder;
 
 /**
  * This is the API class that should be used with every api call
@@ -19,31 +19,60 @@ use JMS\Serializer\SerializerBuilder;
  */
 class HappyrApi
 {
-    //This is the configuration class
+    /**
+     * @var  configuration
+     *
+     * This is the configuration class
+     */
     private $configuration;
 
-    //The connection is the class that is doing the actual http request
+    /**
+     * @var  connection
+     *
+     * The connection is the class that is doing the actual http request
+     */
     protected $connection;
+
+    /**
+     * @var  serializer
+     *
+     *
+     */
+    protected $serializer;
 
 
     /**
-     * A standard constructor that take an optional parameters.
+     * A standard constructor that take some optional parameters.
      * If you dont inject a configuration class in the constructor it will use
      * the static values written in Configuration.php
      *
      * @param Configuration $config
+     * @param SerializerInterace $serializer
+     * @param Connection $connection
      */
-    public function __construct(Configuration $config=null)
+    public function __construct(
+            Configuration $config=null,
+            SerializerInterface $serializer=null,
+            Connection $connection=null
+    )
     {
         //if we dont get a configuration object in the parameter, then create one now.
         if($config==null){
-            $this->configuration=new Configuration();
-        }
-        else{
-            $this->configuration=$config;
+            $config=new Configuration();
         }
 
-        $this->connection=new Connection($this->configuration);
+        if($serializer==null){
+            $serializerClass=$this->configuration->serializerClass;
+            $serializer=new $serializerClass();
+        }
+
+        if($connection==null){
+            $connection=new Connection($this->configuration);
+        }
+
+        $this->configuration=$config;
+        $this->serializer=$serializer;
+        $this->connection=$connection;
     }
 
     /**
@@ -98,7 +127,7 @@ class HappyrApi
      */
     protected function deserialize($data, $class)
     {
-        return SerializerBuilder::create()->build()->deserialize($data, $class, $this->configuration->format);
+        return $this->serializer->deserialize($data, $class, $this->configuration->format);
     }
 
     /**

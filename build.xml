@@ -20,7 +20,7 @@
     </target>
 
     <target name="prepare" depends="clean" description="Prepare for build, create some folders">
-        <mkdir dir="${basedir}/app/var/build/logs"/>
+        <mkdir dir="${basedir}/build/logs"/>
     </target>
 
     <!-- Remove the logs and cache folders -->

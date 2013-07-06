@@ -24,6 +24,8 @@ class Configuration
     //You should have a good reason not to choose xml.
     public $format='xml';
 
+    public $serializerClass='\HappyR\ApiClient\Serializer\JmsSerializer';
+
     //if true, we will throw exceptions on error
     public $enableExceptions=false;
 
