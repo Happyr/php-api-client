@@ -24,7 +24,22 @@ class Configuration
     //You should have a good reason not to choose xml.
     public $format='xml';
 
+    /**
+     * @var string
+     *
+     * the class to use when serializing stuff. The class must implement
+     * the Happyr\ApiClient\Serializer\SerializerInterface
+     */
     public $serializerClass='\HappyR\ApiClient\Serializer\JmsSerializer';
+
+    /**
+     * @var string
+     *
+     * the class to use when making a http request. The class must implement
+     * the Happyr\ApiClient\Http\HttpRequestInterface
+     */
+    public $httpRequestClass='\HappyR\ApiClient\Http\CurlRequest';
+
 
     //if true, we will throw exceptions on error
     public $enableExceptions=false;

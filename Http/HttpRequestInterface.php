@@ -10,6 +10,7 @@ namespace Happyr\ApiClient\Http;
  */
 interface HttpRequestInterface 
 {
+    public function createNew();
     public function setOption($name, $value);
     public function execute();
     public function getInfo($name);

@@ -19,7 +19,20 @@ class CurlRequest implements HttpRequestInterface
      * @param string|null $url
      */
     public function __construct($url=null) {
+        $this->createNew($url);
+    }
+
+    /**
+     * Create a new instance of curl
+     *
+     *
+     * @param string|null $url
+     */
+    public function createNew($url=null)
+    {
         $this->handle = curl_init($url);
+
+        return $this;
     }
 
     /**
@@ -28,9 +41,13 @@ class CurlRequest implements HttpRequestInterface
      * @param mixed $name
      * @param mixed $value
      *
+     *
+     * @return $this
      */
     public function setOption($name, $value) {
         curl_setopt($this->handle, $name, $value);
+
+        return $this;
     }
 
     /**

@@ -12,29 +12,37 @@ use Happyr\ApiClient\Exceptions\HttpException;
  */
 class Connection
 {
+    /**
+     * @var \Happyr\ApiClient\Configuration configuration
+     *
+     *
+     */
     protected $configuration;
+
+    /**
+     * @var HttpRequestInterface request
+     *
+     *
+     */
+    protected $request;
 
     /**
      * Init the connection with our current configuration
      *
      * @param Configuration $configuration
      */
-    public function __construct(Configuration $configuration)
+    public function __construct(Configuration $configuration, HttpRequestInterface $request=null)
     {
         $this->configuration=$configuration;
+
+        if($request==null){
+            $HttpRequestClass=$this->configuration->httpRequestClass;
+            $request= new $HttpRequestClass();
+        }
+        $this->request=$request;
     }
 
-    /**
-     * Return a new request
-     *
-     * @param string|null $url
-     *
-     * @return HttpRequestInterface
-     */
-    protected function getNewRequest($url=null)
-    {
-        return new CurlRequest($url);
-    }
+
 
     /**
      * Send a request. This will return the response.
@@ -48,7 +56,7 @@ class Connection
      * @throws \InvalidArgumentException
      */
     public function sendRequest($uri, array $data=array(), $httpVerb='GET'){
-        $request=$this->getNewRequest();
+        $request=$this->request->createNew();
 
         if($httpVerb=='POST'){
             $this->preparePostData($ch, $data);

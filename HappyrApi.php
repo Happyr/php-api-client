@@ -10,6 +10,7 @@ use Happyr\ApiClient\Entity\User;
 use Happyr\ApiClient\Entity\Populus\Profile;
 use Happyr\ApiClient\Entity\Populus\Question;
 use Happyr\ApiClient\Entity\Populus\Answer;
+use Happyr\ApiClient\Http\Response;
 use Happyr\ApiClient\Serializer\SerializerInterface;
 
 
@@ -102,14 +103,11 @@ class HappyrApi
                 throw $e;//re-throw exception
             }
 
-            //TODO fix error handeling
-
             //return empty result
-            if($this->configuration->format=='xml'){
-                return '<?xml version="1.0" encoding="UTF-8"?><result/>';
-            }
-            elseif($this->configuration->format=='json'){
-                return '[]';
+            $response=new Response('<?xml version="1.0" encoding="UTF-8"?><result/>', $e->getHttpStatus());
+
+            if($this->configuration->format=='json'){
+                $response->setBody('[]');
             }
 
         }
