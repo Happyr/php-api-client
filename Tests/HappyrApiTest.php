@@ -41,10 +41,10 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
             $mockedReturn=m::mock($returnObject);
         }
 
-       $response=m::mock('\HappyR\ApiClient\Http\Response',array(
-           'getBody'=>'testResponse',
-           'getCode'=>$httpResponse,
-       ));
+        $response=m::mock('\HappyR\ApiClient\Http\Response',array(
+            'getBody'=>'testResponse',
+            'getCode'=>$httpResponse,
+        ));
 
         $connection=m::mock('\HappyR\ApiClient\Http\Connection')
             ->shouldReceive('sendRequest')
@@ -53,12 +53,12 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
             ->andReturn($response)
             ->getMock();
 
-       $serializer=m::mock('\Happyr\ApiClient\Serializer\SerializerInterface')
-           ->shouldReceive('deserialize')
-           ->with('testResponse', $returnObject, m::any('xml','yml'))
-           ->times($returnObject==null?0:1)
-           ->andReturn($mockedReturn)
-           ->getMock();
+        $serializer=m::mock('\Happyr\ApiClient\Serializer\SerializerInterface')
+            ->shouldReceive('deserialize')
+            ->with('testResponse', $returnObject, m::any('xml','yml'))
+            ->times($returnObject==null?0:1)
+            ->andReturn($mockedReturn)
+            ->getMock();
 
         return new HappyrApi(null,$serializer,$connection);
 

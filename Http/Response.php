@@ -9,7 +9,7 @@ namespace Happyr\ApiClient\Http;
  *
  * This is the response class you get from the API
  */
-class Response 
+class Response
 {
 
     /**
@@ -27,6 +27,11 @@ class Response
      */
     protected $body;
 
+
+    /**
+     * @param string $body
+     * @param integer $code
+     */
     function __construct($body, $code)
     {
         $this->body = $body;

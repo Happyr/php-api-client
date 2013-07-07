@@ -23,6 +23,7 @@ class WsseTest extends \PHPUnit_Framework_TestCase
     protected function getWsse()
     {
         $wsse=new Wsse('foo','bar');
+
         return $wsse;
     }
 
@@ -38,7 +39,7 @@ class WsseTest extends \PHPUnit_Framework_TestCase
     /**
      * Validate the wsse header
      *
-     * @param Wsse $wsse
+     * @param Wsse &$wsse
      *
      */
     protected function vaidateHeaders(Wsse &$wsse){

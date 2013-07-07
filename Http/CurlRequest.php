@@ -27,6 +27,8 @@ class CurlRequest implements HttpRequestInterface
      *
      *
      * @param string|null $url
+     *
+     * @return $this
      */
     public function createNew($url=null)
     {
