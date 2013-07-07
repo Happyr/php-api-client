@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Happyr\ApiClient\Serializer;
+namespace HappyR\ApiClient\Serializer;
 use JMS\Serializer\SerializerBuilder;
 
 

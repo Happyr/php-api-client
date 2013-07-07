@@ -1,6 +1,6 @@
 <?php
 
-namespace Happyr\ApiClient;
+namespace HappyR\ApiClient;
 
 use Happyr\ApiClient\Http\Connection;
 use Happyr\ApiClient\Exceptions\HttpException;

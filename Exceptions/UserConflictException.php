@@ -1,6 +1,6 @@
 <?php
 
-namespace Happyr\ApiClient\Exceptions;
+namespace HappyR\ApiClient\Exceptions;
 
 /**
  * If you catch this exception you should try to send a confirmation email to the user.

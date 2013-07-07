@@ -1,6 +1,6 @@
 <?php
 
-namespace Happyr\ApiClient\Tests;
+namespace HappyR\ApiClient\Tests;
 
 use Happyr\ApiClient\HappyrApi;
 

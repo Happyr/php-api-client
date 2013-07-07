@@ -1,6 +1,6 @@
 <?php
 
-namespace Happyr\ApiClient\Http;
+namespace HappyR\ApiClient\Http;
 
 /**
  * Class Wsse

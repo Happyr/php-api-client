@@ -1,6 +1,6 @@
 <?php
 
-namespace Happyr\ApiClient\Entity;
+namespace HappyR\ApiClient\Entity;
 
 use JMS\Serializer\Annotation as JMS;
 

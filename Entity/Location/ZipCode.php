@@ -1,6 +1,6 @@
 <?php
 
-namespace Happyr\ApiClient\Entity\Location;
+namespace HappyR\ApiClient\Entity\Location;
 
 use JMS\Serializer\Annotation as JMS;
 

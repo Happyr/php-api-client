@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Happyr\ApiClient\Http;
+namespace HappyR\ApiClient\Http;
 
 
 /**

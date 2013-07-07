@@ -1,6 +1,6 @@
 <?php
 
-namespace Happyr\ApiClient\Exceptions;
+namespace HappyR\ApiClient\Exceptions;
 
 /**
  * Class HttpException

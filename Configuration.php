@@ -1,6 +1,6 @@
 <?php
 
-namespace Happyr\ApiClient;
+namespace HappyR\ApiClient;
 
 /**
  * Class Configuration
