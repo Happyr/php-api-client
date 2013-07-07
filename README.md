@@ -48,16 +48,13 @@ use Happyr\ApiClient\Configuration;
 
 // ---
 
-
 $config=new Configuration('myUsername','myToken');
 
 $api=new HappyrApi($config);
-
 $companies=$api->getCompanies();
 // etc..
 
-
-´´´
+``
 
 
 
