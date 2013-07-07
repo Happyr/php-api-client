@@ -29,6 +29,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $conf=new Configuration();
 
+
         $request=m::mock('Happyr\ApiClient\Http\HttpRequestInterface',array(
                 'setOption'=>null,
                 'execute'=>'response',
@@ -38,7 +39,10 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         );
         $request->shouldReceive('createNew')->once()->andReturn(m::self());
 
-        return new Connection($conf,$request);
+        $conn= new Connection($conf,$request);
+
+        return $conn;
+        //die('Class: '.get_class($conn).' - '.print_r(get_class_methods($conn),true));
     }
 
     /**
@@ -48,7 +52,8 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $connection=$this->getConnection();
 
-        $this->assertInstanceOf('Happyr\ApiClient\Http\Response',$connection->sendRequest('url'));
+
+        $this->assertInstanceOf('Happyr\ApiClient\Http\Response', $connection->sendRequest('url'));
     }
 
     /**

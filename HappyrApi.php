@@ -62,12 +62,12 @@ class HappyrApi
         }
 
         if($serializer==null){
-            $serializerClass=$this->configuration->serializerClass;
+            $serializerClass=$config->serializerClass;
             $serializer=new $serializerClass();
         }
 
         if($connection==null){
-            $connection=new Connection($this->configuration);
+            $connection=new Connection($config);
         }
 
         $this->configuration=$config;

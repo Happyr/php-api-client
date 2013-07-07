@@ -15,7 +15,6 @@ class Connection
     /**
      * @var \Happyr\ApiClient\Configuration configuration
      *
-     *
      */
     protected $configuration;
 
@@ -30,16 +29,18 @@ class Connection
      * Init the connection with our current configuration
      *
      * @param Configuration $configuration
+     * @param HttpRequestInterface $request
      */
     public function __construct(Configuration $configuration, HttpRequestInterface $request=null)
     {
         $this->configuration=$configuration;
 
         if($request==null){
-            $HttpRequestClass=$this->configuration->httpRequestClass;
-            $request= new $HttpRequestClass();
+            $httpRequestClass=$this->configuration->httpRequestClass;
+            $request= new $httpRequestClass();
         }
         $this->request=$request;
+
     }
 
 
@@ -56,14 +57,14 @@ class Connection
      * @throws \InvalidArgumentException
      */
     public function sendRequest($uri, array $data=array(), $httpVerb='GET'){
-        $request=$this->request->createNew();
+        $this->request->createNew();
 
         if($httpVerb=='POST'){
-            $this->preparePostData($ch, $data);
-            $request->setOption(CURLOPT_URL, $this->buildUrl($uri));
+            $this->preparePostData($data);
+            $this->request->setOption(CURLOPT_URL, $this->buildUrl($uri));
         }
         elseif($httpVerb=='GET'){
-            $request->setOption(CURLOPT_URL, $this->buildUrl($uri, $data));
+            $this->request->setOption(CURLOPT_URL, $this->buildUrl($uri, $data));
         }
         else{
             throw new \InvalidArgumentException('httpVerb must be eihter "GET" or "POST"');
@@ -73,21 +74,21 @@ class Connection
 
         // Set a referer and user agent
         if(isset($_SERVER['HTTP_HOST'])){
-            $request->setOption(CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
+            $this->request->setOption(CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
         }
-        $request->setOption(CURLOPT_USERAGENT, 'HappyrApiClient/'.$this->configuration->version);
+        $this->request->setOption(CURLOPT_USERAGENT, 'HappyrApiClient/'.$this->configuration->version);
 
         //do not include the http header in the result
-        $request->setOption(CURLOPT_HEADER, 0);
+        $this->request->setOption(CURLOPT_HEADER, 0);
 
         //return the data
-        $request->setOption(CURLOPT_RETURNTRANSFER, true);
+        $this->request->setOption(CURLOPT_RETURNTRANSFER, true);
 
         // Timeout in seconds
-        $request->setOption(CURLOPT_TIMEOUT, 10);
+        $this->request->setOption(CURLOPT_TIMEOUT, 10);
 
         //follow redirects
-        $request->setOption(CURLOPT_FOLLOWLOCATION, true);
+        $this->request->setOption(CURLOPT_FOLLOWLOCATION, true);
 
         //get headers
         $headers=array_merge(
@@ -96,13 +97,13 @@ class Connection
         );
 
         //add headers
-        $request->setOption(CURLOPT_HTTPHEADER, $headers);
+        $this->request->setOption(CURLOPT_HTTPHEADER, $headers);
 
         //execute post
-        $body = $request->execute();
+        $body = $this->request->execute();
 
         //get the http status code
-        $httpStatus = $request->getInfo(CURLINFO_HTTP_CODE);
+        $httpStatus = $this->request->getInfo(CURLINFO_HTTP_CODE);
 
         //if we got some non good http response code
         if($httpStatus>=300){
@@ -111,7 +112,7 @@ class Connection
         }
 
         //close connection
-        $request->close();
+        $this->request->close();
 
 
         return new Response($body,$httpStatus);
@@ -173,11 +174,10 @@ class Connection
     /**
      * Load the curl object with the post data
      *
-     * @param var &$ch
      * @param array $data
      *
      */
-    protected function preparePostData(&$ch, array $data=array())
+    protected function preparePostData(array $data=array())
     {
         $dataString='';
 
@@ -188,7 +188,7 @@ class Connection
         //remove the last '&'
         rtrim($dataString, '&');
 
-        curl_setopt($ch,CURLOPT_POST, count($data));
-        curl_setopt($ch,CURLOPT_POSTFIELDS, $dataString);
+        $this->request->setOption(CURLOPT_POST, count($data));
+        $this->request->setOption(CURLOPT_POSTFIELDS, $dataString);
     }
 }
