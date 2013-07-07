@@ -6,6 +6,11 @@ namespace Happyr\ApiClient\Tests\Http;
 
 use Happyr\ApiClient\Http\Wsse;
 
+/**
+ * Class WsseTest
+ *
+ * Test the wsse class
+ */
 class WsseTest extends \PHPUnit_Framework_TestCase
 {
 

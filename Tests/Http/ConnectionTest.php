@@ -9,9 +9,22 @@ use Happyr\ApiClient\Http\Connection;
 
 use Mockery as m;
 
+
+/**
+ * Class ConnectionTest
+ *
+ * Test the connection class
+ */
 class ConnectionTest extends \PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Get a new connection with mocked dependencies
+     *
+     * @param int $httpStatus
+     *
+     * @return Connection
+     */
     protected function getConnection($httpStatus=200)
     {
         $conf=new Configuration();
