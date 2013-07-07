@@ -54,7 +54,7 @@ $api=new HappyrApi($config);
 $companies=$api->getCompanies();
 // etc..
 
-``
+```
 
 
 
