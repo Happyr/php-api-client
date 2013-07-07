@@ -47,6 +47,8 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test to send a request
+     *
+     * @runInSeparateProcess
      */
     public function testSendRequest()
     {
@@ -59,6 +61,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test error
      * @expectedException Happyr\ApiClient\Exceptions\HttpException
+     * @runInSeparateProcess
      */
     public function testSendRequestError()
     {
