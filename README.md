@@ -46,15 +46,22 @@ Usage
 use Happyr\ApiClient\HappyrApi;
 use Happyr\ApiClient\Configuration;
 
-// ---
+class myClass
+{
+    // ---
 
-$config=new Configuration('myUsername','myToken');
+    public function myFunc()
+    {
+        $config=new Configuration('myUsername','myToken');
 
-$api=new HappyrApi($config);
-$companies=$api->getCompanies();
-// etc..
+        $api=new HappyrApi($config);
+        $companies=$api->getCompanies();
+        // etc..
+    }
+    // ---
 
-```
+}
+``
 
 
 
