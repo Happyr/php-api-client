@@ -25,6 +25,18 @@ class Connection
     }
 
     /**
+     * Return a new request
+     *
+     * @param string|null $url
+     *
+     * @return HttpRequestInterface
+     */
+    protected function getNewRequest($url=null)
+    {
+        return new CurlRequest($url);
+    }
+
+    /**
      * Send a request. This will return the response.
      *
      * @param string $uri
@@ -36,14 +48,14 @@ class Connection
      * @throws \InvalidArgumentException
      */
     public function sendRequest($uri, array $data=array(), $httpVerb='GET'){
-        $ch=curl_init();
+        $request=$this->getNewRequest();
 
         if($httpVerb=='POST'){
             $this->preparePostData($ch, $data);
-            curl_setopt($ch,CURLOPT_URL, $this->buildUrl($uri));
+            $request->setOption(CURLOPT_URL, $this->buildUrl($uri));
         }
         elseif($httpVerb=='GET'){
-            curl_setopt($ch,CURLOPT_URL, $this->buildUrl($uri, $data));
+            $request->setOption(CURLOPT_URL, $this->buildUrl($uri, $data));
         }
         else{
             throw new \InvalidArgumentException('httpVerb must be eihter "GET" or "POST"');
@@ -53,21 +65,21 @@ class Connection
 
         // Set a referer and user agent
         if(isset($_SERVER['HTTP_HOST'])){
-            curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
+            $request->setOption(CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
         }
-        curl_setopt($ch, CURLOPT_USERAGENT, 'HappyrApiClient/'.$this->configuration->version);
+        $request->setOption(CURLOPT_USERAGENT, 'HappyrApiClient/'.$this->configuration->version);
 
         //do not include the http header in the result
-        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $request->setOption(CURLOPT_HEADER, 0);
 
         //return the data
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $request->setOption(CURLOPT_RETURNTRANSFER, true);
 
         // Timeout in seconds
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        $request->setOption(CURLOPT_TIMEOUT, 10);
 
         //follow redirects
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        $request->setOption(CURLOPT_FOLLOWLOCATION, true);
 
         //get headers
         $headers=array_merge(
@@ -76,13 +88,13 @@ class Connection
         );
 
         //add headers
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $request->setOption(CURLOPT_HTTPHEADER, $headers);
 
         //execute post
-        $body = curl_exec($ch);
+        $body = $request->execute();
 
         //get the http status code
-        $httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $httpStatus = $request->getInfo(CURLINFO_HTTP_CODE);
 
         //if we got some non good http response code
         if($httpStatus>=300){
@@ -91,7 +103,7 @@ class Connection
         }
 
         //close connection
-        curl_close($ch);
+        $request->close();
 
 
         return new Response($body,$httpStatus);
