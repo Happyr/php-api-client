@@ -82,18 +82,17 @@ class HappyrApi
      * @param array $data (optional) if it is a GET-request then data act as a filter. If it is a POST-request it will
      * be the post variables
      * @param string $httpVerb (optional) either GET or POST.
-     * @param integer &$httpStatus (optional) this varialbe is sent by reference. After the call this
      * will contain the http response code
      * @param boolean $suppressExceptions, (optional) if true, we will catch all HttpExceptions that might be thrown by
      * the Connection class
      *
-     * @return the response of the request
+     * @return \Happyr\ApiClient\Http\Response
      * @throws HttpException
      */
-    protected function sendRequest($uri, array $data=array(), $httpVerb='GET', &$httpStatus=null)
+    protected function sendRequest($uri, array $data=array(), $httpVerb='GET')
     {
         try{
-            $response=$this->connection->sendRequest($uri,$data,$httpVerb,$httpStatus);
+            $response=$this->connection->sendRequest($uri,$data,$httpVerb);
         }
         catch(HttpException $e){
             if($this->configuration->debug){
@@ -103,6 +102,8 @@ class HappyrApi
             if($this->configuration->enableExceptions){
                 throw $e;//re-throw exception
             }
+
+            //TODO fix error handeling
 
             //return empty result
             if($this->configuration->format=='xml'){
@@ -139,7 +140,7 @@ class HappyrApi
     {
         $response=$this->sendRequest('companies');
 
-        return $this->deserialize($response, 'array<Happyr\ApiClient\Entity\Company>');
+        return $this->deserialize($response->getBody(), 'array<Happyr\ApiClient\Entity\Company>');
     }
 
     /**
@@ -153,7 +154,7 @@ class HappyrApi
     {
         $response=$this->sendRequest('companies/'.$id);
 
-        return $this->deserialize($response, 'Happyr\ApiClient\Entity\Company');
+        return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\Company');
     }
 
     /**
@@ -166,7 +167,7 @@ class HappyrApi
     {
         $response=$this->sendRequest('opuses');
 
-        return  $this->deserialize($response, 'array<Happyr\ApiClient\Entity\Opus>');
+        return  $this->deserialize($response->getBody(), 'array<Happyr\ApiClient\Entity\Opus>');
     }
 
     /**
@@ -180,7 +181,7 @@ class HappyrApi
     {
         $response=$this->sendRequest('opuses/'.$id);
 
-        return $this->deserialize($response, 'Happyr\ApiClient\Entity\Opus');
+        return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\Opus');
     }
 
     /**
@@ -194,7 +195,7 @@ class HappyrApi
     {
         $response=$this->sendRequest('populus/profiles');
 
-        return  $this->deserialize($response, 'array<Happyr\ApiClient\Entity\Populus\Profile>');
+        return  $this->deserialize($response->getBody(), 'array<Happyr\ApiClient\Entity\Populus\Profile>');
     }
 
     /**
@@ -206,9 +207,9 @@ class HappyrApi
      */
     public function getPopulusProfile($id)
     {
-        $response=$this->sendRequest('opuses/'.$id);
+        $response=$this->sendRequest('populus/profiles/'.$id);
 
-        return $this->deserialize($response, 'Happyr\ApiClient\Entity\Populus\Profile');
+        return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\Populus\Profile');
     }
 
     /**
@@ -221,21 +222,20 @@ class HappyrApi
      */
     public function getPopulusQuestion(User $user, Profile $profile)
     {
-        $httpStatus=0;
         $response=$this->sendRequest(
             'populus/question',
             array(
                 'user_id'=>$user->id,
                 'profile_id'=>$profile->id
             ),
-            'GET',
-            $httpStatus
+            'GET'
         );
-        if($httpStatus==204){
+
+        if($response->getCode()==204){
             return null;
         }
 
-        return  $this->deserialize($response, 'Happyr\ApiClient\Entity\Populus\Question');
+        return  $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\Populus\Question');
     }
 
     /**
@@ -249,17 +249,15 @@ class HappyrApi
      */
     public function postPopulusAnswer(User $user, Question $question, Answer $answer)
     {
-        $httpStatus=0;
-        $this->sendRequest(
+        $response=$this->sendRequest(
             'populus/question/'.$question->id.'/answer',
             array(
                 'answer'=>$answer->id,
                 'user_id'=>$user->id
             ),
-            'POST',
-            $httpStatus
+            'POST'
         );
-        if($httpStatus==201){
+        if($response->getCode()==201){
             return true;
         }
 
@@ -276,25 +274,21 @@ class HappyrApi
      */
     public function getPopulusScore(User $user, Profile $profile)
     {
-        $httpStatus=0;
         $response=$this->sendRequest(
             'populus/score',
             array(
                 'user_id'=>$user->id,
                 'profile_id'=>$profile->id
             ),
-            'GET',
-            $httpStatus
+            'GET'
         );
 
-        $score= $this->deserialize($response, 'Happyr\ApiClient\Entity\Populus\Score');
-
-        if($httpStatus==412){
+        if($response->getCode()==412){
             //We need to answer more questions
             return false;
         }
 
-        return $score;
+        return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\Populus\Score');
     }
 
     /**
@@ -318,20 +312,18 @@ class HappyrApi
      */
     public function createUser($email)
     {
-        $httpStatus=0;
         $response=$this->sendRequest(
             'users',
             array(
                 'email'=>$email
             ),
-            'POST',
-            $httpStatus
+            'POST'
         );
 
-        if($httpStatus==201){//if success
-            return $this->deserialize($response, 'Happyr\ApiClient\Entity\User');
+        if($response->getCode()==201){//if success
+            return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\User');
         }
-        elseif($httpStatus==409){//if that email was previously registered
+        elseif($response->getCode()==409){//if that email was previously registered
             throw new UserConflictException($email);
         }
 
@@ -345,21 +337,19 @@ class HappyrApi
      *
      * @param string $email
      *
-     * @return boolean true if successfull. Otherwise false.
+     * @return boolean true if successful. Otherwise false.
      */
     public function sendUserConfirmation($email)
     {
-        $httpStatus=0;
-        $this->sendRequest(
+        $response=$this->sendRequest(
             'users/confirmation/send',
             array(
                 'email'=>$email
             ),
-            'POST',
-            $httpStatus
+            'POST'
         );
 
-        if($httpStatus==200){
+        if($response->getCode()==200){
             return true;
         }
 
@@ -377,19 +367,17 @@ class HappyrApi
      */
     public function validateUser($email, $token)
     {
-        $httpStatus=0;
         $response=$this->sendRequest(
             'users/confirmation/validate',
             array(
                 'email'=>$email,
                 'token'=>$token
             ),
-            'GET',
-            $httpStatus
+            'GET'
         );
 
-        if($httpStatus==200){
-            return $this->deserialize($response, 'Happyr\ApiClient\Entity\User');
+        if($response->getCode()==200){
+            return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\User');
         }
 
         return false;

@@ -30,13 +30,12 @@ class Connection
      * @param string $uri
      * @param array $data
      * @param string $httpVerb
-     * @param integer &$httpStatus
      *
-     * @return mixed
+     * @return Response
      * @throws \Happyr\ApiClient\Exceptions\HttpException if we got a response code bigger or equal to 300
      * @throws \InvalidArgumentException
      */
-    public function sendRequest($uri, array $data=array(), $httpVerb='GET', &$httpStatus=null){
+    public function sendRequest($uri, array $data=array(), $httpVerb='GET'){
         $ch=curl_init();
 
         if($httpVerb=='POST'){
@@ -80,7 +79,7 @@ class Connection
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         //execute post
-        $response = curl_exec($ch);
+        $body = curl_exec($ch);
 
         //get the http status code
         $httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -88,13 +87,14 @@ class Connection
         //if we got some non good http response code
         if($httpStatus>=300){
             //throw exceptions
-            throw new HttpException($httpStatus, $response);
+            throw new HttpException($httpStatus, $body);
         }
 
         //close connection
         curl_close($ch);
 
-        return $response;
+
+        return new Response($body,$httpStatus);
     }
 
 
