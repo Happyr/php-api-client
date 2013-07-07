@@ -27,16 +27,12 @@
     </listeners>
 
     <filter>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Tests/</directory>
-                <directory>./vendor/</directory>
+        <blacklist>
+            <directory>./vendor/</directory>
 
-                <!-- Don't test interfaces -->
-                <directory suffix="Interface.php">./</directory>
-            </exclude>
-        </whitelist>
+            <!-- Don't test interfaces -->
+            <directory suffix="Interface.php">./</directory>
+        </blacklist>
     </filter>
 
     <logging>
