@@ -30,9 +30,9 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
-                <directory>./Tests/</directory>
-                <directory>./vendor/</directory>
-                <!-- Dont test interfaces -->
+                <directory>./Tests/*</directory>
+                <directory>./vendor/*</directory>
+                <!-- Don't test interfaces -->
                 <directory suffix="Interface.php">./</directory>
             </exclude>
         </whitelist>
