@@ -29,6 +29,7 @@
     <filter>
         <blacklist>
             <directory>./vendor/</directory>
+            <directory>./Tests/</directory>
 
             <!-- Don't test interfaces -->
             <directory suffix="Interface.php">./</directory>
