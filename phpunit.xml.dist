@@ -32,6 +32,8 @@
             <exclude>
                 <directory>./Tests/</directory>
                 <directory>./vendor/</directory>
+                <!-- Dont test interfaces -->
+                <directory suffix="Interface.php">./</directory>
             </exclude>
         </whitelist>
     </filter>
