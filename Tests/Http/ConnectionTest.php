@@ -4,8 +4,8 @@
 namespace HappyR\ApiClient\Tests\Http;
 
 
-use Happyr\ApiClient\Configuration;
-use Happyr\ApiClient\Http\Connection;
+use HappyR\ApiClient\Configuration;
+use HappyR\ApiClient\Http\Connection;
 
 use Mockery as m;
 
@@ -48,7 +48,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test to send a request
      *
-     * @runInSeparateProcess
+     *
      */
     public function testSendRequest()
     {
@@ -61,7 +61,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test error
      * @expectedException Happyr\ApiClient\Exceptions\HttpException
-     * @runInSeparateProcess
+     *
      */
     public function testSendRequestError()
     {

@@ -43,8 +43,8 @@ Usage
 -----
 ```php
 
-use Happyr\ApiClient\HappyrApi;
-use Happyr\ApiClient\Configuration;
+use HappyR\ApiClient\HappyrApi;
+use HappyR\ApiClient\Configuration;
 
 class myClass
 {

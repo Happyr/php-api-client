@@ -2,8 +2,8 @@
 
 namespace HappyR\ApiClient\Http;
 
-use Happyr\ApiClient\Configuration;
-use Happyr\ApiClient\Exceptions\HttpException;
+use HappyR\ApiClient\Configuration;
+use HappyR\ApiClient\Exceptions\HttpException;
 
 /**
  * Class Connection

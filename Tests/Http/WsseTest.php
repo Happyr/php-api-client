@@ -4,7 +4,7 @@
 namespace HappyR\ApiClient\Tests\Http;
 
 
-use Happyr\ApiClient\Http\Wsse;
+use HappyR\ApiClient\Http\Wsse;
 
 /**
  * Class WsseTest

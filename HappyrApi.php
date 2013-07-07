@@ -2,16 +2,16 @@
 
 namespace HappyR\ApiClient;
 
-use Happyr\ApiClient\Http\Connection;
-use Happyr\ApiClient\Exceptions\HttpException;
-use Happyr\ApiClient\Exceptions\UserConflictException;
+use HappyR\ApiClient\Http\Connection;
+use HappyR\ApiClient\Exceptions\HttpException;
+use HappyR\ApiClient\Exceptions\UserConflictException;
 
-use Happyr\ApiClient\Entity\User;
-use Happyr\ApiClient\Entity\Populus\Profile;
-use Happyr\ApiClient\Entity\Populus\Question;
-use Happyr\ApiClient\Entity\Populus\Answer;
-use Happyr\ApiClient\Http\Response;
-use Happyr\ApiClient\Serializer\SerializerInterface;
+use HappyR\ApiClient\Entity\User;
+use HappyR\ApiClient\Entity\Populus\Profile;
+use HappyR\ApiClient\Entity\Populus\Question;
+use HappyR\ApiClient\Entity\Populus\Answer;
+use HappyR\ApiClient\Http\Response;
+use HappyR\ApiClient\Serializer\SerializerInterface;
 
 
 /**
