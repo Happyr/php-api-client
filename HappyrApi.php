@@ -53,8 +53,7 @@ class HappyrApi
     public function __construct(
             Configuration $config=null,
             SerializerInterface $serializer=null,
-            Connection $connection=null
-    )
+            Connection $connection=null)
     {
         //if we dont get a configuration object in the parameter, then create one now.
         if($config==null){

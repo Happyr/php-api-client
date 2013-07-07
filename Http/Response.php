@@ -5,8 +5,9 @@ namespace Happyr\ApiClient\Http;
 
 
 /**
- * 
- * 
+ * Class Response
+ *
+ * This is the response class you get from the API
  */
 class Response 
 {

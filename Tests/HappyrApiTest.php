@@ -17,8 +17,11 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
     /**
      * Get an Api ojbect
      *
+     *
      * @param string $url
-     * @param string $returnObject
+     * @param string|null $returnObject
+     * @param array|null $params
+     * @param int $httpResponse
      *
      * @return HappyrApi
      */
