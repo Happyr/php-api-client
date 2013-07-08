@@ -42,7 +42,6 @@ You find a the full configuration reference [here][3].
 Usage
 -----
 ```php
-
 use HappyR\ApiClient\HappyrApi;
 use HappyR\ApiClient\Configuration;
 
