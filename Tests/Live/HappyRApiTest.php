@@ -42,7 +42,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($collection));
         $this->assertInstanceOf($type,$entity);
 
-        $this->assertInstanceOf($type,$this->client->getCompany($entity->getId()));
+        $this->assertInstanceOf($type,$this->client->getCompany($entity->id));
     }
 
 
@@ -54,11 +54,11 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
         $type='HappyR\ApiClient\Entity\Opus';
 
         $collection=$this->client->getOpuses();
-        $entity=$collection[0];
         $this->assertTrue(is_array($collection));
+        $entity=$collection[0];
         $this->assertInstanceOf($type,$entity);
 
-        $this->assertInstanceOf($type,$this->client->getOpus($entity->getId()));
+        $this->assertInstanceOf($type,$this->client->getOpus($entity->id));
     }
 
 
@@ -74,7 +74,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($collection));
         $this->assertInstanceOf($type,$entity);
 
-        $this->assertInstanceOf($type,$this->client->getPotentialProfile($entity->getId()));
+        $this->assertInstanceOf($type,$this->client->getPotentialProfile($entity->id));
     }
 
     /**
@@ -108,27 +108,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPotentialScore()
     {
-        $uid=513;
-        $pid=2;
-        $type='HappyR\ApiClient\Entity\Potential\Score';
-        $api=$this->getApi('potential/score', $type,
-            array('user_id'=>$uid, 'pattern_id'=>$pid), 200);
 
-        $user=m::mock('HappyR\ApiClient\Entity\User')
-            ->shouldReceive('')->andSet('id',$uid)
-            ->getMock();
-
-        $profile=m::mock('HappyR\ApiClient\Entity\Potential\Profile')
-            ->shouldReceive('')->andSet('id', $pid)
-            ->getMock();
-
-        $this->assertInstanceOf($type,$api->getPotentialScore($user,$profile));
-
-        //test error
-        $api=$this->getApi('potential/score', null,
-            array('user_id'=>$uid, 'pattern_id'=>$pid),412);
-
-        $this->assertFalse($api->getPotentialScore($user,$profile));
     }
 
     /**
@@ -136,18 +116,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateUser()
     {
-        $email="test@mail.se";
-        $type='HappyR\ApiClient\Entity\User';
-        $api=$this->getApi('users', $type,
-            array('email'=>$email),201);
 
-        $this->assertInstanceOf($type,$api->createUser($email));
-
-        //test error
-        $api=$this->getApi('users', null,
-            array('email'=>$email),400);
-
-        $this->assertFalse($api->createUser($email));
 
     }
 
@@ -157,11 +126,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateUserConflict()
     {
-        $email="test@mail.se";
-        $api=$this->getApi('users', null,
-            array('email'=>$email),409);
 
-        $api->createUser($email);
     }
 
     /**
@@ -169,37 +134,12 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendUserConfirmation()
     {
-        $email="test@mail.se";
-        $api=$this->getApi('users/confirmation/send', null,
-            array('email'=>$email),200);
 
-        $this->assertTrue($api->sendUserConfirmation($email));
-
-        //test errro
-        $api=$this->getApi('users/confirmation/send', null,
-            array('email'=>$email),400);
-
-        $this->assertFalse($api->sendUserConfirmation($email));
 
     }
 
     public function testValidateUser()
     {
-        $email="test@mail.se";
-        $token='123';
-        $type='HappyR\ApiClient\Entity\User';
-        $api=$this->getApi('users/confirmation/validate', $type,
-            array('email'=>$email, 'token'=>$token),200);
-
-
-        $this->assertInstanceOf($type,$api->validateUser($email,$token));
-
-        //test error
-        $api=$this->getApi('users/confirmation/validate', null,
-            array('email'=>$email, 'token'=>$token),400);
-
-
-        $this->assertFalse($api->validateUser($email,$token));
 
     }
 

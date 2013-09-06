@@ -105,15 +105,14 @@ class Connection
         //get the http status code
         $httpStatus = $this->request->getInfo(CURLINFO_HTTP_CODE);
 
-        //if we got some non good http response code
-        if($httpStatus>=300){
-            //throw exceptions
-            throw new HttpException($httpStatus, $body);
-        }
-
         //close connection
         $this->request->close();
 
+        //if we got some non good http response code
+        if($httpStatus>=300 || $httpStatus==0){
+            //throw exceptions
+            throw new HttpException($httpStatus, $body);
+        }
 
         return new Response($body,$httpStatus);
     }
