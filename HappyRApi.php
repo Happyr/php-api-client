@@ -223,7 +223,7 @@ class HappyRApi
             'potential/statement',
             array(
                 'user_id'=>$user->id,
-                'profile_id'=>$profile->id
+                'pattern_id'=>$profile->id
             ),
             'GET'
         );
@@ -275,7 +275,7 @@ class HappyRApi
             'potential/score',
             array(
                 'user_id'=>$user->id,
-                'profile_id'=>$profile->id
+                'pattern_id'=>$profile->id
             ),
             'GET'
         );

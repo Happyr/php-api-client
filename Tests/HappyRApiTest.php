@@ -134,7 +134,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
         $uid=5324;
         $type='HappyR\ApiClient\Entity\Potential\Statement';
         $api=$this->getApi('potential/statement', $type,
-            array('user_id'=>$uid,'profile_id'=>$pid),200);
+            array('user_id'=>$uid,'pattern_id'=>$pid),200);
 
         $user=m::mock('HappyR\ApiClient\Entity\User')
             ->shouldReceive('')->andSet('id',$uid)->getMock();
@@ -146,7 +146,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
 
         //When there is no more statements
         $api=$this->getApi('potential/statement', null,
-            array('user_id'=>$uid,'profile_id'=>$pid),204);
+            array('user_id'=>$uid,'pattern_id'=>$pid),204);
 
         $this->assertNull($api->getPotentialStatement($user,$profile));
     }
@@ -186,7 +186,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
         $pid=2;
         $type='HappyR\ApiClient\Entity\Potential\Score';
         $api=$this->getApi('potential/score', $type,
-            array('user_id'=>$uid, 'profile_id'=>$pid), 200);
+            array('user_id'=>$uid, 'pattern_id'=>$pid), 200);
 
         $user=m::mock('HappyR\ApiClient\Entity\User')
             ->shouldReceive('')->andSet('id',$uid)
@@ -200,7 +200,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
 
         //test error
         $api=$this->getApi('potential/score', null,
-            array('user_id'=>$uid, 'profile_id'=>$pid),412);
+            array('user_id'=>$uid, 'pattern_id'=>$pid),412);
 
         $this->assertFalse($api->getPotentialScore($user,$profile));
     }
