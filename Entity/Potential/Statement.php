@@ -19,10 +19,11 @@ class Statement
     /**
      * @JMS\Type("string")
      */
-    public $statement;
+    public $sentence;
 
     /**
      * @JMS\Type("array<HappyR\ApiClient\Entity\Potential\Answer>")
+     * @JMS\SerializedName("assessments")
      */
     public $answers;
 
