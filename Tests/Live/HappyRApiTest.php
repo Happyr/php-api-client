@@ -31,60 +31,51 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * Test to fetch many companies
+     * Test to fetch many companies and one specific
      */
     public function testGetCompanies()
     {
-        $entities=$this->client->getCompanies();
-        $this->assertInstanceOf('Array',$entities);
+        $type='HappyR\ApiClient\Entity\Company';
+
+        $collection=$this->client->getCompanies();
+        $entity=$collection[0];
+        $this->assertTrue(is_array($collection));
+        $this->assertInstanceOf($type,$entity);
+
+        $this->assertInstanceOf($type,$this->client->getCompany($entity->getId()));
     }
 
-    /**
-     * Test to fetch a specific company
-     */
-    public function testGetCompany()
-    {
-        $id=33;
-        $type='HappyR\ApiClient\Entity\Company';
-        $this->assertInstanceOf($type,$this->client->getCompany($id));
-    }
 
     /**
      * Test to fetch many opuses
      */
     public function testGetOpuses()
     {
-        $this->assertInstanceOf('Array',$this->client->getOpuses());
+        $type='HappyR\ApiClient\Entity\Opus';
+
+        $collection=$this->client->getOpuses();
+        $entity=$collection[0];
+        $this->assertTrue(is_array($collection));
+        $this->assertInstanceOf($type,$entity);
+
+        $this->assertInstanceOf($type,$this->client->getOpus($entity->getId()));
     }
 
-    /**
-     * Test to fetch a specific Opus
-     */
-    public function testGetOpus()
-    {
-        $id=33;
-        $type='HappyR\ApiClient\Entity\Opus';
-        $this->assertInstanceOf($type,$this->client->getOpus($id));
-    }
 
     /**
      * Test to fetch many potential profiles
      */
     public function testGetPotentialProfiles()
     {
-        $this->assertInstanceOf('Array',$this->client->getPotentialProfiles());
-    }
-
-    /**
-     * Test to fetch a specific Opus
-     */
-    public function testGetPotentialProfile()
-    {
-        $id=4;
         $type='HappyR\ApiClient\Entity\Potential\Profile';
-        $this->assertInstanceOf($type,$this->client->getPotentialProfile($id));
-    }
 
+        $collection=$this->client->getPotentialProfiles();
+        $entity=$collection[0];
+        $this->assertTrue(is_array($collection));
+        $this->assertInstanceOf($type,$entity);
+
+        $this->assertInstanceOf($type,$this->client->getPotentialProfile($entity->getId()));
+    }
 
     /**
      * Test to fetch a statement
