@@ -1,15 +1,15 @@
 <?php
 
-namespace HappyR\ApiClient\Entity\Populus;
+namespace HappyR\ApiClient\Entity\Potential;
 
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * Class Question
+ * Class Statement
  *
- * This class represents a question in the test
+ * This class represents a statement in the test
  */
-class Question
+class Statement
 {
     /**
      * @JMS\Type("integer")
@@ -19,10 +19,10 @@ class Question
     /**
      * @JMS\Type("string")
      */
-    public $question;
+    public $statement;
 
     /**
-     * @JMS\Type("array<HappyR\ApiClient\Entity\Populus\Answer>")
+     * @JMS\Type("array<HappyR\ApiClient\Entity\Potential\Answer>")
      */
     public $answers;
 

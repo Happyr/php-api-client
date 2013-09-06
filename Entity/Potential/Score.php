@@ -1,6 +1,6 @@
 <?php
 
-namespace HappyR\ApiClient\Entity\Populus;
+namespace HappyR\ApiClient\Entity\Potential;
 
 use JMS\Serializer\Annotation as JMS;
 
