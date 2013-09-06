@@ -42,7 +42,7 @@ You find a the full configuration reference [here][3].
 Usage
 -----
 ```php
-use HappyR\ApiClient\HappyrApi;
+use HappyR\ApiClient\HappyRApi;
 use HappyR\ApiClient\Configuration;
 
 class myClass
@@ -53,7 +53,7 @@ class myClass
     {
         $config=new Configuration('myUsername','myToken');
 
-        $api=new HappyrApi($config);
+        $api=new HappyRApi($config);
         $companies=$api->getCompanies();
         // etc..
     }

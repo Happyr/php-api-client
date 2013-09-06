@@ -2,16 +2,16 @@
 
 namespace HappyR\ApiClient\Tests;
 
-use HappyR\ApiClient\HappyrApi;
+use HappyR\ApiClient\HappyRApi;
 
 use Mockery as m;
 
 /**
- * Class HappyrApiTest
+ * Class HappyRApiTest
  *
  *
  */
-class HappyrApiTest extends \PHPUnit_Framework_TestCase
+class HappyRApiTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -23,7 +23,7 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
      * @param array|null $params
      * @param int $httpResponse
      *
-     * @return HappyrApi
+     * @return HappyRApi
      */
     protected function getApi($url, $returnObject=null, $params=null, $httpResponse=200)
     {
@@ -53,14 +53,14 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
             ->andReturn($response)
             ->getMock();
 
-        $serializer=m::mock('\Happyr\ApiClient\Serializer\SerializerInterface')
+        $serializer=m::mock('\HappyR\ApiClient\Serializer\SerializerInterface')
             ->shouldReceive('deserialize')
             ->with('testResponse', $returnObject, m::any('xml','yml'))
             ->times($returnObject==null?0:1)
             ->andReturn($mockedReturn)
             ->getMock();
 
-        return new HappyrApi(null,$serializer,$connection);
+        return new HappyRApi(null,$serializer,$connection);
 
     }
 
@@ -69,7 +69,7 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCompanies()
     {
-        $api=$this->getApi('companies', 'array<Happyr\ApiClient\Entity\Company>');
+        $api=$this->getApi('companies', 'array<HappyR\ApiClient\Entity\Company>');
         $this->assertInstanceOf('Collection',$api->getCompanies());
     }
 
@@ -79,7 +79,7 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
     public function testGetCompany()
     {
         $id=33;
-        $type='Happyr\ApiClient\Entity\Company';
+        $type='HappyR\ApiClient\Entity\Company';
         $api=$this->getApi('companies/'.$id, $type);
         $this->assertInstanceOf($type,$api->getCompany($id));
     }
@@ -89,7 +89,7 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetOpuses()
     {
-        $api=$this->getApi('opuses', 'array<Happyr\ApiClient\Entity\Opus>');
+        $api=$this->getApi('opuses', 'array<HappyR\ApiClient\Entity\Opus>');
         $this->assertInstanceOf('Collection',$api->getOpuses());
     }
 
@@ -99,7 +99,7 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
     public function testGetOpus()
     {
         $id=33;
-        $type='Happyr\ApiClient\Entity\Opus';
+        $type='HappyR\ApiClient\Entity\Opus';
         $api=$this->getApi('opuses/'.$id, $type);
         $this->assertInstanceOf($type,$api->getOpus($id));
     }
@@ -109,7 +109,7 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPopulusProfiles()
     {
-        $api=$this->getApi('populus/profiles', 'array<Happyr\ApiClient\Entity\Populus\Profile>');
+        $api=$this->getApi('populus/profiles', 'array<HappyR\ApiClient\Entity\Populus\Profile>');
         $this->assertInstanceOf('Collection',$api->getPopulusProfiles());
     }
 
@@ -119,7 +119,7 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
     public function testGetPopulusProfile()
     {
         $id=4;
-        $type='Happyr\ApiClient\Entity\Populus\Profile';
+        $type='HappyR\ApiClient\Entity\Populus\Profile';
         $api=$this->getApi('populus/profiles/'.$id, $type);
         $this->assertInstanceOf($type,$api->getPopulusProfile($id));
     }
@@ -132,13 +132,13 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
     {
         $pid=93;
         $uid=5324;
-        $type='Happyr\ApiClient\Entity\Populus\Question';
+        $type='HappyR\ApiClient\Entity\Populus\Question';
         $api=$this->getApi('populus/question', $type,
             array('user_id'=>$uid,'profile_id'=>$pid),200);
 
-        $user=m::mock('Happyr\ApiClient\Entity\User')
+        $user=m::mock('HappyR\ApiClient\Entity\User')
             ->shouldReceive('')->andSet('id',$uid)->getMock();
-        $profile=m::mock('Happyr\ApiClient\Entity\Populus\Profile')
+        $profile=m::mock('HappyR\ApiClient\Entity\Populus\Profile')
             ->shouldReceive('')->andSet('id',$pid)->getMock();
 
         $this->assertInstanceOf($type,$api->getPopulusQuestion($user,$profile));
@@ -162,11 +162,11 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
         $api=$this->getApi('populus/question/'.$qid.'/answer', null,
             array('answer'=>$aid,'user_id'=>$uid),201);
 
-        $user=m::mock('Happyr\ApiClient\Entity\User')
+        $user=m::mock('HappyR\ApiClient\Entity\User')
             ->shouldReceive('')->andSet('id',$uid)->getMock();
-        $question=m::mock('Happyr\ApiClient\Entity\Populus\Question')
+        $question=m::mock('HappyR\ApiClient\Entity\Populus\Question')
             ->shouldReceive('')->andSet('id',$qid)->getMock();
-        $answer=m::mock('Happyr\ApiClient\Entity\Populus\Answer')
+        $answer=m::mock('HappyR\ApiClient\Entity\Populus\Answer')
             ->shouldReceive('')->andSet('id',$aid)->getMock();
 
         $this->assertTrue($api->postPopulusAnswer($user,$question,$answer));
@@ -184,15 +184,15 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
     {
         $uid=513;
         $pid=2;
-        $type='Happyr\ApiClient\Entity\Populus\Score';
+        $type='HappyR\ApiClient\Entity\Populus\Score';
         $api=$this->getApi('populus/score', $type,
             array('user_id'=>$uid, 'profile_id'=>$pid), 200);
 
-        $user=m::mock('Happyr\ApiClient\Entity\User')
+        $user=m::mock('HappyR\ApiClient\Entity\User')
             ->shouldReceive('')->andSet('id',$uid)
             ->getMock();
 
-        $profile=m::mock('Happyr\ApiClient\Entity\Populus\Profile')
+        $profile=m::mock('HappyR\ApiClient\Entity\Populus\Profile')
             ->shouldReceive('')->andSet('id', $pid)
             ->getMock();
 
@@ -211,7 +211,7 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
     public function testCreateUser()
     {
         $email="test@mail.se";
-        $type='Happyr\ApiClient\Entity\User';
+        $type='HappyR\ApiClient\Entity\User';
         $api=$this->getApi('users', $type,
             array('email'=>$email),201);
 
@@ -227,7 +227,7 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test create a user but conflicts
-     * @expectedException Happyr\ApiClient\Exceptions\UserConflictException
+     * @expectedException \HappyR\ApiClient\Exceptions\UserConflictException
      */
     public function testCreateUserConflict()
     {
@@ -261,7 +261,7 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
     {
         $email="test@mail.se";
         $token='123';
-        $type='Happyr\ApiClient\Entity\User';
+        $type='HappyR\ApiClient\Entity\User';
         $api=$this->getApi('users/confirmation/validate', $type,
             array('email'=>$email, 'token'=>$token),200);
 
@@ -278,6 +278,16 @@ class HappyrApiTest extends \PHPUnit_Framework_TestCase
     }
 
 
+    /**
+     * Test to init with no params
+     *
+     *
+     * @return HappyRApi
+     */
+    public function testInit()
+    {
+        return new HappyRApi();
+    }
 
 
 

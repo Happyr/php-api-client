@@ -22,7 +22,7 @@ class Question
     public $question;
 
     /**
-     * @JMS\Type("array<Happyr\ApiClient\Entity\Populus\Answer>")
+     * @JMS\Type("array<HappyR\ApiClient\Entity\Populus\Answer>")
      */
     public $answers;
 

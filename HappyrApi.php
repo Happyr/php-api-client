@@ -18,7 +18,7 @@ use HappyR\ApiClient\Serializer\SerializerInterface;
  * This is the API class that should be used with every api call
  * Every public function in this class represent a end point in the API
  */
-class HappyrApi
+class HappyRApi
 {
     /**
      * @var  configuration
@@ -86,7 +86,7 @@ class HappyrApi
      * @param boolean $suppressExceptions, (optional) if true, we will catch all HttpExceptions that might be thrown by
      * the Connection class
      *
-     * @return \Happyr\ApiClient\Http\Response
+     * @return \HappyR\ApiClient\Http\Response
      * @throws HttpException
      */
     protected function sendRequest($uri, array $data=array(), $httpVerb='GET')
@@ -137,7 +137,7 @@ class HappyrApi
     {
         $response=$this->sendRequest('companies');
 
-        return $this->deserialize($response->getBody(), 'array<Happyr\ApiClient\Entity\Company>');
+        return $this->deserialize($response->getBody(), 'array<HappyR\ApiClient\Entity\Company>');
     }
 
     /**
@@ -151,7 +151,7 @@ class HappyrApi
     {
         $response=$this->sendRequest('companies/'.$id);
 
-        return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\Company');
+        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Company');
     }
 
     /**
@@ -164,7 +164,7 @@ class HappyrApi
     {
         $response=$this->sendRequest('opuses');
 
-        return  $this->deserialize($response->getBody(), 'array<Happyr\ApiClient\Entity\Opus>');
+        return  $this->deserialize($response->getBody(), 'array<HappyR\ApiClient\Entity\Opus>');
     }
 
     /**
@@ -178,7 +178,7 @@ class HappyrApi
     {
         $response=$this->sendRequest('opuses/'.$id);
 
-        return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\Opus');
+        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Opus');
     }
 
     /**
@@ -192,7 +192,7 @@ class HappyrApi
     {
         $response=$this->sendRequest('populus/profiles');
 
-        return  $this->deserialize($response->getBody(), 'array<Happyr\ApiClient\Entity\Populus\Profile>');
+        return  $this->deserialize($response->getBody(), 'array<HappyR\ApiClient\Entity\Populus\Profile>');
     }
 
     /**
@@ -206,7 +206,7 @@ class HappyrApi
     {
         $response=$this->sendRequest('populus/profiles/'.$id);
 
-        return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\Populus\Profile');
+        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Populus\Profile');
     }
 
     /**
@@ -232,7 +232,7 @@ class HappyrApi
             return null;
         }
 
-        return  $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\Populus\Question');
+        return  $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Populus\Question');
     }
 
     /**
@@ -285,7 +285,7 @@ class HappyrApi
             return false;
         }
 
-        return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\Populus\Score');
+        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Populus\Score');
     }
 
     /**
@@ -318,7 +318,7 @@ class HappyrApi
         );
 
         if($response->getCode()==201){//if success
-            return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\User');
+            return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\User');
         }
         elseif($response->getCode()==409){//if that email was previously registered
             throw new UserConflictException($email);
@@ -374,7 +374,7 @@ class HappyrApi
         );
 
         if($response->getCode()==200){
-            return $this->deserialize($response->getBody(), 'Happyr\ApiClient\Entity\User');
+            return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\User');
         }
 
         return false;

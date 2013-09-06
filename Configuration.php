@@ -28,7 +28,7 @@ class Configuration
      * @var string
      *
      * the class to use when serializing stuff. The class must implement
-     * the Happyr\ApiClient\Serializer\SerializerInterface
+     * the HappyR\ApiClient\Serializer\SerializerInterface
      */
     public $serializerClass='\HappyR\ApiClient\Serializer\JmsSerializer';
 
@@ -36,7 +36,7 @@ class Configuration
      * @var string
      *
      * the class to use when making a http request. The class must implement
-     * the Happyr\ApiClient\Http\HttpRequestInterface
+     * the HappyR\ApiClient\Http\HttpRequestInterface
      */
     public $httpRequestClass='\HappyR\ApiClient\Http\CurlRequest';
 

@@ -30,7 +30,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $conf=new Configuration();
 
 
-        $request=m::mock('Happyr\ApiClient\Http\HttpRequestInterface',array(
+        $request=m::mock('HappyR\ApiClient\Http\HttpRequestInterface',array(
                 'setOption'=>null,
                 'execute'=>'response',
                 'getInfo'=>$httpStatus,
@@ -55,12 +55,12 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $connection=$this->getConnection();
 
 
-        $this->assertInstanceOf('Happyr\ApiClient\Http\Response', $connection->sendRequest('url'));
+        $this->assertInstanceOf('HappyR\ApiClient\Http\Response', $connection->sendRequest('url'));
     }
 
     /**
      * Test error
-     * @expectedException Happyr\ApiClient\Exceptions\HttpException
+     * @expectedException HappyR\ApiClient\Exceptions\HttpException
      *
      */
     public function testSendRequestError()

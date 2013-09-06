@@ -13,7 +13,7 @@ use HappyR\ApiClient\Exceptions\HttpException;
 class Connection
 {
     /**
-     * @var \Happyr\ApiClient\Configuration configuration
+     * @var \HappyR\ApiClient\Configuration configuration
      *
      */
     protected $configuration;
@@ -53,7 +53,7 @@ class Connection
      * @param string $httpVerb
      *
      * @return Response
-     * @throws \Happyr\ApiClient\Exceptions\HttpException if we got a response code bigger or equal to 300
+     * @throws \HappyR\ApiClient\Exceptions\HttpException if we got a response code bigger or equal to 300
      * @throws \InvalidArgumentException
      */
     public function sendRequest($uri, array $data=array(), $httpVerb='GET'){
@@ -76,7 +76,7 @@ class Connection
         if(isset($_SERVER['HTTP_HOST'])){
             $this->request->setOption(CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
         }
-        $this->request->setOption(CURLOPT_USERAGENT, 'HappyrApiClient/'.$this->configuration->version);
+        $this->request->setOption(CURLOPT_USERAGENT, 'HappyRApiClient/'.$this->configuration->version);
 
         //do not include the http header in the result
         $this->request->setOption(CURLOPT_HEADER, 0);

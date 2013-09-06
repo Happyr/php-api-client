@@ -27,12 +27,12 @@ class Opus
     public $description;
 
     /**
-     * @JMS\Type("Happyr\ApiClient\Entity\Location\Location")
+     * @JMS\Type("HappyR\ApiClient\Entity\Location\Location")
      */
     public $location;
 
     /**
-     * @JMS\Type("Happyr\ApiClient\Entity\Company")
+     * @JMS\Type("HappyR\ApiClient\Entity\Company")
      */
     public $company;
 
