@@ -23,9 +23,9 @@ class LiveApiClient
      */
     static function get()
     {
-        $paramfile=file_get_contents(__DIR__.'/parameter.ini');
+        $paramfile=file_get_contents(__DIR__.'/parameters.ini');
         if($paramfile===false){
-            throw new \RuntimeException('There is no paramter.ini file');
+            throw new \RuntimeException('There is no paramters.ini file');
         }
 
         $params=explode("\n", $paramfile);
