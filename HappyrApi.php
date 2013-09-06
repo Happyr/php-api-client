@@ -7,9 +7,9 @@ use HappyR\ApiClient\Exceptions\HttpException;
 use HappyR\ApiClient\Exceptions\UserConflictException;
 
 use HappyR\ApiClient\Entity\User;
-use HappyR\ApiClient\Entity\Populus\Profile;
-use HappyR\ApiClient\Entity\Populus\Question;
-use HappyR\ApiClient\Entity\Populus\Answer;
+use HappyR\ApiClient\Entity\Potential\Profile;
+use HappyR\ApiClient\Entity\Potential\Statement;
+use HappyR\ApiClient\Entity\Potential\Answer;
 use HappyR\ApiClient\Http\Response;
 use HappyR\ApiClient\Serializer\SerializerInterface;
 
@@ -182,17 +182,17 @@ class HappyRApi
     }
 
     /**
-     * Get a list of available Populus Profiles
-     * A populus profile is a pattern that we match the user potential with. A good match
-     * gets a high Populus Score
+     * Get a list of available Potential Profiles
+     * A potential profile is a pattern that we match the user potential with. A good match
+     * gets a high Potential Score
      *
      * @return array<Profile>, an array with Profile objects
      */
-    public function getPopulusProfiles()
+    public function getPotentialProfiles()
     {
-        $response=$this->sendRequest('populus/profiles');
+        $response=$this->sendRequest('potential/profile-patterns');
 
-        return  $this->deserialize($response->getBody(), 'array<HappyR\ApiClient\Entity\Populus\Profile>');
+        return  $this->deserialize($response->getBody(), 'array<HappyR\ApiClient\Entity\Potential\Profile>');
     }
 
     /**
@@ -202,25 +202,25 @@ class HappyRApi
      *
      * @return Profile
      */
-    public function getPopulusProfile($id)
+    public function getPotentialProfile($id)
     {
-        $response=$this->sendRequest('populus/profiles/'.$id);
+        $response=$this->sendRequest('potential/profile-patterns/'.$id);
 
-        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Populus\Profile');
+        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Potential\Profile');
     }
 
     /**
-     * Get the next question for the user on the specific profile
+     * Get the next statement for the user on the specific profile
      *
      * @param User $user
      * @param Profile $profile
      *
-     * @return Question, a Question object. If no more questions is available, return null.
+     * @return Statement, a Statement object. If no more statements is available, return null.
      */
-    public function getPopulusQuestion(User $user, Profile $profile)
+    public function getPotentialStatement(User $user, Profile $profile)
     {
         $response=$this->sendRequest(
-            'populus/question',
+            'potential/statement',
             array(
                 'user_id'=>$user->id,
                 'profile_id'=>$profile->id
@@ -232,22 +232,22 @@ class HappyRApi
             return null;
         }
 
-        return  $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Populus\Question');
+        return  $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Potential\Statement');
     }
 
     /**
-     * Post an answer for the question
+     * Post an answer for the statement
      *
      * @param User $user
-     * @param Question $question
+     * @param Statement $statement
      * @param Answer $answer
      *
      * @return bool true if the answer was successfully posted. Otherwise false
      */
-    public function postPopulusAnswer(User $user, Question $question, Answer $answer)
+    public function postPotentialAnswer(User $user, Statement $statement, Answer $answer)
     {
         $response=$this->sendRequest(
-            'populus/question/'.$question->id.'/answer',
+            'potential/statement/'.$statement->id.'/answer',
             array(
                 'answer'=>$answer->id,
                 'user_id'=>$user->id
@@ -267,12 +267,12 @@ class HappyRApi
      * @param User $user
      * @param Profile $profile
      *
-     * @return integer between 0 and 100 (inclusive). False is returned if not all the questions are answered.
+     * @return integer between 0 and 100 (inclusive). False is returned if not all the statements are answered.
      */
-    public function getPopulusScore(User $user, Profile $profile)
+    public function getPotentialScore(User $user, Profile $profile)
     {
         $response=$this->sendRequest(
-            'populus/score',
+            'potential/score',
             array(
                 'user_id'=>$user->id,
                 'profile_id'=>$profile->id
@@ -281,11 +281,11 @@ class HappyRApi
         );
 
         if($response->getCode()==412){
-            //We need to answer more questions
+            //We need to answer more statements
             return false;
         }
 
-        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Populus\Score');
+        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Potential\Score');
     }
 
     /**

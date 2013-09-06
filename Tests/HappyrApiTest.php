@@ -105,104 +105,104 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test to fetch many populus profiles
+     * Test to fetch many potential profiles
      */
-    public function testGetPopulusProfiles()
+    public function testGetPotentialProfiles()
     {
-        $api=$this->getApi('populus/profiles', 'array<HappyR\ApiClient\Entity\Populus\Profile>');
-        $this->assertInstanceOf('Collection',$api->getPopulusProfiles());
+        $api=$this->getApi('potential/profile-patterns', 'array<HappyR\ApiClient\Entity\Potential\Profile>');
+        $this->assertInstanceOf('Collection',$api->getPotentialProfiles());
     }
 
     /**
      * Test to fetch a specific Opus
      */
-    public function testGetPopulusProfile()
+    public function testGetPotentialProfile()
     {
         $id=4;
-        $type='HappyR\ApiClient\Entity\Populus\Profile';
-        $api=$this->getApi('populus/profiles/'.$id, $type);
-        $this->assertInstanceOf($type,$api->getPopulusProfile($id));
+        $type='HappyR\ApiClient\Entity\Potential\Profile';
+        $api=$this->getApi('potential/profile-patterns/'.$id, $type);
+        $this->assertInstanceOf($type,$api->getPotentialProfile($id));
     }
 
 
     /**
-     * Test to fetch a question
+     * Test to fetch a statement
      */
-    public function testGetPopulusQuestion()
+    public function testGetPotentialStatement()
     {
         $pid=93;
         $uid=5324;
-        $type='HappyR\ApiClient\Entity\Populus\Question';
-        $api=$this->getApi('populus/question', $type,
+        $type='HappyR\ApiClient\Entity\Potential\Statement';
+        $api=$this->getApi('potential/statement', $type,
             array('user_id'=>$uid,'profile_id'=>$pid),200);
 
         $user=m::mock('HappyR\ApiClient\Entity\User')
             ->shouldReceive('')->andSet('id',$uid)->getMock();
-        $profile=m::mock('HappyR\ApiClient\Entity\Populus\Profile')
+        $profile=m::mock('HappyR\ApiClient\Entity\Potential\Profile')
             ->shouldReceive('')->andSet('id',$pid)->getMock();
 
-        $this->assertInstanceOf($type,$api->getPopulusQuestion($user,$profile));
+        $this->assertInstanceOf($type,$api->getPotentialStatement($user,$profile));
 
 
-        //When there is no more questions
-        $api=$this->getApi('populus/question', null,
+        //When there is no more statements
+        $api=$this->getApi('potential/statement', null,
             array('user_id'=>$uid,'profile_id'=>$pid),204);
 
-        $this->assertNull($api->getPopulusQuestion($user,$profile));
+        $this->assertNull($api->getPotentialStatement($user,$profile));
     }
 
     /**
      * Test to push an answer
      */
-    public function testPostPopulusAnswer()
+    public function testPostPotentialAnswer()
     {
         $qid=93;
         $uid=5324;
         $aid=3;
-        $api=$this->getApi('populus/question/'.$qid.'/answer', null,
+        $api=$this->getApi('potential/statement/'.$qid.'/answer', null,
             array('answer'=>$aid,'user_id'=>$uid),201);
 
         $user=m::mock('HappyR\ApiClient\Entity\User')
             ->shouldReceive('')->andSet('id',$uid)->getMock();
-        $question=m::mock('HappyR\ApiClient\Entity\Populus\Question')
+        $statement=m::mock('HappyR\ApiClient\Entity\Potential\Statement')
             ->shouldReceive('')->andSet('id',$qid)->getMock();
-        $answer=m::mock('HappyR\ApiClient\Entity\Populus\Answer')
+        $answer=m::mock('HappyR\ApiClient\Entity\Potential\Answer')
             ->shouldReceive('')->andSet('id',$aid)->getMock();
 
-        $this->assertTrue($api->postPopulusAnswer($user,$question,$answer));
+        $this->assertTrue($api->postPotentialAnswer($user,$statement,$answer));
 
         //test wrong answer..
-        $api=$this->getApi('populus/question/'.$qid.'/answer', null,
+        $api=$this->getApi('potential/statement/'.$qid.'/answer', null,
             array('answer'=>$aid,'user_id'=>$uid),400);
-        $this->assertFalse($api->postPopulusAnswer($user,$question,$answer));
+        $this->assertFalse($api->postPotentialAnswer($user,$statement,$answer));
     }
 
     /**
      * Test to fetch Score
      */
-    public function testGetPopulusScore()
+    public function testGetPotentialScore()
     {
         $uid=513;
         $pid=2;
-        $type='HappyR\ApiClient\Entity\Populus\Score';
-        $api=$this->getApi('populus/score', $type,
+        $type='HappyR\ApiClient\Entity\Potential\Score';
+        $api=$this->getApi('potential/score', $type,
             array('user_id'=>$uid, 'profile_id'=>$pid), 200);
 
         $user=m::mock('HappyR\ApiClient\Entity\User')
             ->shouldReceive('')->andSet('id',$uid)
             ->getMock();
 
-        $profile=m::mock('HappyR\ApiClient\Entity\Populus\Profile')
+        $profile=m::mock('HappyR\ApiClient\Entity\Potential\Profile')
             ->shouldReceive('')->andSet('id', $pid)
             ->getMock();
 
-        $this->assertInstanceOf($type,$api->getPopulusScore($user,$profile));
+        $this->assertInstanceOf($type,$api->getPotentialScore($user,$profile));
 
         //test error
-        $api=$this->getApi('populus/score', null,
+        $api=$this->getApi('potential/score', null,
             array('user_id'=>$uid, 'profile_id'=>$pid),412);
 
-        $this->assertFalse($api->getPopulusScore($user,$profile));
+        $this->assertFalse($api->getPotentialScore($user,$profile));
     }
 
     /**
