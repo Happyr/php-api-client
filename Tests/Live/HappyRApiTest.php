@@ -26,55 +26,52 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->client=LiveApiClient::get();
+        $this->client = LiveApiClient::get();
     }
-
 
     /**
      * Test to fetch many companies and one specific
      */
     public function testGetCompanies()
     {
-        $type='HappyR\ApiClient\Entity\Company';
+        $type = 'HappyR\ApiClient\Entity\Company';
 
-        $collection=$this->client->getCompanies();
-        $entity=$collection[0];
+        $collection = $this->client->getCompanies();
+        $entity = $collection[0];
         $this->assertTrue(is_array($collection));
-        $this->assertInstanceOf($type,$entity);
+        $this->assertInstanceOf($type, $entity);
 
-        $this->assertInstanceOf($type,$this->client->getCompany($entity->id));
+        $this->assertInstanceOf($type, $this->client->getCompany($entity->id));
     }
-
 
     /**
      * Test to fetch many opuses
      */
     public function testGetOpuses()
     {
-        $type='HappyR\ApiClient\Entity\Opus';
+        $type = 'HappyR\ApiClient\Entity\Opus';
 
-        $collection=$this->client->getOpuses();
+        $collection = $this->client->getOpuses();
         $this->assertTrue(is_array($collection));
-        $entity=$collection[0];
-        $this->assertInstanceOf($type,$entity);
+        $entity = $collection[0];
+        $this->assertInstanceOf($type, $entity);
 
-        $this->assertInstanceOf($type,$this->client->getOpus($entity->id));
+        $this->assertInstanceOf($type, $this->client->getOpus($entity->id));
     }
-
 
     /**
      * Test to fetch many potential profiles
      */
     public function testGetPotentialProfiles()
     {
-        $type='HappyR\ApiClient\Entity\Potential\Profile';
+        $type = 'HappyR\ApiClient\Entity\Potential\Profile';
 
-        $collection=$this->client->getPotentialProfiles();
-        $entity=$collection[0];
+        $collection = $this->client->getPotentialProfiles();
+        $entity = $collection[0];
         $this->assertTrue(is_array($collection));
-        $this->assertInstanceOf($type,$entity);
+        $this->assertInstanceOf($type, $entity);
 
-        $this->assertInstanceOf($type,$this->client->getPotentialProfile($entity->id));
+        $this->assertInstanceOf($type, $this->client->getPotentialProfile($entity->id));
     }
 
     /**
@@ -83,10 +80,8 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
     public function testGetPotentialStatement()
     {
 
-        $type='HappyR\ApiClient\Entity\Potential\Statement';
-
-
-      //  $this->assertInstanceOf($type,$this->client->getPotentialStatement($user,$profile));
+        $type = 'HappyR\ApiClient\Entity\Potential\Statement';
+        //  $this->assertInstanceOf($type,$this->client->getPotentialStatement($user,$profile));
 
     }
 
@@ -95,8 +90,6 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostPotentialAnswer()
     {
-
-
         //$this->assertTrue($this->client->postPotentialAnswer($user,$statement,$answer));
 
         //test wrong answer..
@@ -108,7 +101,6 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPotentialScore()
     {
-
     }
 
     /**
@@ -116,17 +108,15 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateUser()
     {
-
-
     }
 
     /**
      * Test create a user but conflicts
+     *
      * @expectedException \HappyR\ApiClient\Exceptions\UserConflictException
      */
     public function testCreateUserConflict()
     {
-
     }
 
     /**
@@ -134,13 +124,9 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendUserConfirmation()
     {
-
-
     }
 
     public function testValidateUser()
     {
-
     }
-
 }

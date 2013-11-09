@@ -2,8 +2,8 @@
 
 
 namespace HappyR\ApiClient\Serializer;
-use JMS\Serializer\SerializerBuilder;
 
+use JMS\Serializer\SerializerBuilder;
 
 /**
  * Class JmsSerializer
@@ -24,7 +24,7 @@ class JmsSerializer extends SerializerBuilder implements SerializerInterface
      */
     function __construct()
     {
-        $this->serializer=SerializerBuilder::create()->build();
+        $this->serializer = SerializerBuilder::create()->build();
     }
 
     /**
@@ -53,6 +53,4 @@ class JmsSerializer extends SerializerBuilder implements SerializerInterface
     {
         return $this->serializer->serialize($data, $format);
     }
-
-
 }

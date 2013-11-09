@@ -15,5 +15,4 @@ class Country
      * @JMS\Type("string")
      */
     public $name;
-
 }

@@ -3,7 +3,6 @@
 
 namespace HappyR\ApiClient\Http;
 
-
 /**
  * Class CurlRequest
  *
@@ -18,7 +17,8 @@ class CurlRequest implements HttpRequestInterface
      *
      * @param string|null $url
      */
-    public function __construct($url=null) {
+    public function __construct($url = null)
+    {
         $this->createNew($url);
     }
 
@@ -30,7 +30,7 @@ class CurlRequest implements HttpRequestInterface
      *
      * @return $this
      */
-    public function createNew($url=null)
+    public function createNew($url = null)
     {
         $this->handle = curl_init($url);
 
@@ -46,7 +46,8 @@ class CurlRequest implements HttpRequestInterface
      *
      * @return $this
      */
-    public function setOption($name, $value) {
+    public function setOption($name, $value)
+    {
         curl_setopt($this->handle, $name, $value);
 
         return $this;
@@ -58,7 +59,8 @@ class CurlRequest implements HttpRequestInterface
      *
      * @return mixed
      */
-    public function execute() {
+    public function execute()
+    {
         return curl_exec($this->handle);
     }
 
@@ -69,15 +71,16 @@ class CurlRequest implements HttpRequestInterface
      *
      * @return mixed
      */
-    public function getInfo($name) {
+    public function getInfo($name)
+    {
         return curl_getinfo($this->handle, $name);
     }
 
     /**
      * Close the connection
      */
-    public function close() {
+    public function close()
+    {
         curl_close($this->handle);
     }
-
 }

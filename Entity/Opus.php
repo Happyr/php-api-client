@@ -40,5 +40,4 @@ class Opus
      * @JMS\Type("string")
      */
     public $createdAt;
-
 }

@@ -3,12 +3,10 @@
 
 namespace HappyR\ApiClient\Tests\Http;
 
-
 use HappyR\ApiClient\Configuration;
 use HappyR\ApiClient\Http\Connection;
 
 use Mockery as m;
-
 
 /**
  * Class ConnectionTest
@@ -25,21 +23,22 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @return Connection
      */
-    protected function getConnection($httpStatus=200)
+    protected function getConnection($httpStatus = 200)
     {
-        $conf=new Configuration();
+        $conf = new Configuration();
 
-
-        $request=m::mock('HappyR\ApiClient\Http\HttpRequestInterface',array(
-                'setOption'=>null,
-                'execute'=>'response',
-                'getInfo'=>$httpStatus,
-                'close'=>null,
+        $request = m::mock(
+            'HappyR\ApiClient\Http\HttpRequestInterface',
+            array(
+                'setOption' => null,
+                'execute' => 'response',
+                'getInfo' => $httpStatus,
+                'close' => null,
             )
         );
         $request->shouldReceive('createNew')->once()->andReturn(m::self());
 
-        $conn= new Connection($conf,$request);
+        $conn = new Connection($conf, $request);
 
         return $conn;
         //die('Class: '.get_class($conn).' - '.print_r(get_class_methods($conn),true));
@@ -52,22 +51,21 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendRequest()
     {
-        $connection=$this->getConnection();
-
+        $connection = $this->getConnection();
 
         $this->assertInstanceOf('HappyR\ApiClient\Http\Response', $connection->sendRequest('url'));
     }
 
     /**
      * Test error
+     *
      * @expectedException HappyR\ApiClient\Exceptions\HttpException
      *
      */
     public function testSendRequestError()
     {
-        $connection=$this->getConnection(400);
+        $connection = $this->getConnection(400);
 
         $connection->sendRequest('url');
     }
-
 }

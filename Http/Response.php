@@ -3,7 +3,6 @@
 
 namespace HappyR\ApiClient\Http;
 
-
 /**
  * Class Response
  *
@@ -19,14 +18,12 @@ class Response
      */
     protected $code;
 
-
     /**
      * @var string body
      *
      * The body of the response
      */
     protected $body;
-
 
     /**
      * @param string $body
@@ -81,7 +78,4 @@ class Response
     {
         return $this->code;
     }
-
-
-
 }

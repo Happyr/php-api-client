@@ -3,7 +3,6 @@
 
 namespace HappyR\ApiClient\Http;
 
-
 /**
  * This is an iterface for the HTTP Request
  *

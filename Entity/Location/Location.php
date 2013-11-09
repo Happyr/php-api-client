@@ -45,5 +45,4 @@ class Location
      * @JMS\Type("HappyR\ApiClient\Entity\Location\ZipCode")
      */
     public $zipCode;
-
 }

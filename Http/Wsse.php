@@ -14,32 +14,31 @@ class Wsse
     protected $digest;
     protected $nonce;
     protected $created;
-    protected $profile='UsernameToken';
+    protected $profile = 'UsernameToken';
 
     /**
      * @param string $username
      * @param string $password
      */
-    public function __construct($username, $password){
-        $this->username=$username;
-        $this->password=$password;
+    public function __construct($username, $password)
+    {
+        $this->username = $username;
+        $this->password = $password;
 
         $this->build();
     }
-
 
     /**
      * Build the headers
      */
     protected function build()
     {
-        $this->created=gmdate('Y-m-d\TH:i:s\Z');
-        $this->nonce=$this->getRandomString();
+        $this->created = gmdate('Y-m-d\TH:i:s\Z');
+        $this->nonce = $this->getRandomString();
 
         // calculate the digest
-        $this->digest=base64_encode(sha1(base64_decode($this->nonce).$this->created.$this->password, true));
+        $this->digest = base64_encode(sha1(base64_decode($this->nonce) . $this->created . $this->password, true));
     }
-
 
     /**
      * Returns the headers
@@ -50,11 +49,10 @@ class Wsse
     public function getHeaders()
     {
         return array(
-            'Authorization: WSSE profile="'.$this->profile.'"',
-            'X-WSSE: '.$this->profile.' Username="'.$this->username.'", PasswordDigest="'.$this->digest.
-            '", Nonce="'.$this->nonce.'", Created="'.$this->created.'"',
+            'Authorization: WSSE profile="' . $this->profile . '"',
+            'X-WSSE: ' . $this->profile . ' Username="' . $this->username . '", PasswordDigest="' . $this->digest .
+            '", Nonce="' . $this->nonce . '", Created="' . $this->created . '"',
         );
-
     }
 
     /**
@@ -66,9 +64,9 @@ class Wsse
      */
     protected function getRandomString()
     {
-        $length=mt_rand(8, 16);
+        $length = mt_rand(8, 16);
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charlen=strlen($characters);
+        $charlen = strlen($characters);
 
         $randomString = '';
         for ($i = 0; $i < $length; $i++) {
@@ -77,5 +75,4 @@ class Wsse
 
         return $randomString;
     }
-
 }

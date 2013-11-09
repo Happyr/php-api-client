@@ -20,5 +20,4 @@ class Municipality
      * @JMS\Type("string")
      */
     public $code;
-
 }

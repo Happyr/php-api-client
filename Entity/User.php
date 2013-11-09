@@ -16,5 +16,4 @@ class User
      * @JMS\SerializedName("user_id")
      */
     public $id;
-
 }

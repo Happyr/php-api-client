@@ -15,5 +15,4 @@ class City
      * @JMS\Type("string")
      */
     public $name;
-
 }

@@ -14,11 +14,10 @@ class UserConflictException extends \Exception
      */
     public function __construct($email)
     {
-        $this->email=$email;
+        $this->email = $email;
 
         parent::__construct('A user with that email is already registered.');
     }
-
 
     /**
      *
@@ -29,5 +28,4 @@ class UserConflictException extends \Exception
     {
         return $this->email;
     }
-
 }

@@ -35,9 +35,4 @@ class Company
      * @JMS\Type("string")
      */
     public $image;
-
-
-
-
-
 }

@@ -3,7 +3,6 @@
 
 namespace HappyR\ApiClient\Tests\Http;
 
-
 use HappyR\ApiClient\Http\Wsse;
 
 /**
@@ -22,7 +21,7 @@ class WsseTest extends \PHPUnit_Framework_TestCase
      */
     protected function getWsse()
     {
-        $wsse=new Wsse('foo','bar');
+        $wsse = new Wsse('foo', 'bar');
 
         return $wsse;
     }
@@ -32,7 +31,7 @@ class WsseTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetHeaders()
     {
-        $wsse=$this->getWsse();
+        $wsse = $this->getWsse();
         $this->vaidateHeaders($wsse);
     }
 
@@ -42,12 +41,11 @@ class WsseTest extends \PHPUnit_Framework_TestCase
      * @param Wsse &$wsse
      *
      */
-    protected function vaidateHeaders(Wsse &$wsse){
-        $header=$wsse->getHeaders();
+    protected function vaidateHeaders(Wsse &$wsse)
+    {
+        $header = $wsse->getHeaders();
 
-        $pattern='/UsernameToken Username="([^"]+)", PasswordDigest="([^"]+)", Nonce="([^"]+)", Created="([^"]+)"/';
-        $this->assertRegExp($pattern,$header[1], 'Wsse header did not match pattern');
-
-
+        $pattern = '/UsernameToken Username="([^"]+)", PasswordDigest="([^"]+)", Nonce="([^"]+)", Created="([^"]+)"/';
+        $this->assertRegExp($pattern, $header[1], 'Wsse header did not match pattern');
     }
 }

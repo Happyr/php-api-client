@@ -18,18 +18,17 @@ class HttpException extends \Exception
      */
     public function __construct($status, $response)
     {
-        $this->httpStatus=$status;
-        $this->httpResponse=$response;
+        $this->httpStatus = $status;
+        $this->httpResponse = $response;
 
-        $message=$response;
-        try{
+        $message = $response;
+        try {
             $xml = @simplexml_load_string($response);
-            if(is_object($xml)){
-                $message=$xml->exception['message'];
+            if (is_object($xml)) {
+                $message = $xml->exception['message'];
             }
-        }
-        catch(\Exception $e){
-            $message=substr($response,0, 200);
+        } catch (\Exception $e) {
+            $message = substr($response, 0, 200);
         }
 
         parent::__construct($message, $status);
@@ -43,7 +42,7 @@ class HttpException extends \Exception
      */
     public function __toString()
     {
-        return $this->getHttpStatus().': '.$this->getMessage();
+        return $this->getHttpStatus() . ': ' . $this->getMessage();
     }
 
     /**

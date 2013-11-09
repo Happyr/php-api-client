@@ -31,19 +31,16 @@ class Connection
      * @param Configuration $configuration
      * @param HttpRequestInterface $request
      */
-    public function __construct(Configuration $configuration, HttpRequestInterface $request=null)
+    public function __construct(Configuration $configuration, HttpRequestInterface $request = null)
     {
-        $this->configuration=$configuration;
+        $this->configuration = $configuration;
 
-        if($request==null){
-            $httpRequestClass=$this->configuration->httpRequestClass;
-            $request= new $httpRequestClass();
+        if ($request == null) {
+            $httpRequestClass = $this->configuration->httpRequestClass;
+            $request = new $httpRequestClass();
         }
-        $this->request=$request;
-
+        $this->request = $request;
     }
-
-
 
     /**
      * Send a request. This will return the response.
@@ -56,27 +53,24 @@ class Connection
      * @throws \HappyR\ApiClient\Exceptions\HttpException if we got a response code bigger or equal to 300
      * @throws \InvalidArgumentException
      */
-    public function sendRequest($uri, array $data=array(), $httpVerb='GET'){
+    public function sendRequest($uri, array $data = array(), $httpVerb = 'GET')
+    {
         $this->request->createNew();
 
-        if($httpVerb=='POST'){
+        if ($httpVerb == 'POST') {
             $this->preparePostData($data);
             $this->request->setOption(CURLOPT_URL, $this->buildUrl($uri));
-        }
-        elseif($httpVerb=='GET'){
+        } elseif ($httpVerb == 'GET') {
             $this->request->setOption(CURLOPT_URL, $this->buildUrl($uri, $data));
-        }
-        else{
+        } else {
             throw new \InvalidArgumentException('httpVerb must be eihter "GET" or "POST"');
         }
 
-
-
         // Set a referer and user agent
-        if(isset($_SERVER['HTTP_HOST'])){
+        if (isset($_SERVER['HTTP_HOST'])) {
             $this->request->setOption(CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
         }
-        $this->request->setOption(CURLOPT_USERAGENT, 'HappyRApiClient/'.$this->configuration->version);
+        $this->request->setOption(CURLOPT_USERAGENT, 'HappyRApiClient/' . $this->configuration->version);
 
         //do not include the http header in the result
         $this->request->setOption(CURLOPT_HEADER, 0);
@@ -91,7 +85,7 @@ class Connection
         $this->request->setOption(CURLOPT_FOLLOWLOCATION, true);
 
         //get headers
-        $headers=array_merge(
+        $headers = array_merge(
             $this->getAcceptHeader(),
             $this->getAuthenticationHeader()
         );
@@ -109,15 +103,13 @@ class Connection
         $this->request->close();
 
         //if we got some non good http response code
-        if($httpStatus>=300 || $httpStatus==0){
+        if ($httpStatus >= 300 || $httpStatus == 0) {
             //throw exceptions
             throw new HttpException($httpStatus, $body);
         }
 
-        return new Response($body,$httpStatus);
+        return new Response($body, $httpStatus);
     }
-
-
 
     /**
      * Get the accept header.
@@ -130,7 +122,7 @@ class Connection
     protected function getAcceptHeader()
     {
         return array(
-            'Accept: application/vnd.happyrecruiting-v'.$this->configuration->version.'+'.$this->configuration->format,
+            'Accept: application/vnd.happyrecruiting-v' . $this->configuration->version . '+' . $this->configuration->format,
         );
     }
 
@@ -142,7 +134,7 @@ class Connection
      */
     protected function getAuthenticationHeader()
     {
-        $wsse=new Wsse($this->configuration->username, $this->configuration->token);
+        $wsse = new Wsse($this->configuration->username, $this->configuration->token);
 
         return $wsse->getHeaders();
     }
@@ -155,19 +147,20 @@ class Connection
      *
      * @return string
      */
-    protected function buildUrl($uri, array $filters= array()){
-        $filterString='';
+    protected function buildUrl($uri, array $filters = array())
+    {
+        $filterString = '';
 
         //add the filter on the filter string
-        if(count($filters)>0){
-            $filterString='?';
-            foreach($filters as $key=>$value){
-                $filterString.=$key.'='.$value.'&';
+        if (count($filters) > 0) {
+            $filterString = '?';
+            foreach ($filters as $key => $value) {
+                $filterString .= $key . '=' . $value . '&';
             }
-            rtrim($filterString,'&');
+            rtrim($filterString, '&');
         }
 
-        return $this->configuration->baseUrl.$uri.$filterString;
+        return $this->configuration->baseUrl . $uri . $filterString;
     }
 
     /**
@@ -176,13 +169,13 @@ class Connection
      * @param array $data
      *
      */
-    protected function preparePostData(array $data=array())
+    protected function preparePostData(array $data = array())
     {
-        $dataString='';
+        $dataString = '';
 
         //urlify the data for the POST
-        foreach($data as $key=>$value) {
-            $dataString .= $key.'='.$value.'&';
+        foreach ($data as $key => $value) {
+            $dataString .= $key . '=' . $value . '&';
         }
         //remove the last '&'
         rtrim($dataString, '&');

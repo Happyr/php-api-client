@@ -3,10 +3,9 @@
 
 namespace HappyR\ApiClient\Serializer;
 
-
 /**
  * Serializer interface
- * 
+ *
  */
 interface SerializerInterface
 {

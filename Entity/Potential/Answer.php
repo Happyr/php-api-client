@@ -20,6 +20,4 @@ class Answer
      * @JMS\Type("string")
      */
     public $label;
-
-
 }
