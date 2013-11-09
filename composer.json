@@ -20,8 +20,6 @@
         "mockery/mockery": "0.8.0"
     },
     "autoload": {
-        "psr-0": { "HappyR\\ApiClient\\": "" }
-    },
-    "target-dir": "HappyR/ApiClient"
-
+        "psr-0": { "HappyR\\ApiClient\\": "src/" }
+    }
 }

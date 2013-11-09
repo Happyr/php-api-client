@@ -3,7 +3,6 @@
 namespace HappyR\ApiClient\Tests;
 
 use HappyR\ApiClient\HappyRApi;
-
 use Mockery as m;
 
 /**
