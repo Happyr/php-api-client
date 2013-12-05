@@ -52,43 +52,59 @@ class Client
      */
     public function sendRequest($uri, array $data=array(), $httpVerb='GET')
     {
-        try{
-            $request=$this->buildRequest($uri, $data, $httpVerb);
+        $request=$this->buildRequest($uri, $data, $httpVerb);
 
-            //execute request
-            $body = $request->execute();
+        //execute request
+        $body = $request->execute();
 
-            //get the http status code
-            $httpStatus = $request->getInfo(CURLINFO_HTTP_CODE);
+        //get the http status code
+        $httpStatus = $request->getInfo(CURLINFO_HTTP_CODE);
 
-            //close connection
-            $request->close();
+        //close connection
+        $request->close();
 
-            //if we got some non good http response code
-            if ($httpStatus >= 300 || $httpStatus == 0) {
-                //throw exceptions
-                throw new HttpException($httpStatus, $body);
-            }
+        /*
+         * Start to create a response
+         */
 
-            return new Response($body, $httpStatus);
-
+        //if we got some non good http response code
+        if ($httpStatus >= 300 || $httpStatus == 0) {
+            $response = $this->handleError($body, $httpStatus);
         }
-        catch(HttpException $e){
-            if($this->configuration->debug){
-                echo ("Exception: ".$e."\n");
-            }
+        else{
+            $response = new Response($body, $httpStatus);
+        }
 
-            if($this->configuration->enableExceptions){
-                throw $e;//re-throw exception
-            }
+        $request->setFormat($this->configuration->format);
 
-            //return empty result
-            $response=new Response('<?xml version="1.0" encoding="UTF-8"?><result/>', $e->getHttpStatus());
+        return $response;
+    }
 
-            if($this->configuration->format=='json'){
-                $response->setBody('[]');
-            }
+    /**
+     * Handle stuff when an error occur
+     *
+     * @param string $body
+     * @param int $httpStatus
+     *
+     * @return Response
+     * @throws \HappyR\ApiClient\Exceptions\HttpException
+     */
+    protected function handleError(&$body, $httpStatus)
+    {
+        if($this->configuration->debug){
+            echo ('Exception: '.$body."\n");
+        }
 
+        if($this->configuration->enableExceptions){
+            //throw exceptions
+            throw new HttpException($httpStatus, $body);
+        }
+
+        //return empty result
+        $response=new Response('<?xml version="1.0" encoding="UTF-8"?><result/>', $httpStatus);
+
+        if($this->configuration->format=='json'){
+            $response->setBody('[]');
         }
 
         return $response;
