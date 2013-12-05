@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * This class represents a matching profile
  */
-class Profile
+class Pattern
 {
     /**
      * @JMS\Type("integer")

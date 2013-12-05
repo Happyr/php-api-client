@@ -9,7 +9,7 @@ use HappyR\ApiClient\Exceptions\HttpException;
 use HappyR\ApiClient\Exceptions\UserConflictException;
 
 use HappyR\ApiClient\Entity\User;
-use HappyR\ApiClient\Entity\Potential\Profile;
+use HappyR\ApiClient\Entity\Potential\Pattern;
 use HappyR\ApiClient\Entity\Potential\Statement;
 use HappyR\ApiClient\Entity\Potential\Answer;
 use HappyR\ApiClient\Http\Response;

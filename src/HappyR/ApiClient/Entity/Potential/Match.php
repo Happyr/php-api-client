@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * This class represents the score on the matching
  */
-class Score
+class Match
 {
     /**
      * @JMS\Type("integer")
