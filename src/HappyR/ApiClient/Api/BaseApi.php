@@ -4,6 +4,8 @@
 namespace HappyR\ApiClient\Api;
 
 use HappyR\ApiClient\Http\Client;
+use HappyR\ApiClient\Http\Response;
+use HappyR\ApiClient\Serializer\SerializerInterface;
 
 /**
  * Class BaseApi
@@ -19,14 +21,21 @@ abstract class BaseApi
      */
     protected $httpClient;
 
-
+    /**
+     * @var  serializer
+     *
+     *
+     */
+    protected $serializer;
 
     /**
      * @param Client $httpClient
+     * @param SerializerInterface $serializer
      */
-    public function __construct(Client &$httpClient)
+    public function __construct(Client $httpClient, SerializerInterface $serializer)
     {
         $this->httpClient = $httpClient;
+        $this->serializer = $serializer;
     }
 
 
@@ -38,9 +47,9 @@ abstract class BaseApi
      *
      * @return an instance of $class
      */
-    protected function deserialize($data, $class)
+    protected function deserialize(Response &$response, $class)
     {
-        return $this->serializer->deserialize($data, $class, $this->configuration->format);
+        return $this->serializer->deserialize($response->getBody(), $class, $response->getFormat());
     }
 
 
