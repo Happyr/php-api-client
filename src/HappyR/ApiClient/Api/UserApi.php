@@ -34,7 +34,7 @@ class UserApi extends BaseApi
      */
     public function createUser($email)
     {
-        $response=$this->sendRequest(
+        $response=$this->httpClient->sendRequest(
             'users',
             array(
                 'email'=>$email
@@ -43,7 +43,7 @@ class UserApi extends BaseApi
         );
 
         if($response->getCode()==201){//if success
-            return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\User');
+            return $this->deserialize($response, 'HappyR\ApiClient\Entity\User');
         }
         elseif($response->getCode()==409){//if that email was previously registered
             throw new UserConflictException($email);
@@ -63,7 +63,7 @@ class UserApi extends BaseApi
      */
     public function sendUserConfirmation($email)
     {
-        $response=$this->sendRequest(
+        $response=$this->httpClient->sendRequest(
             'users/confirmation/send',
             array(
                 'email'=>$email
@@ -89,7 +89,7 @@ class UserApi extends BaseApi
      */
     public function validateUser($email, $token)
     {
-        $response=$this->sendRequest(
+        $response=$this->httpClient->sendRequest(
             'users/confirmation/validate',
             array(
                 'email'=>$email,
@@ -99,7 +99,7 @@ class UserApi extends BaseApi
         );
 
         if($response->getCode()==200){
-            return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\User');
+            return $this->deserialize($response, 'HappyR\ApiClient\Entity\User');
         }
 
         return false;

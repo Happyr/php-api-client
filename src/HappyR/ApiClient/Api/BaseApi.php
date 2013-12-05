@@ -16,14 +16,13 @@ use HappyR\ApiClient\Serializer\SerializerInterface;
 abstract class BaseApi
 {
     /**
-     * @var \HappyR\ApiClient\Http\Client httpClient
+     * @var Client httpClient
      *
      */
     protected $httpClient;
 
     /**
-     * @var  serializer
-     *
+     * @var SerializerInterface serializer
      *
      */
     protected $serializer;
@@ -38,19 +37,16 @@ abstract class BaseApi
         $this->serializer = $serializer;
     }
 
-
     /**
      * Deserialize an object
      *
-     * @param string $data The raw response from the API-server
-     * @param string $class The full class path to the object beeing deserialized
+     * @param Response &$response
+     * @param string $class the fqn of the class
      *
-     * @return an instance of $class
+     * @return array|object instance of $class
      */
     protected function deserialize(Response &$response, $class)
     {
         return $this->serializer->deserialize($response->getBody(), $class, $response->getFormat());
     }
-
-
 }

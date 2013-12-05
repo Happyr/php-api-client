@@ -22,9 +22,9 @@ class PotentialApi extends BaseApi
      */
     public function getPotentialProfiles()
     {
-        $response=$this->sendRequest('potential/profile-patterns');
+        $response=$this->httpClient->sendRequest('potential/profile-patterns');
 
-        return  $this->deserialize($response->getBody(), 'array<HappyR\ApiClient\Entity\Potential\Profile>');
+        return  $this->deserialize($response, 'array<HappyR\ApiClient\Entity\Potential\Profile>');
     }
 
     /**
@@ -36,7 +36,7 @@ class PotentialApi extends BaseApi
      */
     public function getPotentialProfile($id)
     {
-        $response=$this->sendRequest('potential/profile-patterns/'.$id);
+        $response=$this->httpClient->sendRequest('potential/profile-patterns/'.$id);
 
         return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Potential\Profile');
     }
@@ -51,7 +51,7 @@ class PotentialApi extends BaseApi
      */
     public function getPotentialStatement(User $user, Profile $profile)
     {
-        $response=$this->sendRequest(
+        $response=$this->httpClient->sendRequest(
             'potential/statement',
             array(
                 'user_id'=>$user->id,
@@ -64,7 +64,7 @@ class PotentialApi extends BaseApi
             return null;
         }
 
-        return  $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Potential\Statement');
+        return  $this->deserialize($response, 'HappyR\ApiClient\Entity\Potential\Statement');
     }
 
     /**
@@ -78,7 +78,7 @@ class PotentialApi extends BaseApi
      */
     public function postPotentialAnswer(User $user, Statement $statement, Answer $answer)
     {
-        $response=$this->sendRequest(
+        $response=$this->httpClient->sendRequest(
             'potential/statement/'.$statement->id.'/answer',
             array(
                 'answer'=>$answer->id,
@@ -103,7 +103,7 @@ class PotentialApi extends BaseApi
      */
     public function getPotentialScore(User $user, Profile $profile)
     {
-        $response=$this->sendRequest(
+        $response=$this->httpClient->sendRequest(
             'potential/score',
             array(
                 'user_id'=>$user->id,
@@ -117,7 +117,7 @@ class PotentialApi extends BaseApi
             return false;
         }
 
-        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Potential\Score');
+        return $this->deserialize($response, 'HappyR\ApiClient\Entity\Potential\Score');
     }
 
 } 
