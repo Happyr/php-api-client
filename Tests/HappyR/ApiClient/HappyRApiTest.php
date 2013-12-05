@@ -1,6 +1,6 @@
 <?php
 
-namespace HappyR\ApiClient\Tests;
+namespace HappyR\ApiClient;
 
 use HappyR\ApiClient\HappyRApi;
 use Mockery as m;

@@ -4,4 +4,3 @@ build
 phpunit.xml
 composer.lock
 vendor
-Tests/Live/parameters.ini

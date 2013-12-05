@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HappyR\ApiClient\Tests\Serializer;
+namespace HappyR\ApiClient\Serializer;
 
 use HappyR\ApiClient\Serializer\JmsSerializer;
 

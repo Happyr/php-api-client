@@ -1,8 +1,8 @@
 <?php
 
-namespace HappyR\ApiClient\Tests\Live;
+namespace HappyR\ApiClient\Live;
 
-use HappyR\ApiClient\HappyRApi;
+include __DIR__.'/LiveApiClient.php';
 
 use Mockery as m;
 

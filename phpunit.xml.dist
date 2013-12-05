@@ -10,14 +10,14 @@
          stopOnFailure="false"
          syntaxCheck="false"
          codecoverage= "true"
-         bootstrap="Tests/bootstrap.php"
+         bootstrap="tests/bootstrap.php"
         >
 
     <formatter type="clover" usefile="false" />
 
     <testsuites>
         <testsuite name="HappyR Api Client Test Suite">
-            <directory>./Tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 
@@ -29,7 +29,7 @@
     <filter>
         <blacklist>
             <directory>./vendor/</directory>
-            <directory>./Tests/</directory>
+            <directory>./tests/</directory>
 
             <!-- Don't test interfaces -->
             <directory suffix="Interface.php">./</directory>
