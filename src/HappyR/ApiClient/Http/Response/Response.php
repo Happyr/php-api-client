@@ -26,6 +26,12 @@ class Response
     protected $body;
 
     /**
+     * @var string format (xml or json)
+     *
+     */
+    protected $format;
+
+    /**
      * @param string $body
      * @param integer $code
      */
@@ -78,4 +84,28 @@ class Response
     {
         return $this->code;
     }
+
+    /**
+     *
+     * @param string $format
+     *
+     * @return $this
+     */
+    public function setFormat($format)
+    {
+        $this->format = $format;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    
 }

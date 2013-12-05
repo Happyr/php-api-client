@@ -13,28 +13,12 @@ class CurlRequest implements RequestInterface
     private $handle = null;
 
     /**
-     * Construct the
+     * Construct the curl
      *
-     * @param string|null $url
      */
-    public function __construct($url = null)
+    public function __construct()
     {
-        $this->createNew($url);
-    }
-
-    /**
-     * Create a new instance of curl
-     *
-     *
-     * @param string|null $url
-     *
-     * @return $this
-     */
-    public function createNew($url = null)
-    {
-        $this->handle = curl_init($url);
-
-        return $this;
+        $this->handle=curl_init();
     }
 
     /**

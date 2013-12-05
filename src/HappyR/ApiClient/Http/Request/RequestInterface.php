@@ -9,13 +9,6 @@ namespace HappyR\ApiClient\Http;
  */
 interface RequestInterface
 {
-    /**
-     * Create a new instance of the request
-     *
-     *
-     * @return $this
-     */
-    public function createNew();
 
     /**
      * Set a option

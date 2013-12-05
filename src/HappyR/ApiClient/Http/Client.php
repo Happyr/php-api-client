@@ -31,15 +31,9 @@ class Client
      * @param Configuration $configuration
      * @param RequestInterface $request
      */
-    public function __construct(Configuration $configuration, RequestInterface $request = null)
+    public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
-
-        if ($request == null) {
-            $httpRequestClass = $this->configuration->httpRequestClass;
-            $request = new $httpRequestClass();
-        }
-        $this->request = $request;
     }
 
     /**
@@ -59,7 +53,25 @@ class Client
     public function sendRequest($uri, array $data=array(), $httpVerb='GET')
     {
         try{
-            $response=$this->doSendRequest($uri,$data,$httpVerb);
+            $request=$this->buildRequest($uri, $data, $httpVerb);
+
+            //execute request
+            $body = $request->execute();
+
+            //get the http status code
+            $httpStatus = $request->getInfo(CURLINFO_HTTP_CODE);
+
+            //close connection
+            $request->close();
+
+            //if we got some non good http response code
+            if ($httpStatus >= 300 || $httpStatus == 0) {
+                //throw exceptions
+                throw new HttpException($httpStatus, $body);
+            }
+
+            return new Response($body, $httpStatus);
+
         }
         catch(HttpException $e){
             if($this->configuration->debug){
@@ -95,34 +107,38 @@ class Client
      */
     protected function buildRequest($uri, array $data = array(), $httpVerb = 'GET')
     {
-        $this->request->createNew();
+        $httpRequestClass = $this->configuration->httpRequestClass;
+        $request = new $httpRequestClass();
 
-        if ($httpVerb == 'POST') {
-            $this->preparePostData($data);
-            $this->request->setOption(CURLOPT_URL, $this->buildUrl($uri));
-        } elseif ($httpVerb == 'GET') {
-            $this->request->setOption(CURLOPT_URL, $this->buildUrl($uri, $data));
-        } else {
-            throw new \InvalidArgumentException('HTTP method must be either "GET" or "POST"');
+        switch ($httpVerb) {
+            case 'POST':
+                $this->preparePostData($request, $data);
+                $request->setOption(CURLOPT_URL, $this->buildUrl($uri));
+            break;
+            case 'GET':
+                $request->setOption(CURLOPT_URL, $this->buildUrl($uri, $data));
+            break;
+            default:
+                throw new \InvalidArgumentException('HTTP method must be either "GET" or "POST"');
         }
 
         // Set a referrer and user agent
         if (isset($_SERVER['HTTP_HOST'])) {
-            $this->request->setOption(CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
+            $request->setOption(CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
         }
-        $this->request->setOption(CURLOPT_USERAGENT, 'HappyRApiClient/' . $this->configuration->clientVersion);
+        $request->setOption(CURLOPT_USERAGENT, 'HappyRApiClient/' . $this->configuration->clientVersion);
 
         //do not include the http header in the result
-        $this->request->setOption(CURLOPT_HEADER, 0);
+        $request->setOption(CURLOPT_HEADER, 0);
 
         //return the data
-        $this->request->setOption(CURLOPT_RETURNTRANSFER, true);
+        $request->setOption(CURLOPT_RETURNTRANSFER, true);
 
         // Timeout in seconds
-        $this->request->setOption(CURLOPT_TIMEOUT, 10);
+        $request->setOption(CURLOPT_TIMEOUT, 10);
 
         //follow redirects
-        $this->request->setOption(CURLOPT_FOLLOWLOCATION, true);
+        $request->setOption(CURLOPT_FOLLOWLOCATION, true);
 
         //get headers
         $headers = array_merge(
@@ -131,24 +147,9 @@ class Client
         );
 
         //add headers
-        $this->request->setOption(CURLOPT_HTTPHEADER, $headers);
+        $request->setOption(CURLOPT_HTTPHEADER, $headers);
 
-        //execute post
-        $body = $this->request->execute();
-
-        //get the http status code
-        $httpStatus = $this->request->getInfo(CURLINFO_HTTP_CODE);
-
-        //close connection
-        $this->request->close();
-
-        //if we got some non good http response code
-        if ($httpStatus >= 300 || $httpStatus == 0) {
-            //throw exceptions
-            throw new HttpException($httpStatus, $body);
-        }
-
-        return new Response($body, $httpStatus);
+        return $request;
     }
 
     /**
@@ -209,7 +210,7 @@ class Client
      * @param array $data
      *
      */
-    protected function preparePostData(array $data = array())
+    protected function preparePostData(RequestInterface &$request, array $data = array())
     {
         $dataString = '';
 
@@ -220,7 +221,7 @@ class Client
         //remove the last '&'
         rtrim($dataString, '&');
 
-        $this->request->setOption(CURLOPT_POST, count($data));
-        $this->request->setOption(CURLOPT_POSTFIELDS, $dataString);
+        $request->setOption(CURLOPT_POST, count($data));
+        $request->setOption(CURLOPT_POSTFIELDS, $dataString);
     }
 }
