@@ -22,7 +22,7 @@ class UserApi extends BaseApi
      * to fetch new emails and find the email from HappyRecruiting. In that email there is a token that
      * he should enter to the API client. Simple as pie.
      *
-     * Use the following two functions to confrim a user's email:
+     * Use the following two functions to confirm a user's email:
      *  - sendUserConfirmation($email)
      *  - validateUser($email, $token)
      *
@@ -104,4 +104,22 @@ class UserApi extends BaseApi
 
         return false;
     }
-} 
+
+
+    public function createGroup()
+    {
+        //TODO Implement me
+    }
+
+    public function addPatternToGroup()
+    {
+        //TODO Implement me
+
+    }
+
+    public function addUserToGroup()
+    {
+        //TODO Implement me
+
+    }
+}

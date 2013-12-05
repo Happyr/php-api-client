@@ -20,9 +20,9 @@ class PotentialApi extends BaseApi
      *
      * @return array<Profile>, an array with Profile objects
      */
-    public function getPotentialProfiles()
+    public function getPatterns()
     {
-        $response=$this->httpClient->sendRequest('potential/profile-patterns');
+        $response=$this->httpClient->sendRequest('patterns');
 
         return  $this->deserialize($response, 'array<HappyR\ApiClient\Entity\Potential\Profile>');
     }
@@ -34,9 +34,9 @@ class PotentialApi extends BaseApi
      *
      * @return Profile
      */
-    public function getPotentialProfile($id)
+    public function getPattern($id)
     {
-        $response=$this->httpClient->sendRequest('potential/profile-patterns/'.$id);
+        $response=$this->httpClient->sendRequest('patterns/'.$id);
 
         return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Potential\Profile');
     }
@@ -49,7 +49,7 @@ class PotentialApi extends BaseApi
      *
      * @return Statement, a Statement object. If no more statements is available, return null.
      */
-    public function getPotentialStatement(User $user, Profile $profile)
+    public function getStatement(User $user, Profile $profile)
     {
         $response=$this->httpClient->sendRequest(
             'potential/statement',
@@ -76,7 +76,7 @@ class PotentialApi extends BaseApi
      *
      * @return bool true if the answer was successfully posted. Otherwise false
      */
-    public function postPotentialAnswer(User $user, Statement $statement, Answer $answer)
+    public function createAssessment(User $user, Statement $statement, Answer $answer)
     {
         $response=$this->httpClient->sendRequest(
             'potential/statement/'.$statement->id.'/answer',
@@ -101,7 +101,7 @@ class PotentialApi extends BaseApi
      *
      * @return integer between 0 and 100 (inclusive). False is returned if not all the statements are answered.
      */
-    public function getPotentialScore(User $user, Profile $profile)
+    public function getMatch(User $user, Profile $profile)
     {
         $response=$this->httpClient->sendRequest(
             'potential/score',
