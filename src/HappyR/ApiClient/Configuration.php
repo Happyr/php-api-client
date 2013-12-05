@@ -16,10 +16,7 @@ class Configuration
     public $token='';
 
     //must end with a slash (/)
-    public $baseUrl='http://happyrecruiting.se/api/';
-
-    //The version of the API you want to use
-    public $version='1.0';
+    public $baseUrl='http://api.happyr.com/api/';
 
     //You should have a good reason not to choose xml.
     public $format='xml';
@@ -46,6 +43,9 @@ class Configuration
 
     //enables debug mode
     public $debug=false;
+
+    //The version of this client. This is for our statistics only
+    public $clientVersion=1.0;
 
     /**
      * @param null $username

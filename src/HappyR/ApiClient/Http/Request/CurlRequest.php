@@ -8,7 +8,7 @@ namespace HappyR\ApiClient\Http;
  *
  * This is a wrapper for curl
  */
-class CurlRequest implements HttpRequestInterface
+class CurlRequest implements RequestInterface
 {
     private $handle = null;
 

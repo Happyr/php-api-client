@@ -2,7 +2,7 @@
 
 namespace HappyR\ApiClient;
 
-use HappyR\ApiClient\Http\Connection;
+use HappyR\ApiClient\Http\Client;
 use HappyR\ApiClient\Exceptions\HttpException;
 use HappyR\ApiClient\Exceptions\UserConflictException;
 
@@ -28,7 +28,7 @@ class HappyRApi
     private $configuration;
 
     /**
-     * @var  connection
+     * @var  Client
      *
      * The connection is the class that is doing the actual http request
      */
@@ -49,14 +49,14 @@ class HappyRApi
      *
      * @param Configuration $config
      * @param SerializerInterace $serializer
-     * @param Connection $connection
+     * @param Client $connection
      */
     public function __construct(
             Configuration $config=null,
             SerializerInterface $serializer=null,
-            Connection $connection=null
+            Client $connection=null
     ) {
-        //if we dont get a configuration object in the parameter, then create one now.
+        //if we don't get a configuration object in the parameter, then create one now.
         if($config==null){
             $config=new Configuration();
         }
@@ -67,7 +67,7 @@ class HappyRApi
         }
 
         if($connection==null){
-            $connection=new Connection($config);
+            $connection=new Client($config);
         }
 
         $this->configuration=$config;
@@ -75,45 +75,7 @@ class HappyRApi
         $this->connection=$connection;
     }
 
-    /**
-     * Make a request
-     *
-     * @param string $uri The uri to en endpoint.
-     * @param array $data (optional) if it is a GET-request then data act as a filter. If it is a POST-request it will
-     * be the post variables
-     * @param string $httpVerb (optional) either GET or POST.
-     * will contain the http response code
-     * @param boolean $suppressExceptions, (optional) if true, we will catch all HttpExceptions that might be thrown by
-     * the Connection class
-     *
-     * @return \HappyR\ApiClient\Http\Response
-     * @throws HttpException
-     */
-    protected function sendRequest($uri, array $data=array(), $httpVerb='GET')
-    {
-        try{
-            $response=$this->connection->sendRequest($uri,$data,$httpVerb);
-        }
-        catch(HttpException $e){
-            if($this->configuration->debug){
-                echo ("Exception: ".$e."\n");
-            }
 
-            if($this->configuration->enableExceptions){
-                throw $e;//re-throw exception
-            }
-
-            //return empty result
-            $response=new Response('<?xml version="1.0" encoding="UTF-8"?><result/>', $e->getHttpStatus());
-
-            if($this->configuration->format=='json'){
-                $response->setBody('[]');
-            }
-
-        }
-
-        return $response;
-    }
 
     /**
      * Deserialize an object
@@ -126,59 +88,6 @@ class HappyRApi
     protected function deserialize($data, $class)
     {
         return $this->serializer->deserialize($data, $class, $this->configuration->format);
-    }
-
-    /**
-     * Get the companies that are available
-     *
-     * @return array<Company>, an array with Company objects
-     */
-    public function getCompanies()
-    {
-        $response=$this->sendRequest('companies');
-
-        return $this->deserialize($response->getBody(), 'array<HappyR\ApiClient\Entity\Company>');
-    }
-
-    /**
-     * Get a company with the $id
-     *
-     * @param integer $id of the company
-     *
-     * @return Company
-     */
-    public function getCompany($id)
-    {
-        $response=$this->sendRequest('companies/'.$id);
-
-        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Company');
-    }
-
-    /**
-     * Get the current active opuses
-     * An Opus is a job advert
-     *
-     * @return array<Opus>, an array with Opus objects
-     */
-    public function getOpuses()
-    {
-        $response=$this->sendRequest('opuses');
-
-        return  $this->deserialize($response->getBody(), 'array<HappyR\ApiClient\Entity\Opus>');
-    }
-
-    /**
-     * Get an Opus with the $id
-     *
-     * @param integer $id of the opus
-     *
-     * @return Opus
-     */
-    public function getOpus($id)
-    {
-        $response=$this->sendRequest('opuses/'.$id);
-
-        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Opus');
     }
 
     /**

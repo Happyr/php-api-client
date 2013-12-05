@@ -4,7 +4,7 @@
 namespace HappyR\ApiClient\Tests\Http;
 
 use HappyR\ApiClient\Configuration;
-use HappyR\ApiClient\Http\Connection;
+use HappyR\ApiClient\Http\Client;
 
 use Mockery as m;
 
@@ -21,7 +21,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param int $httpStatus
      *
-     * @return Connection
+     * @return Client
      */
     protected function getConnection($httpStatus = 200)
     {
@@ -38,7 +38,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         );
         $request->shouldReceive('createNew')->once()->andReturn(m::self());
 
-        $conn = new Connection($conf, $request);
+        $conn = new Client($conf, $request);
 
         return $conn;
         //die('Class: '.get_class($conn).' - '.print_r(get_class_methods($conn),true));

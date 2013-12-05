@@ -10,7 +10,7 @@ use HappyR\ApiClient\Exceptions\HttpException;
  *
  * This class handles the connection to the API-Server
  */
-class Connection
+class Client
 {
     /**
      * @var \HappyR\ApiClient\Configuration configuration
@@ -19,7 +19,7 @@ class Connection
     protected $configuration;
 
     /**
-     * @var HttpRequestInterface request
+     * @var RequestInterface request
      *
      *
      */
@@ -29,9 +29,9 @@ class Connection
      * Init the connection with our current configuration
      *
      * @param Configuration $configuration
-     * @param HttpRequestInterface $request
+     * @param RequestInterface $request
      */
-    public function __construct(Configuration $configuration, HttpRequestInterface $request = null)
+    public function __construct(Configuration $configuration, RequestInterface $request = null)
     {
         $this->configuration = $configuration;
 
@@ -40,6 +40,46 @@ class Connection
             $request = new $httpRequestClass();
         }
         $this->request = $request;
+    }
+
+    /**
+     * Make a request
+     *
+     * @param string $uri The uri to en endpoint.
+     * @param array $data (optional) if it is a GET-request then data act as a filter. If it is a POST-request it will
+     * be the post variables
+     * @param string $httpVerb (optional) either GET or POST.
+     * will contain the http response code
+     * @param boolean $suppressExceptions, (optional) if true, we will catch all HttpExceptions that might be thrown by
+     * the Connection class
+     *
+     * @return \HappyR\ApiClient\Http\Response
+     * @throws HttpException
+     */
+    public function sendRequest($uri, array $data=array(), $httpVerb='GET')
+    {
+        try{
+            $response=$this->doSendRequest($uri,$data,$httpVerb);
+        }
+        catch(HttpException $e){
+            if($this->configuration->debug){
+                echo ("Exception: ".$e."\n");
+            }
+
+            if($this->configuration->enableExceptions){
+                throw $e;//re-throw exception
+            }
+
+            //return empty result
+            $response=new Response('<?xml version="1.0" encoding="UTF-8"?><result/>', $e->getHttpStatus());
+
+            if($this->configuration->format=='json'){
+                $response->setBody('[]');
+            }
+
+        }
+
+        return $response;
     }
 
     /**
@@ -53,7 +93,7 @@ class Connection
      * @throws \HappyR\ApiClient\Exceptions\HttpException if we got a response code bigger or equal to 300
      * @throws \InvalidArgumentException
      */
-    public function sendRequest($uri, array $data = array(), $httpVerb = 'GET')
+    protected function buildRequest($uri, array $data = array(), $httpVerb = 'GET')
     {
         $this->request->createNew();
 
@@ -63,14 +103,14 @@ class Connection
         } elseif ($httpVerb == 'GET') {
             $this->request->setOption(CURLOPT_URL, $this->buildUrl($uri, $data));
         } else {
-            throw new \InvalidArgumentException('httpVerb must be eihter "GET" or "POST"');
+            throw new \InvalidArgumentException('HTTP method must be either "GET" or "POST"');
         }
 
-        // Set a referer and user agent
+        // Set a referrer and user agent
         if (isset($_SERVER['HTTP_HOST'])) {
             $this->request->setOption(CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
         }
-        $this->request->setOption(CURLOPT_USERAGENT, 'HappyRApiClient/' . $this->configuration->version);
+        $this->request->setOption(CURLOPT_USERAGENT, 'HappyRApiClient/' . $this->configuration->clientVersion);
 
         //do not include the http header in the result
         $this->request->setOption(CURLOPT_HEADER, 0);
@@ -122,12 +162,12 @@ class Connection
     protected function getAcceptHeader()
     {
         return array(
-            'Accept: application/vnd.happyrecruiting-v' . $this->configuration->version . '+' . $this->configuration->format,
+            'Accept: application/'.$this->configuration->format,
         );
     }
 
     /**
-     * Get the wsse authentication header
+     * Get the WSSE authentication header
      *
      *
      * @return array

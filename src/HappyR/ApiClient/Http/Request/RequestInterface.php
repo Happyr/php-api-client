@@ -7,7 +7,7 @@ namespace HappyR\ApiClient\Http;
  * This is an iterface for the HTTP Request
  *
  */
-interface HttpRequestInterface
+interface RequestInterface
 {
     /**
      * Create a new instance of the request
