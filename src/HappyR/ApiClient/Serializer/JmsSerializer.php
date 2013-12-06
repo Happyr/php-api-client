@@ -22,7 +22,7 @@ class JmsSerializer extends SerializerBuilder implements SerializerInterface
     /**
      * Init the serializer
      */
-    function __construct()
+    public function __construct()
     {
         $this->serializer = SerializerBuilder::create()->build();
     }

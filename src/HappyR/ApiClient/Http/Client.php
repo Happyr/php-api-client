@@ -64,8 +64,7 @@ class Client
         //if we got some non good http response code
         if ($httpStatus >= 300 || $httpStatus == 0) {
             $response = $this->handleError($body, $httpStatus);
-        }
-        else{
+        } else {
             $response = new Response($body, $httpStatus);
         }
 
@@ -85,11 +84,11 @@ class Client
      */
     protected function handleError(&$body, $httpStatus)
     {
-        if($this->configuration->debug){
+        if ($this->configuration->debug) {
             echo ('Exception: '.$body."\n");
         }
 
-        if($this->configuration->enableExceptions){
+        if ($this->configuration->enableExceptions) {
             //throw exceptions
             throw new HttpException($httpStatus, $body);
         }
@@ -97,7 +96,7 @@ class Client
         //return empty result
         $response=new Response('<?xml version="1.0" encoding="UTF-8"?><result/>', $httpStatus);
 
-        if($this->configuration->format=='json'){
+        if ($this->configuration->format=='json') {
             $response->setBody('[]');
         }
 
@@ -124,10 +123,10 @@ class Client
             case 'POST':
                 $this->preparePostData($request, $data);
                 $request->setOption(CURLOPT_URL, $this->buildUrl($uri));
-            break;
+                break;
             case 'GET':
                 $request->setOption(CURLOPT_URL, $this->buildUrl($uri, $data));
-            break;
+                break;
             default:
                 throw new \InvalidArgumentException('HTTP method must be either "GET" or "POST"');
         }

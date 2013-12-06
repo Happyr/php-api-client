@@ -21,7 +21,7 @@ class LiveApiClient
      * @return HappyRApi
      * @throws \RuntimeException
      */
-    static function get()
+    public static function get()
     {
         $paramfile = file_get_contents(__DIR__ . '/parameters.ini');
         if ($paramfile === false) {

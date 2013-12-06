@@ -59,7 +59,7 @@ class PotentialApi extends BaseApi
             )
         );
 
-        if($response->getCode()==204){
+        if ($response->getCode()==204) {
             return null;
         }
 
@@ -88,7 +88,7 @@ class PotentialApi extends BaseApi
             'POST'
         );
 
-        if($response->getCode()==204){
+        if ($response->getCode()==204) {
             return null;
         }
 
@@ -110,7 +110,7 @@ class PotentialApi extends BaseApi
             'pattern'=>$this->getId($pattern),
         ));
 
-        if($response->getCode()==412){
+        if ($response->getCode()==412) {
             //We need to answer more statements
             return null;
         }
@@ -139,5 +139,4 @@ class PotentialApi extends BaseApi
 
         return $this->deserialize($response, 'array<HappyR\ApiClient\Entity\User\User>');
     }
-
-} 
+}

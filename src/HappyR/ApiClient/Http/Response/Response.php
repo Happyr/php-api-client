@@ -35,7 +35,7 @@ class Response
      * @param string $body
      * @param integer $code
      */
-    function __construct($body, $code)
+    public function __construct($body, $code)
     {
         $this->body = $body;
         $this->code = $code;
@@ -106,6 +106,4 @@ class Response
     {
         return $this->format;
     }
-
-    
 }

@@ -53,14 +53,12 @@ class Configuration
      */
     public function __construct($username=null,$token=null)
     {
-        if($token!=null){
+        if ($token!=null) {
             $this->token=$token;
         }
 
-        if($username!=null){
+        if ($username!=null) {
             $this->username=$username;
         }
     }
-
-
 }

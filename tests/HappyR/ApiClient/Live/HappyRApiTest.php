@@ -45,6 +45,4 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf($type, $this->client->getPotentialApi()->getPattern($entity->id));
     }
-
-
 }

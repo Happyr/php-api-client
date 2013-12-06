@@ -59,7 +59,7 @@ class HappyRApi
     public function __construct(Configuration $config=null)
     {
         //if we don't get a configuration object in the parameter, then create one now.
-        if($config==null){
+        if ($config==null) {
             $config=new Configuration();
         }
 
