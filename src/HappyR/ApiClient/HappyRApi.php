@@ -8,7 +8,6 @@ use HappyR\ApiClient\Http\Client;
 use HappyR\ApiClient\Entity\User;
 use HappyR\ApiClient\Serializer\SerializerInterface;
 
-
 /**
  * This is the API class that should be used with every api call
  * Every public function in this class represent a end point in the API

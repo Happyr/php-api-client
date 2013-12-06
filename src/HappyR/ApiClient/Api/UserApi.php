@@ -44,9 +44,11 @@ class UserApi extends BaseApi
                 'ignore-duplicate'=>$ignoreDuplicate?1:0,
             ), 'POST');
 
-        if ($response->getCode()==201) {//if success
+        if ($response->getCode()==201) {
+            //if success
             return $this->deserialize($response, 'HappyR\ApiClient\Entity\User');
-        } elseif ($response->getCode()==409) {//if that email was previously registered
+        } elseif ($response->getCode()==409) {
+            //if that email was previously registered
             throw new UserConflictException($email);
         }
 

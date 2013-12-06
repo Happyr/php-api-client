@@ -51,7 +51,7 @@ class Configuration
      * @param null $username
      * @param null $token
      */
-    public function __construct($username=null,$token=null)
+    public function __construct($username=null, $token=null)
     {
         if ($token!=null) {
             $this->token=$token;

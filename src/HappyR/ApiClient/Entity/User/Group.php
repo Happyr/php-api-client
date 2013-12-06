@@ -16,4 +16,4 @@ class Group
      * @JMS\Type("integer")
      */
     public $id;
-} 
+}
