@@ -17,7 +17,7 @@
 
     <testsuites>
         <testsuite name="HappyR Api Client Test Suite">
-            <directory>tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 
@@ -28,9 +28,9 @@
 
     <filter>
         <blacklist>
-            <directory>vendor/</directory>
-            <directory>tests/</directory>
-            <directory>src/HappyR/ApiClient/Entity</directory>
+            <directory>./vendor/</directory>
+            <directory>./tests/</directory>
+            <directory>./src/HappyR/ApiClient/Entity</directory>
 
             <!-- Don't test interfaces -->
             <directory suffix="Interface.php">./</directory>
