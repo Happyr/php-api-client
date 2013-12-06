@@ -1,4 +1,4 @@
-username=
-token=
-baseUrl=http://local.dev/api/
-enableExceptions=true
+username:
+token:
+baseUrl:http://local.dev/api/
+enableExceptions:false

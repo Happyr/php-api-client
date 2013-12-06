@@ -31,11 +31,11 @@ class LiveApiClient
         $params = explode("\n", $paramfile);
         $conf = new Configuration();
         foreach ($params as $param) {
-            if (!strstr($param, '=')) {
+            if (!strstr($param, ':')) {
                 continue;
             }
-            list($name, $value) = explode('=', $param);
-            $conf->$name = $value;
+            list($name, $value) = explode(':', $param, 2);
+            $conf->$name = trim($value);
         }
 
         return new HappyRApi($conf);
