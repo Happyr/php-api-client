@@ -13,35 +13,36 @@ use HappyR\ApiClient\Entity\Potential\Pattern;
  */
 class UserApi extends BaseApi
 {
-
     /**
-     * Create a new user. If the email is not previously registered on the API-server we will just
-     * return a User object. If, however, the email is previously registered then you (the API client)
+     * Create an user. If the email is not previously registered we will just
+     * return a new User object. If, however, the email is previously registered then you (the API client)
      * have to ask the user to confirm his email.
      *
      * The first step is to ask the API-server to send an email to the user. Then you have to tell the user
-     * to fetch new emails and find the email from HappyRecruiting. In that email there is a token that
+     * to fetch new emails and find the email from HappyR. In that email there is a token that
      * he should enter to the API client. Simple as pie.
      *
      * Use the following two functions to confirm a user's email:
      *  - sendUserConfirmation($email)
      *  - validateUser($email, $token)
      *
+     * @param string $email
+     * @param bool $ignoreDuplicate if true you will not get a UserConflictException
+     * @param string $name full name of the user
+     * @param string $location like 'Street 22, city, state, country'
      *
-     * @param string $email of the user you want to create.
-     *
-     * @return User if successful. Boolean false if error.
-     * @throws UserConflictException if you need to confirm the users email
+     * @return null|User
+     * @throws UserConflictException
      */
-    public function createUser($email)
+    public function createUser($email, $ignoreDuplicate=false, $name=null, $location=null)
     {
-        $response=$this->httpClient->sendRequest(
-            'users',
+        $response=$this->httpClient->sendRequest('user',
             array(
-                'email'=>$email
-            ),
-            'POST'
-        );
+                'email'=>$email,
+                'name'=>$name,
+                'location'=>$location,
+                'ignore-duplicate'=>$ignoreDuplicate?1:0,
+            ), 'POST');
 
         if($response->getCode()==201){//if success
             return $this->deserialize($response, 'HappyR\ApiClient\Entity\User');
@@ -50,7 +51,7 @@ class UserApi extends BaseApi
             throw new UserConflictException($email);
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -65,14 +66,14 @@ class UserApi extends BaseApi
     public function sendUserConfirmation($email)
     {
         $response=$this->httpClient->sendRequest(
-            'users/confirmation/send',
+            'user/confirmation/send',
             array(
                 'email'=>$email
             ),
             'POST'
         );
 
-        if($response->getCode()==200){
+        if($response->getCode()==204){
             return true;
         }
 
@@ -81,17 +82,17 @@ class UserApi extends BaseApi
 
     /**
      * Validate a user with the email and token. The token was email to the user
-     * from happyrecruiting.se when the sendUserConfirmation()-function was called
+     * from happyr.com when the sendUserConfirmation()-function was called
      *
      * @param string $email
      * @param string $token that was sent to the user by email
      *
-     * @return User if successful. Boolean false if error.
+     * @return null|User if successful. Null is returned on error.
      */
     public function validateUser($email, $token)
     {
         $response=$this->httpClient->sendRequest(
-            'users/confirmation/validate',
+            'user/confirmation/validate',
             array(
                 'email'=>$email,
                 'token'=>$token
@@ -102,7 +103,7 @@ class UserApi extends BaseApi
             return $this->deserialize($response, 'HappyR\ApiClient\Entity\User\User');
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -116,7 +117,7 @@ class UserApi extends BaseApi
     {
         $response=$this->httpClient->sendRequest('user/group/new', array(
             'pattern'=>$this->getId($pattern),
-        ));
+        ), 'POST');
 
         return $this->deserialize($response, 'HappyR\ApiClient\Entity\User\Group');
     }
@@ -132,7 +133,7 @@ class UserApi extends BaseApi
     {
         $this->httpClient->sendRequest('user/group/'.$this->getId($group).'/add-pattern', array(
             'pattern'=>$this->getId($pattern),
-        ));
+        ), 'POST');
     }
 
     /**
@@ -146,6 +147,6 @@ class UserApi extends BaseApi
     {
         $this->httpClient->sendRequest('user/group/'.$this->getId($group).'/add-pattern', array(
             'user'=>$this->getId($user),
-        ));
+        ), 'POST');
     }
 }
