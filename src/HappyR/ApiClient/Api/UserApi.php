@@ -131,7 +131,7 @@ class UserApi extends BaseApi
      */
     public function addPatternToGroup($group, $pattern)
     {
-        $this->httpClient->sendRequest('user/group/'.$this->getId($group).'/add-pattern', array(
+        $this->httpClient->sendRequest(sprintf('user/group/%d/add-pattern', $this->getId($group)), array(
             'pattern'=>$this->getId($pattern),
         ), 'POST');
     }
@@ -145,7 +145,7 @@ class UserApi extends BaseApi
      */
     public function addUserToGroup($group, $user)
     {
-        $this->httpClient->sendRequest('user/group/'.$this->getId($group).'/add-pattern', array(
+        $this->httpClient->sendRequest(sprintf('user/group/%d/add-pattern', $this->getId($group)), array(
             'user'=>$this->getId($user),
         ), 'POST');
     }

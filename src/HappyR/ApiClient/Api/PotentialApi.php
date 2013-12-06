@@ -37,7 +37,7 @@ class PotentialApi extends BaseApi
      */
     public function getPattern($id)
     {
-        $response=$this->httpClient->sendRequest('patterns/'.$id);
+        $response=$this->httpClient->sendRequest(sprintf('patterns/%d', $id));
 
         return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Potential\Pattern');
     }
@@ -53,7 +53,7 @@ class PotentialApi extends BaseApi
     public function getStatement($user, $pattern)
     {
         $response=$this->httpClient->sendRequest(
-            sprintf('pattern/%d/next-statement',$this->getId($pattern)),
+            sprintf('pattern/%d/next-statement', $this->getId($pattern)),
             array(
                 'user'=>$this->getId($user),
             )
