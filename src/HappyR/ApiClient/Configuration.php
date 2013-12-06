@@ -35,7 +35,7 @@ class Configuration
      * the class to use when making a http request. The class must implement
      * the HappyR\ApiClient\Http\HttpRequestInterface
      */
-    public $httpRequestClass='\HappyR\ApiClient\Http\CurlRequest';
+    public $httpRequestClass='\HappyR\ApiClient\Http\Request\CurlRequest';
 
 
     //if true, we will throw exceptions on error

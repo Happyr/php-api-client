@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HappyR\ApiClient\Http;
+namespace HappyR\ApiClient\Http\Request;
 
 /**
  * This is an iterface for the HTTP Request

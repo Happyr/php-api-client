@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HappyR\ApiClient\Http;
+namespace HappyR\ApiClient\Http\Response;
 
 /**
  * Class Response

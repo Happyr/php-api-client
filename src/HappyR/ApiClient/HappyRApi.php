@@ -107,39 +107,54 @@ class HappyRApi
         return $this->serializer;
     }
 
-    /**
-     *
-     * @param \HappyR\ApiClient\Http\Client $httpClient
-     *
-     * @return $this
-     */
-    public function setHttpClient(Client $httpClient)
-    {
-        $this->httpClient = $httpClient;
-
-        return $this;
-    }
 
     /**
      *
-     * @return \HappyR\ApiClient\Http\Client
+     * Get a Http client
+     *
+     * @param bool $forceNew if true we will create a new Client object
+     *
+     * @return Client
      */
-    protected function getHttpClient()
+    protected function getHttpClient($forceNew = false)
     {
-        if (!$this->httpClient) {
-            $class = $this->configuration->httpRequestClass;
-            $this->httpClient=new $class();
+        if (!$this->httpClient || $forceNew) {
+            $this->httpClient=new Client($this->configuration);
         }
 
         return $this->httpClient;
     }
 
     /**
+     *
+     * @param \HappyR\ApiClient\Configuration $configuration
+     *
+     * @return $this
+     */
+    public function setConfiguration($configuration)
+    {
+        $this->configuration = $configuration;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @return \HappyR\ApiClient\Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+
+
+    /**
      * Get the potential api
      *
      * @param bool $forceNew if true we will create a new PotentialApi object
      *
-     * @return UserApi
+     * @return PotentialApi
      */
     public function getPotentialApi($forceNew = false)
     {

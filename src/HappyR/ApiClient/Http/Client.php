@@ -4,6 +4,7 @@ namespace HappyR\ApiClient\Http;
 
 use HappyR\ApiClient\Configuration;
 use HappyR\ApiClient\Exceptions\HttpException;
+use HappyR\ApiClient\Http\Response\Response;
 
 /**
  * Class Connection
@@ -18,18 +19,11 @@ class Client
      */
     protected $configuration;
 
-    /**
-     * @var RequestInterface request
-     *
-     *
-     */
-    protected $request;
 
     /**
      * Init the connection with our current configuration
      *
      * @param Configuration $configuration
-     * @param RequestInterface $request
      */
     public function __construct(Configuration $configuration)
     {
@@ -75,7 +69,7 @@ class Client
             $response = new Response($body, $httpStatus);
         }
 
-        $request->setFormat($this->configuration->format);
+        $response->setFormat($this->configuration->format);
 
         return $response;
     }

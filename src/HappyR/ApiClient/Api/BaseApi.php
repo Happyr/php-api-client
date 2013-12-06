@@ -4,7 +4,7 @@
 namespace HappyR\ApiClient\Api;
 
 use HappyR\ApiClient\Http\Client;
-use HappyR\ApiClient\Http\Response;
+use HappyR\ApiClient\Http\Response\Response;
 use HappyR\ApiClient\Serializer\SerializerInterface;
 
 /**
