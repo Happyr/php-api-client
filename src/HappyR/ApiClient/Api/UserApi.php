@@ -3,6 +3,7 @@
 
 namespace HappyR\ApiClient\Api;
 
+use HappyR\ApiClient\Entity\Potential\Pattern;
 
 /**
  * Class UserManagement
@@ -99,27 +100,53 @@ class UserApi extends BaseApi
         );
 
         if($response->getCode()==200){
-            return $this->deserialize($response, 'HappyR\ApiClient\Entity\User');
+            return $this->deserialize($response, 'HappyR\ApiClient\Entity\User\User');
         }
 
         return false;
     }
 
-
-    public function createGroup()
+    /**
+     * Create a new group
+     *
+     * @var Pattern|integer $pattern to be used in this group. (id or object)
+     *
+     * @return \HappyR\ApiClient\Entity\User\Group
+     */
+    public function createGroup($pattern)
     {
-        //TODO Implement me
+        $response=$this->httpClient->sendRequest('user/group/new', array(
+            'pattern'=>$this->getId($pattern),
+        ));
+
+        return $this->deserialize($response, 'HappyR\ApiClient\Entity\User\Group');
     }
 
-    public function addPatternToGroup()
+    /**
+     * Add a pattern to the group
+     *
+     * @param Group|integer $group
+     * @param Pattern|integer $pattern
+     *
+     */
+    public function addPatternToGroup($group, $pattern)
     {
-        //TODO Implement me
-
+        $this->httpClient->sendRequest('user/group/'.$this->getId($group).'/add-pattern', array(
+            'pattern'=>$this->getId($pattern),
+        ));
     }
 
-    public function addUserToGroup()
+    /**
+     * Add an user to the group
+     *
+     * @param Group|integer $group
+     * @param User|integer $user
+     *
+     */
+    public function addUserToGroup($group, $user)
     {
-        //TODO Implement me
-
+        $this->httpClient->sendRequest('user/group/'.$this->getId($group).'/add-pattern', array(
+            'user'=>$this->getId($user),
+        ));
     }
 }

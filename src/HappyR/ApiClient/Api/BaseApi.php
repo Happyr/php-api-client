@@ -49,4 +49,20 @@ abstract class BaseApi
     {
         return $this->serializer->deserialize($response->getBody(), $class, $response->getFormat());
     }
+
+    /**
+     * Return the $object->id if $object is an object.
+     *
+     * @param mixed $object
+     *
+     * @return integer
+     */
+    protected function getId($object)
+    {
+        if (is_object($object) && property_exists($object, 'id')) {
+            return $object->id;
+        }
+
+        return $object;
+    }
 }
