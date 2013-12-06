@@ -4,6 +4,7 @@ namespace HappyR\ApiClient\Http;
 
 use HappyR\ApiClient\Configuration;
 use HappyR\ApiClient\Exceptions\HttpException;
+use HappyR\ApiClient\Http\Request\RequestInterface;
 use HappyR\ApiClient\Http\Response\Response;
 
 /**
@@ -203,11 +204,7 @@ class Client
 
         //add the filter on the filter string
         if (count($filters) > 0) {
-            $filterString = '?';
-            foreach ($filters as $key => $value) {
-                $filterString .= $key . '=' . $value . '&';
-            }
-            $filterString=rtrim($filterString, '&');
+            $filterString='?'.$this->urlifyArray($filters);
         }
 
         return $this->configuration->baseUrl . $uri . $filterString;
@@ -221,16 +218,28 @@ class Client
      */
     protected function preparePostData(RequestInterface &$request, array $data = array())
     {
-        $dataString = '';
-
         //urlify the data for the POST
-        foreach ($data as $key => $value) {
-            $dataString .= $key . '=' . $value . '&';
-        }
-        //remove the last '&'
-        rtrim($dataString, '&');
+        $dataString=$this->urlifyArray($data);
 
         $request->setOption(CURLOPT_POST, count($data));
         $request->setOption(CURLOPT_POSTFIELDS, $dataString);
+    }
+
+    /**
+     * Convert array to string
+     *
+     * @param array $data
+     *
+     * @return string
+     */
+    private function urlifyArray(array $data = array())
+    {
+        $dataString = '';
+        foreach ($data as $key => $value) {
+            $dataString .= $key . '=' . $value . '&';
+        }
+
+        //remove the last '&'
+        return rtrim($dataString, '&');
     }
 }
