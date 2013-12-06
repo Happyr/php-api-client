@@ -95,8 +95,7 @@ class UserApi extends BaseApi
             array(
                 'email'=>$email,
                 'token'=>$token
-            ),
-            'GET'
+            )
         );
 
         if($response->getCode()==200){

@@ -3,6 +3,7 @@
 
 namespace HappyR\ApiClient\Api;
 
+use HappyR\ApiClient\Entity\Potential\Statement;
 
 /**
  * Class PotentialApi
@@ -32,92 +33,111 @@ class PotentialApi extends BaseApi
      *
      * @param integer $id of the Profile
      *
-     * @return Profile
+     * @return Pattern
      */
     public function getPattern($id)
     {
         $response=$this->httpClient->sendRequest('patterns/'.$id);
 
-        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Potential\Profile');
+        return $this->deserialize($response->getBody(), 'HappyR\ApiClient\Entity\Potential\Pattern');
     }
 
     /**
      * Get the next statement for the user on the specific profile
      *
-     * @param User $user
-     * @param Profile $profile
+     * @param User|integer $user
+     * @param Pattern|integer $pattern
      *
-     * @return Statement, a Statement object. If no more statements is available, return null.
+     * @return Statement|null If no more statements is available, return null.
      */
-    public function getStatement(User $user, Profile $profile)
+    public function getStatement($user, $pattern)
     {
         $response=$this->httpClient->sendRequest(
-            'potential/statement',
+            sprintf('pattern/%d/next-statement',$this->getId($pattern)),
             array(
-                'user_id'=>$user->id,
-                'pattern_id'=>$profile->id
-            ),
-            'GET'
+                'user'=>$this->getId($user),
+            )
         );
 
         if($response->getCode()==204){
             return null;
         }
 
-        return  $this->deserialize($response, 'HappyR\ApiClient\Entity\Potential\Statement');
+        return $this->deserialize($response, 'HappyR\ApiClient\Entity\Potential\Statement');
     }
 
     /**
-     * Post an answer for the statement
+     * Create an assessment, ie answer the question
      *
-     * @param User $user
-     * @param Statement $statement
-     * @param Answer $answer
+     * @param Statement|integer $statement
+     * @param User|integer $user
+     * @param Pattern|integer $pattern
+     * @param integer $answer [1-5]. This is the value of an Assessment
      *
-     * @return bool true if the answer was successfully posted. Otherwise false
+     * @return Statement|null
      */
-    public function createAssessment(User $user, Statement $statement, Answer $answer)
+    public function createAssessment($statement, $user, $pattern, $answer)
     {
         $response=$this->httpClient->sendRequest(
-            'potential/statement/'.$statement->id.'/answer',
+            sprintf('statement/%d',$this->getId($statement)),
             array(
-                'answer'=>$answer->id,
-                'user_id'=>$user->id
+                'answer'=>$answer,
+                'user'=>$this->getId($user),
+                'pattern'=>$this->getId($pattern),
             ),
             'POST'
         );
-        if($response->getCode()==201){
-            return true;
+
+        if($response->getCode()==204){
+            return null;
         }
 
-        return false;
+        return $this->deserialize($response, 'HappyR\ApiClient\Entity\Potential\Statement');
     }
 
     /**
-     * Get the score for the user on the specific profile
+     * Get the Match for an user on a pattern
      *
-     * @param User $user
-     * @param Profile $profile
+     * @param User|integer $user
+     * @param Pattern|integer $pattern
      *
-     * @return integer between 0 and 100 (inclusive). False is returned if not all the statements are answered.
+     * @return \HappyR\ApiClient\Entity\Potential\Match|null Returns null if the user has to answer more questions
      */
-    public function getMatch(User $user, Profile $profile)
+    public function getMatch($user, $pattern)
     {
-        $response=$this->httpClient->sendRequest(
-            'potential/score',
-            array(
-                'user_id'=>$user->id,
-                'pattern_id'=>$profile->id
-            ),
-            'GET'
-        );
+        $response=$this->httpClient->sendRequest('match', array(
+            'user'=>$this->getId($user),
+            'pattern'=>$this->getId($pattern),
+        ));
 
         if($response->getCode()==412){
             //We need to answer more statements
-            return false;
+            return null;
         }
 
-        return $this->deserialize($response, 'HappyR\ApiClient\Entity\Potential\Score');
+        return $this->deserialize($response, 'HappyR\ApiClient\Entity\Potential\Match');
+    }
+
+    /**
+     * Get the top users for a pattern
+     *
+     * @param Group|integer $group
+     * @param Pattern|integer $pattern
+     * @param integer $limit
+     *
+     *
+     * @return array
+     */
+    public function getTopMatches($group, $pattern, $limit=1)
+    {
+        $response=$this->httpClient->sendRequest('match/top', array(
+                'group'=>$this->getId($group),
+                'pattern'=>$this->getId($pattern),
+                'limit'=>$limit
+            ));
+
+
+        return $this->deserialize($response, 'array<HappyR\ApiClient\Entity\User\User>');
     }
 
 } 
