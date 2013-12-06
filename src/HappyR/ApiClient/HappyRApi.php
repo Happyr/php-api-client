@@ -67,6 +67,20 @@ class HappyRApi
     }
 
     /**
+     * This function sends a request to the API directly without using the helper classes in HappyR\ApiClient\Api
+     *
+     * @param string $uri
+     * @param array $data
+     * @param string $httpVerb
+     *
+     * @return Response
+     */
+    public function send($uri, array $data=array(), $httpVerb='GET')
+    {
+        return $this->getHttpClient()->sendRequest($uri, $data, $httpVerb);
+    }
+
+    /**
      *
      * @param \HappyR\ApiClient\SerializerInterface $serializer
      *
