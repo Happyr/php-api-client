@@ -25,4 +25,18 @@ class Pattern
      * @JMS\Type("string")
      */
     public $description;
+
+    /**
+     * A string like "en", "sv", etc
+     *
+     * @JMS\Type("string")
+     */
+    public $language;
+
+    /**
+     * Is the pattern "public" or "private"
+     *
+     * @JMS\Type("string")
+     */
+    public $type;
 }

@@ -22,16 +22,25 @@ class Statement
     public $sentence;
 
     /**
-     * @JMS\Type("array<HappyR\ApiClient\Entity\Potential\Answer>")
-     * @JMS\SerializedName("assessments")
+     * @JMS\Type("array<HappyR\ApiClient\Entity\Potential\Assessment>")
      */
-    public $answers;
+    public $assessments;
 
     /**
      * @JMS\Type("integer")
      *
      * the progress is a value between 0 and 100 that tells how the
-     * questionare progress is developing. You may use this in a progressbar.
+     * test progress is developing. You may use this in a progressbar.
      */
     public $progress;
+
+    /**
+     * @var string postUrl is the url you post the assessment to
+     *
+     * @JMS\Type("string")
+     * @JMS\SerializedName("post_url")
+     *
+     */
+    public $postUrl;
+
 }

@@ -15,4 +15,13 @@ class Match
      * @JMS\Type("integer")
      */
     public $score;
+
+    /**
+     * @var bool complete
+     *
+     * Is the match score complete or does the user have more questions to answer
+     *
+     * @JMS\Type("boolean")
+     */
+    public $complete;
 }

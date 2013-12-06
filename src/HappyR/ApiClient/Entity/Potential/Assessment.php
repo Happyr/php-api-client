@@ -5,16 +5,18 @@ namespace HappyR\ApiClient\Entity\Potential;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * Class Answer
+ * Class Assessment
  *
- * This class represents an answer to the test
+ * @author Tobias Nyholm
+ *
+ * This is one of the options for the Statement
  */
-class Answer
+class Assessment
 {
     /**
      * @JMS\Type("integer")
      */
-    public $id;
+    public $value;
 
     /**
      * @JMS\Type("string")
