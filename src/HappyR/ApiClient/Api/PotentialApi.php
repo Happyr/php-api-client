@@ -79,7 +79,7 @@ class PotentialApi extends BaseApi
     public function createAssessment($statement, $user, $pattern, $answer)
     {
         $response=$this->httpClient->sendRequest(
-            sprintf('statement/%d',$this->getId($statement)),
+            sprintf('statement/%d', $this->getId($statement)),
             array(
                 'answer'=>$answer,
                 'user'=>$this->getId($user),
@@ -135,7 +135,6 @@ class PotentialApi extends BaseApi
                 'pattern'=>$this->getId($pattern),
                 'limit'=>$limit
             ));
-
 
         return $this->deserialize($response, 'array<HappyR\ApiClient\Entity\User\User>');
     }
