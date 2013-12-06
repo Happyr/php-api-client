@@ -207,7 +207,7 @@ class Client
             foreach ($filters as $key => $value) {
                 $filterString .= $key . '=' . $value . '&';
             }
-            rtrim($filterString, '&');
+            $filterString=rtrim($filterString, '&');
         }
 
         return $this->configuration->baseUrl . $uri . $filterString;
