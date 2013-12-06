@@ -1,10 +1,10 @@
 HappyR PHP API client
 =====================
 
-This PHP library is a client to the API at [HappyRecruiting.se][1].
+This PHP library is a client to the API at [api.happyr.com][1].
 
 If you are using WordPress you may want to check out our [WordPress plugin][2] that
-integrates with this library. It may makes life simpler for you.
+integrates with this library. It might make life simpler for you.
 
 
 
@@ -34,8 +34,8 @@ $ php composer.phar update
 Configuration
 -------------
 
-There is a few mandatory configuration parameters. Thay are 'username' and 'token'. You will get them both
-from the [HappyRecruiting website][1]. You may add those in the Configuration.php or set them in runtime.
+There is a few mandatory configuration parameters. They are 'username' and 'token'. You will get them both
+from the [HappyR-API website][1]. You may add those in the Configuration.php or set them in runtime.
 
 You find a the full configuration reference [here][3].
 
@@ -53,8 +53,8 @@ class myClass
     {
         $config=new Configuration('myUsername','myToken');
 
-        $api=new HappyRApi($config);
-        $companies=$api->getCompanies();
+        $api = new HappyRApi($config);
+        $profilePatterns = $api->getPotentialApi()->getPatterns();
         // etc..
     }
     // ---
@@ -65,7 +65,7 @@ class myClass
 
 
 
-[1]: http://happyrecruiting.se
+[1]: http://api.happyr.com
 [2]: http://developer.happyr.se/wordpress-plugins/happyr-api-client
-[3]: http://developer.happyr.se/php-libraries/happyrecruiting-api-client/configuration
+[3]: http://developer.happyr.se/libraries/happyr-api-client/configuration
 
