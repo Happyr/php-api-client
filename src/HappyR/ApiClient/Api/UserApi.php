@@ -31,7 +31,7 @@ class UserApi extends BaseApi
      * @param string $name full name of the user
      * @param string $location like 'Street 22, city, state, country'
      *
-     * @return null|User
+     * @return null|\HappyR\ApiClient\Entity\User\User
      * @throws UserConflictException
      */
     public function createUser($email, $ignoreDuplicate=false, $name=null, $location=null)
@@ -46,7 +46,7 @@ class UserApi extends BaseApi
 
         if ($response->getCode()==201) {
             //if success
-            return $this->deserialize($response, 'HappyR\ApiClient\Entity\User');
+            return $this->deserialize($response, 'HappyR\ApiClient\Entity\User\User');
         } elseif ($response->getCode()==409) {
             //if that email was previously registered
             throw new UserConflictException($email);
