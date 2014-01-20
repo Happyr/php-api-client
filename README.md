@@ -19,7 +19,7 @@ Install it with Composer!
     // ...
     require: {
         // ...
-        "happyr/php-api-client": "1.0.*",
+        "happyr/api-php-client": "1.0.*",
     }
 }
 ```
