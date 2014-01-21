@@ -22,4 +22,14 @@ class Assessment
      * @JMS\Type("string")
      */
     public $label;
+
+    /**
+     * To string function
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->label;
+    }
 }
