@@ -72,7 +72,7 @@ class HappyRApi
      * @param array $data
      * @param string $httpVerb
      *
-     * @return Response
+     * @return \HappyR\ApiClient\Http\Response\Response
      */
     public function send($uri, array $data=array(), $httpVerb='GET')
     {
