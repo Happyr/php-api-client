@@ -94,7 +94,7 @@ class HappyRApi
 
     /**
      *
-     * @return \HappyR\ApiClient\SerializerInterace
+     * @return \HappyR\ApiClient\SerializerInterface
      */
     protected function getSerializer()
     {
