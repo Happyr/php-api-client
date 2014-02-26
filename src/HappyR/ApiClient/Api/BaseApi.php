@@ -59,8 +59,12 @@ abstract class BaseApi
      */
     protected function getId($object)
     {
-        if (is_object($object) && property_exists($object, 'id')) {
-            return $object->id;
+        if (is_object($object)) {
+            if (method_exists($object, 'getId')) {
+                return $object->getId();
+            } elseif (property_exists($object, 'id')) {
+                return $object->id;
+            }
         }
 
         return $object;
