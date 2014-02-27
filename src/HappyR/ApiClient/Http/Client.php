@@ -121,6 +121,8 @@ class Client
         $request = new $httpRequestClass();
 
         switch ($httpVerb) {
+            case 'DELETE':
+                $request->setOption(CURLOPT_CUSTOMREQUEST, 'DELETE');
             case 'POST':
                 $this->preparePostData($request, $data);
                 $request->setOption(CURLOPT_URL, $this->buildUrl($uri));
@@ -129,7 +131,7 @@ class Client
                 $request->setOption(CURLOPT_URL, $this->buildUrl($uri, $data));
                 break;
             default:
-                throw new \InvalidArgumentException('HTTP method must be either "GET" or "POST"');
+                throw new \InvalidArgumentException('HTTP method must be either "GET", "POST" or "DELETE"');
         }
 
         // Set a referrer and user agent
