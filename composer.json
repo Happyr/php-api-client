@@ -12,11 +12,10 @@
         }
     ],
     "require": {
-        "php": ">=5.3.2",
-        "jms/serializer": "0.13.*"
+        "php": ">=5.3.2"
     },
     "require-dev": {
-        "mockery/mockery": "0.8.0"
+        "mockery/mockery": "*"
     },
     "autoload": {
         "psr-0": { "HappyR\\ApiClient\\": "src/" }

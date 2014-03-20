@@ -108,6 +108,13 @@ class HappyRApi
         return $this->configuration;
     }
 
+    /**
+     * Get the login url
+     *
+     * @param string $redirectUrl not urlencoded
+     *
+     * @return string
+     */
     public function getLoginUrl($redirectUrl)
     {
         $this->establishCSRFTokenState();
@@ -121,6 +128,12 @@ class HappyRApi
         );
     }
 
+    /**
+     * Get Code
+     *
+     * @return null
+     * @throws \Exception
+     */
     protected function getCode()
     {
         if (isset($_REQUEST['code'])) {
