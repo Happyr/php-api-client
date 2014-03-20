@@ -19,7 +19,7 @@ Install it with Composer!
     // ...
     require: {
         // ...
-        "happyr/api-php-client": "1.0.*",
+        "happyr/api-php-client": "dev-master",
     }
 }
 ```
@@ -51,10 +51,11 @@ class myClass
 
     public function myFunc()
     {
-        $config=new Configuration('myUsername','myToken');
+        $config=new Configuration('myApiIdentifier','myApiSecret');
 
         $api = new HappyRApi($config);
-        $profilePatterns = $api->getPotentialApi()->getPatterns();
+        $patterns=$api->api('patterns');
+
         // etc..
     }
     // ---
