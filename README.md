@@ -3,10 +3,6 @@ HappyR PHP API client
 
 This PHP library is a client to the API at [api.happyr.com][1].
 
-If you are using WordPress you may want to check out our [WordPress plugin][2] that
-integrates with this library. It might make life simpler for you.
-
-
 
 Installation
 ------------
