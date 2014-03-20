@@ -10,7 +10,6 @@ namespace HappyR\ApiClient\Http\Response;
  */
 class Response
 {
-
     /**
      * @var integer code
      *

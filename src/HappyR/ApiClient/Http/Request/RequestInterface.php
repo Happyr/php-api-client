@@ -4,44 +4,21 @@
 namespace HappyR\ApiClient\Http\Request;
 
 /**
- * This is an iterface for the HTTP Request
+ * This is an interface for the HTTP Request
  *
  */
 interface RequestInterface
 {
-
     /**
-     * Set a option
      *
-     * @param mixed $name
-     * @param mixed $value
      *
-     * @return $this
+     * @param $uri
+     * @param array $data
+     * @param string $httpVerb
+     * @param array $headers
+     *
+     * @return \HappyR\ApiClient\Http\Response\Response
      */
-    public function setOption($name, $value);
+    public function send($uri, array $data=array(), $httpVerb='GET', array $headers=array());
 
-    /**
-     * Execute the request
-     *
-     *
-     * @return mixed response
-     */
-    public function execute();
-
-    /**
-     * Get info
-     *
-     * @param mixed $name
-     *
-     * @return mixed
-     */
-    public function getInfo($name);
-
-    /**
-     * Close the request
-     *
-     *
-     * @return mixed
-     */
-    public function close();
 }

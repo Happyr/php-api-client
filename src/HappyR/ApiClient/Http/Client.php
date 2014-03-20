@@ -20,6 +20,11 @@ class Client
      */
     protected $configuration;
 
+    /**
+     * @var \HappyR\ApiClient\Http\Request\RequestInterface request
+     *
+     */
+    protected $request;
 
     /**
      * Init the connection with our current configuration
@@ -29,6 +34,8 @@ class Client
     public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
+        $class=$configuration->httpRequestClass;
+        $this->request = new $class();
     }
 
     /**
@@ -47,29 +54,17 @@ class Client
      */
     public function sendRequest($uri, array $data=array(), $httpVerb='GET')
     {
-        $request=$this->buildRequest($uri, $data, $httpVerb);
+        //get headers
+        $headers = array_merge($this->getAcceptHeader(), $this->getAuthenticationHeader());
+        $headers['User-Agent'] = 'HappyRApiClient/'.$this->configuration->clientVersion;
 
-        //execute request
-        $body = $request->execute();
-
-        //get the http status code
-        $httpStatus = $request->getInfo(CURLINFO_HTTP_CODE);
-
-        //close connection
-        $request->close();
-
-        /*
-         * Start to create a response
-         */
+        $response=$this->request->send($this->configuration->baseUrl.'/api/'.$uri, $data, $httpVerb, $headers);
+        $response->setFormat($this->configuration->format);
 
         //if we got some non good http response code
-        if ($httpStatus >= 300 || $httpStatus == 0) {
-            $response = $this->handleError($body, $httpStatus);
-        } else {
-            $response = new Response($body, $httpStatus);
+        if ($response->getCode() >= 500 || $response->getCode() == 0) {
+            $response = $this->handleError($response);
         }
-
-        $response->setFormat($this->configuration->format);
 
         return $response;
     }
@@ -83,85 +78,25 @@ class Client
      * @return Response
      * @throws \HappyR\ApiClient\Exceptions\HttpException
      */
-    protected function handleError(&$body, $httpStatus)
+    protected function handleError(Response $response)
     {
         if ($this->configuration->debug) {
-            echo ('Exception: '.$body."\n");
+            echo ('Exception: '.$response->getBody()."\n");
         }
 
         if ($this->configuration->enableExceptions) {
             //throw exceptions
-            throw new HttpException($httpStatus, $body);
+            throw new HttpException($response->getCode(), $response->getBody());
         }
 
         //return empty result
-        $response=new Response('<?xml version="1.0" encoding="UTF-8"?><result/>', $httpStatus);
-
-        if ($this->configuration->format=='json') {
+        if ($response->getFormat()=='json') {
             $response->setBody('[]');
+        } else {
+            $response->setBody('<?xml version="1.0" encoding="UTF-8"?><result/>');
         }
 
         return $response;
-    }
-
-    /**
-     * Send a request. This will return the response.
-     *
-     * @param string $uri
-     * @param array $data
-     * @param string $httpVerb
-     *
-     * @return Response
-     * @throws \HappyR\ApiClient\Exceptions\HttpException if we got a response code bigger or equal to 300
-     * @throws \InvalidArgumentException
-     */
-    protected function buildRequest($uri, array $data = array(), $httpVerb = 'GET')
-    {
-        $httpRequestClass = $this->configuration->httpRequestClass;
-        $request = new $httpRequestClass();
-
-        switch ($httpVerb) {
-            case 'DELETE':
-                $request->setOption(CURLOPT_CUSTOMREQUEST, 'DELETE');
-            case 'POST':
-                $this->preparePostData($request, $data);
-                $request->setOption(CURLOPT_URL, $this->buildUrl($uri));
-                break;
-            case 'GET':
-                $request->setOption(CURLOPT_URL, $this->buildUrl($uri, $data));
-                break;
-            default:
-                throw new \InvalidArgumentException('HTTP method must be either "GET", "POST" or "DELETE"');
-        }
-
-        // Set a referrer and user agent
-        if (isset($_SERVER['HTTP_HOST'])) {
-            $request->setOption(CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
-        }
-        $request->setOption(CURLOPT_USERAGENT, 'HappyRApiClient/' . $this->configuration->clientVersion);
-
-        //do not include the http header in the result
-        $request->setOption(CURLOPT_HEADER, 0);
-
-        //return the data
-        $request->setOption(CURLOPT_RETURNTRANSFER, true);
-
-        // Timeout in seconds
-        $request->setOption(CURLOPT_TIMEOUT, 10);
-
-        //follow redirects
-        $request->setOption(CURLOPT_FOLLOWLOCATION, true);
-
-        //get headers
-        $headers = array_merge(
-            $this->getAcceptHeader(),
-            $this->getAuthenticationHeader()
-        );
-
-        //add headers
-        $request->setOption(CURLOPT_HTTPHEADER, $headers);
-
-        return $request;
     }
 
     /**
@@ -187,61 +122,8 @@ class Client
      */
     protected function getAuthenticationHeader()
     {
-        $wsse = new Wsse($this->configuration->username, $this->configuration->token);
+        $wsse = new Wsse($this->configuration->identifier, $this->configuration->secret);
 
         return $wsse->getHeaders();
-    }
-
-    /**
-     * Build the url with baseUrl and uri
-     *
-     * @param string $uri
-     * @param array $filters
-     *
-     * @return string
-     */
-    protected function buildUrl($uri, array $filters = array())
-    {
-        $filterString = '';
-
-        //add the filter on the filter string
-        if (count($filters) > 0) {
-            $filterString='?'.$this->urlifyArray($filters);
-        }
-
-        return $this->configuration->baseUrl . $uri . $filterString;
-    }
-
-    /**
-     * Load the curl object with the post data
-     *
-     * @param array $data
-     *
-     */
-    protected function preparePostData(RequestInterface &$request, array $data = array())
-    {
-        //urlify the data for the POST
-        $dataString=$this->urlifyArray($data);
-
-        $request->setOption(CURLOPT_POST, count($data));
-        $request->setOption(CURLOPT_POSTFIELDS, $dataString);
-    }
-
-    /**
-     * Convert array to string
-     *
-     * @param array $data
-     *
-     * @return string
-     */
-    private function urlifyArray(array $data = array())
-    {
-        $dataString = '';
-        foreach ($data as $key => $value) {
-            $dataString .= $key . '=' . $value . '&';
-        }
-
-        //remove the last '&'
-        return rtrim($dataString, '&');
     }
 }

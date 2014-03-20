@@ -28,24 +28,13 @@ class HappyRApi
      */
     protected $httpClient;
 
-
     /**
-     * @var SerializerInterace serializer
+     * @var string state
+     *
+     * To protect us from CSRF attacks
      *
      */
-    protected $serializer;
-
-    /**
-     * @var PotentialApi potentialApi
-     *
-     */
-    protected $potentialApi;
-
-    /**
-     * @var UserApi userApi
-     *
-     */
-    protected $userApi;
+    protected $state;
 
     /**
      * A standard constructor that take some optional parameters.
@@ -53,7 +42,7 @@ class HappyRApi
      * the static values written in Configuration.php
      *
      * @param Configuration $config
-
+     *
      */
     public function __construct(Configuration $config=null)
     {
@@ -74,36 +63,9 @@ class HappyRApi
      *
      * @return \HappyR\ApiClient\Http\Response\Response
      */
-    public function send($uri, array $data=array(), $httpVerb='GET')
+    public function api($uri, array $data=array(), $httpVerb='GET')
     {
         return $this->getHttpClient()->sendRequest($uri, $data, $httpVerb);
-    }
-
-    /**
-     *
-     * @param \HappyR\ApiClient\SerializerInterface $serializer
-     *
-     * @return $this
-     */
-    public function setSerializer(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
-
-        return $this;
-    }
-
-    /**
-     *
-     * @return \HappyR\ApiClient\SerializerInterface
-     */
-    protected function getSerializer()
-    {
-        if (!$this->serializer) {
-            $class = $this->configuration->serializerClass;
-            $this->serializer=new $class();
-        }
-
-        return $this->serializer;
     }
 
 
@@ -146,38 +108,89 @@ class HappyRApi
         return $this->configuration;
     }
 
-
-
-    /**
-     * Get the potential api
-     *
-     * @param bool $forceNew if true we will create a new PotentialApi object
-     *
-     * @return PotentialApi
-     */
-    public function getPotentialApi($forceNew = false)
+    public function getLoginUrl($redirectUrl)
     {
+        $this->establishCSRFTokenState();
 
-        if (!$this->potentialApi || $forceNew) {
-            $this->potentialApi = new PotentialApi($this->getHttpClient(), $this->getSerializer());
+        return sprintf(
+            '%s/candidate/login/api_key=%s&state=%s&redirect_url=%s',
+            $this->configuration->baseUrl,
+            $this->configuration->identifier,
+            $this->getState(),
+            urlencode($redirectUrl)
+        );
+    }
+
+    protected function getCode()
+    {
+        if (isset($_REQUEST['code'])) {
+            $state = $this->getState();
+            //if state exists in session and in request and if they are equal
+            if (null !== $state && isset($_REQUEST['state']) && $state === $_REQUEST['state']) {
+                // CSRF state has done its job, so clear it
+                $this->setState(null);
+
+                return $_REQUEST['code'];
+            } else {
+                throw new \Exception('CSRF state token does not match one provided.');
+            }
         }
 
-        return $this->potentialApi;
+        return null;
     }
 
     /**
-     * Get the user api
+     * Get the user token after login.
      *
-     * @param bool $forceNew if true we will create a new UserApi object
-     *
-     * @return UserApi
+     * @return string
      */
-    public function getUserApi($forceNew = false)
+    public function getUserToken()
     {
-        if (!$this->userApi || $forceNew) {
-            $this->userApi = new UserApi($this->getHttpClient(), $this->getSerializer());
+        $code=$this->getCode();
+        $token=$this->api('user/get-token', array('code'=>$code));
+
+        return $token->getBody();
+    }
+
+    /**
+     * Lays down a CSRF state token for this process.
+     *
+     */
+    protected function establishCSRFTokenState()
+    {
+        if ($this->getState() === null) {
+            $this->setState(md5(uniqid(mt_rand(), true)));
+            $_SESSION['happyr_ac_state'] = $this->getState();
+        }
+    }
+
+    /**
+     *
+     * @param string $state
+     *
+     * @return $this
+     */
+    protected function setState($state)
+    {
+        if ($state === null) {
+            $_SESSION['happyr_ac_state']=null;
         }
 
-        return $this->userApi;
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    protected function getState()
+    {
+        if ($this->state === null) {
+            $this->state = isset($_SESSION['happyr_ac_state'])?$_SESSION['happyr_ac_state']:null;
+        }
+
+        return $this->state;
     }
 }

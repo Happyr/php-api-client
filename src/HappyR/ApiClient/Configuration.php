@@ -9,25 +9,17 @@ namespace HappyR\ApiClient;
  */
 class Configuration
 {
-    //your username here
-    public $username='';
+    //your api identifier
+    public $identifier='';
 
-    //Your api token goes here
-    public $token='';
+    //Your api secret
+    public $secret='';
 
-    //must end with a slash (/)
-    public $baseUrl='http://api.happyr.com/api/';
+    //must not end with a slash (/)
+    public $baseUrl='http://api.happyr.com';
 
     //You should have a good reason not to choose xml.
     public $format='xml';
-
-    /**
-     * @var string
-     *
-     * the class to use when serializing stuff. The class must implement
-     * the HappyR\ApiClient\Serializer\SerializerInterface
-     */
-    public $serializerClass='\HappyR\ApiClient\Serializer\JmsSerializer';
 
     /**
      * @var string
@@ -37,7 +29,6 @@ class Configuration
      */
     public $httpRequestClass='\HappyR\ApiClient\Http\Request\CurlRequest';
 
-
     //if true, we will throw exceptions on error
     public $enableExceptions=false;
 
@@ -45,20 +36,20 @@ class Configuration
     public $debug=false;
 
     //The version of this client. This is for our statistics only
-    public $clientVersion=1.0;
+    public $clientVersion=2.0;
 
     /**
-     * @param null $username
-     * @param null $token
+     * @param string $identifier
+     * @param string $secret
      */
-    public function __construct($username=null, $token=null)
+    public function __construct($identifier=null, $secret=null)
     {
-        if ($token!=null) {
-            $this->token=$token;
+        if ($secret!=null) {
+            $this->secret=$secret;
         }
 
-        if ($username!=null) {
-            $this->username=$username;
+        if ($identifier!=null) {
+            $this->identifier=$identifier;
         }
     }
 }

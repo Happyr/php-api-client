@@ -3,6 +3,8 @@
 
 namespace HappyR\ApiClient\Http\Request;
 
+use HappyR\ApiClient\Http\Response\Response;
+
 /**
  * Class CurlRequest
  *
@@ -10,61 +12,122 @@ namespace HappyR\ApiClient\Http\Request;
  */
 class CurlRequest implements RequestInterface
 {
-    private $handle = null;
-
     /**
-     * Construct the curl
-     *
-     */
-    public function __construct()
-    {
-        $this->handle=curl_init();
-    }
-
-    /**
-     * Set option
-     *
-     * @param mixed $name
-     * @param mixed $value
      *
      *
-     * @return $this
-     */
-    public function setOption($name, $value)
-    {
-        curl_setopt($this->handle, $name, $value);
-
-        return $this;
-    }
-
-    /**
-     * Execute the curl !
-     *
+     * @param $uri
+     * @param array $data
+     * @param string $httpVerb
+     * @param array $headers
      *
      * @return mixed
      */
-    public function execute()
+    public function send($uri, array $data = array(), $httpVerb = 'GET', array $headers = array())
     {
-        return curl_exec($this->handle);
+        $ch=curl_init();
+
+        // Set a referrer and user agent
+        if (isset($_SERVER['HTTP_HOST'])) {
+            curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
+        }
+
+        //do not include the http header in the result
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+        //return the data
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Timeout in seconds
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
+        //follow redirects
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+        //add headers
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        switch ($httpVerb) {
+            case 'DELETE':
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+            case 'POST':
+                $this->preparePostData($ch, $data);
+                curl_setopt($ch, CURLOPT_URL, $this->buildUrl($uri));
+                break;
+            case 'GET':
+                curl_setopt($ch, CURLOPT_URL, $this->buildUrl($uri, $data));
+                break;
+            default:
+                throw new \InvalidArgumentException('HTTP method must be either "GET", "POST" or "DELETE"');
+        }
+
+        //execute request
+        $body = curl_exec($ch);
+
+        //get the http status code
+        $httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        //close connection
+        curl_close($ch);
+
+        $response = new Response($body, $httpStatus);
+
+        return $response;
+    }
+
+
+    /**
+     * Build the url with baseUrl and uri
+     *
+     * @param string $uri
+     * @param array $filters
+     *
+     * @return string
+     */
+    protected function buildUrl($uri, array $filters = array())
+    {
+        $filterString = '';
+
+        //add the filter on the filter string
+        if (count($filters) > 0) {
+            $filterString='?'.$this->urlifyArray($filters);
+        }
+
+        return $uri . $filterString;
+    }
+
+
+    /**
+     * Load the curl object with the post data
+     *
+     *
+     * @param $ch
+     * @param array $data
+     *
+     */
+    protected function preparePostData($ch, array $data = array())
+    {
+        //urlify the data for the POST
+        $dataString=$this->urlifyArray($data);
+
+        curl_setopt($ch, CURLOPT_POST, count($data));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
     }
 
     /**
-     * Get some info
+     * Convert array to string
      *
-     * @param mixed $name
+     * @param array $data
      *
-     * @return mixed
+     * @return string
      */
-    public function getInfo($name)
+    private function urlifyArray(array $data = array())
     {
-        return curl_getinfo($this->handle, $name);
-    }
+        $dataString = '';
+        foreach ($data as $key => $value) {
+            $dataString .= $key . '=' . $value . '&';
+        }
 
-    /**
-     * Close the connection
-     */
-    public function close()
-    {
-        curl_close($this->handle);
+        //remove the last '&'
+        return rtrim($dataString, '&');
     }
 }
