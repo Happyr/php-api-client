@@ -30,7 +30,7 @@ $ php composer.phar update
 Configuration
 -------------
 
-There is a few mandatory configuration parameters. They are 'username' and 'token'. You will get them both
+There is a few mandatory configuration parameters. They are 'identifier' and 'secret'. You will get them both
 from the [HappyR-API website][1]. You may add those in the Configuration.php or set them in runtime.
 
 You find a the full configuration reference [here][3].
