@@ -84,19 +84,14 @@ class Client
             echo ('Exception: '.$response->getBody()."\n");
         }
 
+        $exception=new HttpException($response);
+
         if ($this->configuration->enableExceptions) {
             //throw exceptions
-            throw new HttpException($response->getCode(), $response->getBody());
+            throw $exception;
         }
 
-        //return empty result
-        if ($response->getFormat()=='json') {
-            $response->setBody('[]');
-        } else {
-            $response->setBody('<?xml version="1.0" encoding="UTF-8"?><result/>');
-        }
-
-        return $response;
+        return $exception->getEmptyResponse();
     }
 
     /**

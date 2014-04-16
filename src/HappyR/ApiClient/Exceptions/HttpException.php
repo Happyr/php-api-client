@@ -2,6 +2,8 @@
 
 namespace HappyR\ApiClient\Exceptions;
 
+use HappyR\ApiClient\Http\Response\Response;
+
 /**
  * Class HttpException
  *
@@ -9,19 +11,19 @@ namespace HappyR\ApiClient\Exceptions;
  */
 class HttpException extends \Exception
 {
-    protected $httpStatus;
-    protected $httpResponse;
+    /**
+     * @var \HappyR\ApiClient\Http\Response\Response response
+     *
+     */
+    protected $response;
 
     /**
-     * @param string $status
-     * @param int $response
+     * @param Response $response
      */
-    public function __construct($status, $response)
+    public function __construct(Response $response)
     {
-        $this->httpStatus = $status;
-        $this->httpResponse = $response;
-
-        $message = $response;
+        $this->response=$response;
+        $message = $response->getBody();
         try {
             $xml = @simplexml_load_string($response);
             if (is_object($xml)) {
@@ -31,7 +33,7 @@ class HttpException extends \Exception
             $message = substr($response, 0, 200);
         }
 
-        parent::__construct($message, $status);
+        parent::__construct($message, $response->getCode());
     }
 
     /**
@@ -46,24 +48,49 @@ class HttpException extends \Exception
     }
 
     /**
+     * Get the HTTP status code
      *
-     *
-     *
-     * @return string
+     * @return int
      */
     public function getHttpStatus()
     {
-        return $this->httpStatus;
+        return $this->response->getCode();
+    }
+
+    /**
+     * Get the HTTP response body
+     *
+     * @return string
+     */
+    public function getHttpResponse()
+    {
+        return $this->response->getBody();
     }
 
     /**
      *
-     *
-     *
-     * @return int
+     * @return \HappyR\ApiClient\Http\Response\Response
      */
-    public function getHttpResponse()
+    public function getResponse()
     {
-        return $this->httpResponse;
+        return $this->response;
+    }
+
+    /**
+     * Get an empty response
+     *
+     *
+     * @return Response
+     */
+    public function getEmptyResponse()
+    {
+        $response = clone $this->response;
+        if ($response->getFormat()=='json') {
+            $response->setBody('[]');
+        } else {
+            $response->setBody('<?xml version="1.0" encoding="UTF-8"?><result/>');
+        }
+
+        return $response;
     }
 }
