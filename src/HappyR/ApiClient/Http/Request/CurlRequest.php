@@ -89,7 +89,7 @@ class CurlRequest implements RequestInterface
 
         //add the filter on the filter string
         if (count($filters) > 0) {
-            $filterString='?'.$this->urlifyArray($filters);
+            $filterString='?'.http_build_query($filters);
         }
 
         return $uri . $filterString;
@@ -107,27 +107,9 @@ class CurlRequest implements RequestInterface
     protected function preparePostData($ch, array $data = array())
     {
         //urlify the data for the POST
-        $dataString=$this->urlifyArray($data);
+        $dataString=http_build_query($data);
 
         curl_setopt($ch, CURLOPT_POST, count($data));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-    }
-
-    /**
-     * Convert array to string
-     *
-     * @param array $data
-     *
-     * @return string
-     */
-    private function urlifyArray(array $data = array())
-    {
-        $dataString = '';
-        foreach ($data as $key => $value) {
-            $dataString .= $key . '=' . $value . '&';
-        }
-
-        //remove the last '&'
-        return rtrim($dataString, '&');
     }
 }
