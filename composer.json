@@ -3,7 +3,7 @@
     "type": "library",
     "description": "HappyR public API client library. ",
     "keywords": ["HappyR", "HappyRecruiting", "API", "Client"],
-    "homepage": "http://developer.happyr.se/php-libraries/happyrecruiting-api-client",
+    "homepage": "http://developer.happyr.com/php-libraries/happyrecruiting-api-client",
     "license": "MIT",
     "authors": [
         {
