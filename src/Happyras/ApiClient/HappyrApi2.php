@@ -2,11 +2,7 @@
 
 namespace Happyr\ApiClient;
 
-use Happyr\ApiClient\Api\PotentialApi;
-use Happyr\ApiClient\Api\UserApi;
 use Happyr\ApiClient\Http\Client;
-use Happyr\ApiClient\Entity\User;
-use Happyr\ApiClient\Serializer\SerializerInterface;
 
 /**
  * This is the API class that should be used with every api call
