@@ -26,6 +26,8 @@ class CurlRequest implements RequestInterface
     {
         $ch=curl_init();
 
+        $headers=$this->rewriteHeaders($headers);
+
         // Set a referrer and user agent
         if (isset($_SERVER['HTTP_HOST'])) {
             curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
@@ -112,4 +114,22 @@ class CurlRequest implements RequestInterface
         curl_setopt($ch, CURLOPT_POST, count($data));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
     }
+
+    /**
+     * Make sure the key of the array is moved to the value
+     *
+     * @param array $headers
+     *
+     * @return array
+     */
+    protected function rewriteHeaders(array $headers)
+    {
+        $betterHeaders = array();
+        foreach ($headers as $key =>$value) {
+            $betterHeaders[]=sprintf('%s: %s', $key, $value);
+        }
+
+        return $betterHeaders;
+    }
+
 }

@@ -46,6 +46,6 @@ class WsseTest extends \PHPUnit_Framework_TestCase
         $header = $wsse->getHeaders();
 
         $pattern = '/UsernameToken Username="([^"]+)", PasswordDigest="([^"]+)", Nonce="([^"]+)", Created="([^"]+)"/';
-        $this->assertRegExp($pattern, $header[1], 'Wsse header did not match pattern');
+        $this->assertRegExp($pattern, $header['X-WSSE'], 'Wsse header did not match pattern');
     }
 }

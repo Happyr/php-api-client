@@ -49,9 +49,8 @@ class Wsse
     public function getHeaders()
     {
         return array(
-            'Authorization: WSSE profile="' . $this->profile . '"',
-            'X-WSSE: ' . $this->profile . ' Username="' . $this->username . '", PasswordDigest="' . $this->digest .
-            '", Nonce="' . $this->nonce . '", Created="' . $this->created . '"',
+            'Authorization'=>sprintf('WSSE profile="%s"', $this->profile),
+            'X-WSSE'=> sprintf('%s Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"', $this->profile, $this->username, $this->digest, $this->nonce, $this->created),
         );
     }
 

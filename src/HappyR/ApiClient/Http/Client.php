@@ -105,7 +105,7 @@ class Client
     protected function getAcceptHeader()
     {
         return array(
-            'Accept: application/'.$this->configuration->format,
+            'Accept'=>'application/'.$this->configuration->format,
         );
     }
 
