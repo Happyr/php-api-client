@@ -1,4 +1,4 @@
-HappyR PHP API client
+Happyr PHP API client
 =====================
 
 This PHP library is a client to the API at [api.happyr.com][1].
@@ -31,15 +31,15 @@ Configuration
 -------------
 
 There is a few mandatory configuration parameters. They are 'identifier' and 'secret'. You will get them both
-from the [HappyR-API website][1]. You may add those in the Configuration.php or set them in runtime.
+from the [Happyr-API website][1]. You may add those in the Configuration.php or set them in runtime.
 
 You find a the full configuration reference [here][3].
 
 Usage
 -----
 ```php
-use HappyR\ApiClient\HappyRApi;
-use HappyR\ApiClient\Configuration;
+use Happyr\ApiClient\HappyrApi;
+use Happyr\ApiClient\Configuration;
 
 class myClass
 {
@@ -49,7 +49,7 @@ class myClass
     {
         $config=new Configuration('myApiIdentifier','myApiSecret');
 
-        $api = new HappyRApi($config);
+        $api = new HappyrApi($config);
         $patterns=$api->api('patterns');
 
         // etc..

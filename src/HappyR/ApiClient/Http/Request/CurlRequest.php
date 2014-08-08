@@ -1,9 +1,9 @@
 <?php
 
 
-namespace HappyR\ApiClient\Http\Request;
+namespace Happyr\ApiClient\Http\Request;
 
-use HappyR\ApiClient\Http\Response\Response;
+use Happyr\ApiClient\Http\Response\Response;
 
 /**
  * Class CurlRequest

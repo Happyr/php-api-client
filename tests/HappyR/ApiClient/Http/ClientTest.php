@@ -1,15 +1,15 @@
 <?php
 
 
-namespace HappyR\ApiClient\Tests\Http;
+namespace Happyr\ApiClient\Tests\Http;
 
-use HappyR\ApiClient\Configuration;
+use Happyr\ApiClient\Configuration;
 
-use HappyR\ApiClient\Exceptions\HttpException;
-use HappyR\ApiClient\Http\Client;
-use HappyR\ApiClient\Http\Request\RequestInterface;
-use HappyR\ApiClient\Http\Response\Response;
-use HappyR\ApiClient\Http\Wsse;
+use Happyr\ApiClient\Exceptions\HttpException;
+use Happyr\ApiClient\Http\Client;
+use Happyr\ApiClient\Http\Request\RequestInterface;
+use Happyr\ApiClient\Http\Response\Response;
+use Happyr\ApiClient\Http\Wsse;
 use Mockery as m;
 
 /**

@@ -1,11 +1,11 @@
 <?php
 
-namespace HappyR\ApiClient\Http;
+namespace Happyr\ApiClient\Http;
 
-use HappyR\ApiClient\Configuration;
-use HappyR\ApiClient\Exceptions\HttpException;
-use HappyR\ApiClient\Http\Request\RequestInterface;
-use HappyR\ApiClient\Http\Response\Response;
+use Happyr\ApiClient\Configuration;
+use Happyr\ApiClient\Exceptions\HttpException;
+use Happyr\ApiClient\Http\Request\RequestInterface;
+use Happyr\ApiClient\Http\Response\Response;
 
 /**
  * Class Connection
@@ -15,13 +15,13 @@ use HappyR\ApiClient\Http\Response\Response;
 class Client
 {
     /**
-     * @var \HappyR\ApiClient\Configuration configuration
+     * @var \Happyr\ApiClient\Configuration configuration
      *
      */
     protected $configuration;
 
     /**
-     * @var \HappyR\ApiClient\Http\Request\RequestInterface request
+     * @var \Happyr\ApiClient\Http\Request\RequestInterface request
      *
      */
     protected $request;
@@ -49,14 +49,14 @@ class Client
      * @param boolean $suppressExceptions, (optional) if true, we will catch all HttpExceptions that might be thrown by
      * the Connection class
      *
-     * @return \HappyR\ApiClient\Http\Response
+     * @return \Happyr\ApiClient\Http\Response
      * @throws HttpException
      */
     public function sendRequest($uri, array $data=array(), $httpVerb='GET')
     {
         //get headers
         $headers = array_merge($this->getAcceptHeader(), $this->getAuthenticationHeader());
-        $headers['User-Agent'] = 'HappyRApiClient/'.$this->configuration->clientVersion;
+        $headers['User-Agent'] = 'HappyrApiClient/'.$this->configuration->clientVersion;
 
         $response=$this->request->send($this->configuration->baseUrl.'/api/'.$uri, $data, $httpVerb, $headers);
         $response->setFormat($this->configuration->format);
@@ -76,7 +76,7 @@ class Client
      * @param int $httpStatus
      *
      * @return Response
-     * @throws \HappyR\ApiClient\Exceptions\HttpException
+     * @throws \Happyr\ApiClient\Exceptions\HttpException
      */
     protected function handleError(Response $response)
     {

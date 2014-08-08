@@ -1,9 +1,9 @@
 <?php
 
 
-namespace HappyR\ApiClient\Tests\Http;
+namespace Happyr\ApiClient\Tests\Http;
 
-use HappyR\ApiClient\Http\Wsse;
+use Happyr\ApiClient\Http\Wsse;
 
 /**
  * Class WsseTest

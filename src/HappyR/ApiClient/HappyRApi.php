@@ -1,18 +1,18 @@
 <?php
 
-namespace HappyR\ApiClient;
+namespace Happyr\ApiClient;
 
-use HappyR\ApiClient\Api\PotentialApi;
-use HappyR\ApiClient\Api\UserApi;
-use HappyR\ApiClient\Http\Client;
-use HappyR\ApiClient\Entity\User;
-use HappyR\ApiClient\Serializer\SerializerInterface;
+use Happyr\ApiClient\Api\PotentialApi;
+use Happyr\ApiClient\Api\UserApi;
+use Happyr\ApiClient\Http\Client;
+use Happyr\ApiClient\Entity\User;
+use Happyr\ApiClient\Serializer\SerializerInterface;
 
 /**
  * This is the API class that should be used with every api call
  * Every public function in this class represent a end point in the API
  */
-class HappyRApi
+class HappyrApi
 {
     /**
      * @var Configuration configuration
@@ -55,13 +55,13 @@ class HappyRApi
     }
 
     /**
-     * This function sends a request to the API directly without using the helper classes in HappyR\ApiClient\Api
+     * This function sends a request to the API directly without using the helper classes in Happyr\ApiClient\Api
      *
      * @param string $uri
      * @param array $data
      * @param string $httpVerb
      *
-     * @return \HappyR\ApiClient\Http\Response\Response
+     * @return \Happyr\ApiClient\Http\Response\Response
      */
     public function api($uri, array $data=array(), $httpVerb='GET')
     {
@@ -88,7 +88,7 @@ class HappyRApi
 
     /**
      *
-     * @param \HappyR\ApiClient\Configuration $configuration
+     * @param \Happyr\ApiClient\Configuration $configuration
      *
      * @return $this
      */
@@ -101,7 +101,7 @@ class HappyRApi
 
     /**
      *
-     * @return \HappyR\ApiClient\Configuration
+     * @return \Happyr\ApiClient\Configuration
      */
     public function getConfiguration()
     {

@@ -1,8 +1,8 @@
 <?php
 
-namespace HappyR\ApiClient\Exceptions;
+namespace Happyr\ApiClient\Exceptions;
 
-use HappyR\ApiClient\Http\Response\Response;
+use Happyr\ApiClient\Http\Response\Response;
 
 /**
  * Class HttpException
@@ -12,7 +12,7 @@ use HappyR\ApiClient\Http\Response\Response;
 class HttpException extends \Exception
 {
     /**
-     * @var \HappyR\ApiClient\Http\Response\Response response
+     * @var \Happyr\ApiClient\Http\Response\Response response
      *
      */
     protected $response;
@@ -69,7 +69,7 @@ class HttpException extends \Exception
 
     /**
      *
-     * @return \HappyR\ApiClient\Http\Response\Response
+     * @return \Happyr\ApiClient\Http\Response\Response
      */
     public function getResponse()
     {

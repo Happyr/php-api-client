@@ -1,9 +1,9 @@
 <?php
 
 
-namespace HappyR\ApiClient\Tests\Http\Request;
+namespace Happyr\ApiClient\Tests\Http\Request;
 
-use HappyR\ApiClient\Http\Request\CurlRequest;
+use Happyr\ApiClient\Http\Request\CurlRequest;
 use Mockery as m;
 
 /**

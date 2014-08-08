@@ -1,21 +1,21 @@
 <?php
 
 
-namespace HappyR\ApiClient\Tests;
+namespace Happyr\ApiClient\Tests;
 
-use HappyR\ApiClient\HappyRApi;
-use HappyR\ApiClient\Configuration;
-use HappyR\ApiClient\Http\Client;
+use Happyr\ApiClient\HappyrApi;
+use Happyr\ApiClient\Configuration;
+use Happyr\ApiClient\Http\Client;
 
 use Mockery as m;
 
 /**
- * Class HappyRApiTest
+ * Class HappyrApiTest
  *
  * @author Tobias Nyholm
  *
  */
-class HappyRApiTest extends \PHPUnit_Framework_TestCase
+class HappyrApiTest extends \PHPUnit_Framework_TestCase
 {
     const APP_ID='123456789';
     const APP_SECRET='987654321';
@@ -47,12 +47,12 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
         $uri='foobar';
         $expected='baz';
 
-        $client = m::mock('HappyR\ApiClient\Http\Client')
+        $client = m::mock('Happyr\ApiClient\Http\Client')
             ->shouldReceive('sendRequest')->once()->with($uri, $data, $method)->andReturn($expected)
             ->getMock();
 
 
-        $api=$this->getMock('HappyR\ApiClient\HappyRApi', array('getHttpClient'));
+        $api=$this->getMock('Happyr\ApiClient\HappyrApi', array('getHttpClient'));
         $api->expects($this->once())->method('getHttpClient')->will($this->returnValue($client));
 
         $result=$api->api($uri, $data, $method);
@@ -70,7 +70,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
         $expected='base/candidate/login/api_key='.self::APP_ID."&state=$state&redirect_url=".urlencode($redirectUrl);
 
 
-        $api=$this->getMock('HappyR\ApiClient\HappyRApi', array('establishCSRFTokenState', 'getState'));
+        $api=$this->getMock('Happyr\ApiClient\HappyrApi', array('establishCSRFTokenState', 'getState'));
         $api->expects($this->once())->method('establishCSRFTokenState');
         $api->expects($this->once())->method('getState')->will($this->returnValue($state));
 
@@ -106,7 +106,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
         $_REQUEST['code']='foobar';
         $_REQUEST['state']=$state;
 
-        $api=$this->getMock('HappyR\ApiClient\Tests\DummyApi', array('getState', 'setState'), array(), '', false);
+        $api=$this->getMock('Happyr\ApiClient\Tests\DummyApi', array('getState', 'setState'), array(), '', false);
         $api->expects($this->once())->method('setState')->with($this->equalTo(null));
         $api->expects($this->once())->method('getState')->will($this->returnValue($state));
 
@@ -118,7 +118,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCodeInvalidCode()
     {
-        $api=$this->getMock('HappyR\ApiClient\Tests\DummyApi', array('getState'), array(), '', false);
+        $api=$this->getMock('Happyr\ApiClient\Tests\DummyApi', array('getState'), array(), '', false);
         $api->expects($this->once())->method('getState')->will($this->returnValue('bazbar'));
 
         $_REQUEST['code']='foobar';
@@ -130,7 +130,7 @@ class HappyRApiTest extends \PHPUnit_Framework_TestCase
 
 }
 
-class DummyApi extends HappyRApi {
+class DummyApi extends HappyrApi {
     public function getHttpClient($forceNew = false)
     {
         return parent::getHttpClient($forceNew);

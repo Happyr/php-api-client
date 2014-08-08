@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HappyR\ApiClient\Http\Request;
+namespace Happyr\ApiClient\Http\Request;
 
 /**
  * This is an interface for the HTTP Request
@@ -17,7 +17,7 @@ interface RequestInterface
      * @param string $httpVerb
      * @param array $headers
      *
-     * @return \HappyR\ApiClient\Http\Response\Response
+     * @return \Happyr\ApiClient\Http\Response\Response
      */
     public function send($uri, array $data=array(), $httpVerb='GET', array $headers=array());
 

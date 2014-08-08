@@ -1,6 +1,6 @@
 <?php
 
-namespace HappyR\ApiClient;
+namespace Happyr\ApiClient;
 
 /**
  * Class Configuration
@@ -25,9 +25,9 @@ class Configuration
      * @var string
      *
      * the class to use when making a http request. The class must implement
-     * the HappyR\ApiClient\Http\HttpRequestInterface
+     * the Happyr\ApiClient\Http\HttpRequestInterface
      */
-    public $httpRequestClass='\HappyR\ApiClient\Http\Request\Guzzle';
+    public $httpRequestClass='\Happyr\ApiClient\Http\Request\Guzzle';
 
     //if true, we will throw exceptions on error
     public $enableExceptions=false;

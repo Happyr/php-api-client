@@ -19,6 +19,6 @@
         "mockery/mockery": "*"
     },
     "autoload": {
-        "psr-0": { "HappyR\\ApiClient\\": "src/" }
+        "psr-0": { "Happyr\\ApiClient\\": "src/" }
     }
 }
