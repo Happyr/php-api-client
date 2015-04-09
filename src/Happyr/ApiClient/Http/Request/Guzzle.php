@@ -27,7 +27,7 @@ class Guzzle implements RequestInterface
     {
         $options=array(
             'headers'=>$headers,
-            'timeout' => 3,
+            'timeout' => 10,
             'exceptions' => false,
         );
 
