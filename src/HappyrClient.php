@@ -64,13 +64,14 @@ final class HappyrClient
     }
 
     /**
-     * @param string $apiKey
+     * @param string $identifier
+     * @param string $secret
      *
      * @return HappyrClient
      */
-    public static function create($apiUser, $apiPassword)
+    public static function create($identifier, $secret)
     {
-        $httpClientConfigurator = (new HttpClientConfigurator())->setApiCredentials($apiUser, $apiPassword);
+        $httpClientConfigurator = (new HttpClientConfigurator())->setApiCredentials($identifier, $secret);
 
         return self::configure($httpClientConfigurator);
     }

@@ -27,12 +27,12 @@ final class HttpClientConfigurator
     /**
      * @var string
      */
-    private $apiUsername;
+    private $apiIdentifier;
 
     /**
      * @var string
      */
-    private $apiPassword;
+    private $apiSecret;
 
     /**
      * @var UriFactory
@@ -76,8 +76,8 @@ final class HttpClientConfigurator
             'User-Agent' => 'Happyr/api-client (https://github.com/Happyr/php-api-client)',
         ]);
 
-        if (null !== $this->apiUsername) {
-            $plugins[] = new Plugin\AuthenticationPlugin(new Authentication\Wsse($this->apiUsername, $this->apiPassword));
+        if (null !== $this->apiIdentifier) {
+            $plugins[] = new Plugin\AuthenticationPlugin(new Authentication\Wsse($this->apiIdentifier, $this->apiSecret));
         }
 
         return new PluginClient($this->httpClient, array_merge($plugins, $this->appendPlugins));
@@ -96,15 +96,15 @@ final class HttpClientConfigurator
     }
 
     /**
-     * @param string $username
-     * @param string $password
+     * @param string $identifier
+     * @param string $secret
      *
      * @return HttpClientConfigurator
      */
-    public function setApiCredentials($username, $password)
+    public function setApiCredentials($identifier, $secret)
     {
-        $this->apiUsername = $username;
-        $this->apiPassword = $password;
+        $this->apiIdentifier = $identifier;
+        $this->apiSecret = $secret;
 
         return $this;
     }
