@@ -1,6 +1,6 @@
 <?php
 
-namespace Happyr\ApiClient\Model\Dimension;
+namespace Happyr\ApiClient\Model\Match;
 
 use Happyr\ApiClient\Model\CreatableFromArray;
 
@@ -9,8 +9,17 @@ use Happyr\ApiClient\Model\CreatableFromArray;
  */
 final class TopPattern implements CreatableFromArray
 {
-    private function __construct()
+    /**
+     * @var array
+     */
+    private $patterns;
+
+    /**
+     * @param array $patterns
+     */
+    private function __construct(array $patterns)
     {
+        $this->patterns = $patterns;
     }
 
     /**
@@ -20,6 +29,14 @@ final class TopPattern implements CreatableFromArray
      */
     public static function createFromArray(array $data)
     {
-        return new self();
+        return new self($data['data']);
+    }
+
+    /**
+     * @return array
+     */
+    public function getPatterns()
+    {
+        return $this->patterns;
     }
 }

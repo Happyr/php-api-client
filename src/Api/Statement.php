@@ -18,7 +18,7 @@ final class Statement extends HttpApi
      *
      * @return StatementModel|ResponseInterface
      */
-    public function next($user, array $patterns, array $params)
+    public function next($user, array $patterns, array $params = [])
     {
         Assert::stringNotEmpty($user);
         Assert::notEmpty($patterns);
@@ -40,7 +40,7 @@ final class Statement extends HttpApi
      *
      * @return StatementModel|ResponseInterface
      */
-    public function answer($user, array $patterns, $statement, $answer, array $params)
+    public function answer($user, array $patterns, $statement, $answer, array $params = [])
     {
         Assert::stringNotEmpty($user);
         Assert::notEmpty($patterns);

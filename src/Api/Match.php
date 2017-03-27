@@ -3,11 +3,11 @@
 namespace Happyr\ApiClient\Api;
 
 use Happyr\ApiClient\Assert;
-use Happyr\ApiClient\Model\Dimension\ExtendedMatch;
-use Happyr\ApiClient\Model\Dimension\SelfDescription;
-use Happyr\ApiClient\Model\Dimension\SimpleMatch;
-use Happyr\ApiClient\Model\Dimension\TopPattern;
-use Happyr\ApiClient\Model\Dimension\TopUser;
+use Happyr\ApiClient\Model\Match\ExtendedMatch;
+use Happyr\ApiClient\Model\Match\SelfDescription;
+use Happyr\ApiClient\Model\Match\SimpleMatch;
+use Happyr\ApiClient\Model\Match\TopPattern;
+use Happyr\ApiClient\Model\Match\TopUser;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -22,7 +22,7 @@ final class Match extends HttpApi
      *
      * @return SimpleMatch|ResponseInterface
      */
-    public function show($user, array $patterns, array $params)
+    public function show($user, array $patterns, array $params = [])
     {
         Assert::stringNotEmpty($user);
         Assert::notEmpty($patterns);
@@ -42,7 +42,7 @@ final class Match extends HttpApi
      *
      * @return ExtendedMatch|ResponseInterface
      */
-    public function showExtended($user, array $patterns, array $params)
+    public function showExtended($user, array $patterns, array $params = [])
     {
         Assert::stringNotEmpty($user);
         Assert::notEmpty($patterns);
@@ -62,7 +62,7 @@ final class Match extends HttpApi
      *
      * @return SelfDescription|ResponseInterface
      */
-    public function selfDescription($user, array $patterns, array $params)
+    public function selfDescription($user, array $patterns, array $params = [])
     {
         Assert::stringNotEmpty($user);
         Assert::notEmpty($patterns);
@@ -82,7 +82,7 @@ final class Match extends HttpApi
      *
      * @return TopPattern|ResponseInterface
      */
-    public function topPatterns($user, array $patterns, array $params)
+    public function topPatterns($user, array $patterns, array $params = [])
     {
         Assert::stringNotEmpty($user);
         Assert::notEmpty($patterns);
@@ -101,7 +101,7 @@ final class Match extends HttpApi
      *
      * @return TopUser|ResponseInterface
      */
-    public function topUser($pattern, array $params)
+    public function topUser($pattern, array $params = [])
     {
         Assert::stringNotEmpty($pattern);
 

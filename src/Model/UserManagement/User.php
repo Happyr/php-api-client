@@ -9,8 +9,24 @@ use Happyr\ApiClient\Model\CreatableFromArray;
  */
 final class User implements CreatableFromArray
 {
-    private function __construct()
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $email;
+
+    /**
+     * @param string $name
+     * @param string $email
+     */
+    private function __construct($name, $email)
     {
+        $this->name = $name;
+        $this->email = $email;
     }
 
     /**
@@ -20,6 +36,24 @@ final class User implements CreatableFromArray
      */
     public static function createFromArray(array $data)
     {
-        return new self();
+        $data = $data['data'];
+
+        return new self($data['name'], $data['email']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 }

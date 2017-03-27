@@ -1,6 +1,6 @@
 <?php
 
-namespace Happyr\ApiClient\Model\Dimension;
+namespace Happyr\ApiClient\Model\Match;
 
 use Happyr\ApiClient\Model\CreatableFromArray;
 
@@ -9,8 +9,31 @@ use Happyr\ApiClient\Model\CreatableFromArray;
  */
 final class SelfDescription implements CreatableFromArray
 {
-    private function __construct()
+    /**
+     * @var array
+     */
+    private $profiles;
+
+    /**
+     * @var array
+     */
+    private $strongDescription;
+
+    /**
+     * @var array
+     */
+    private $weakDescription;
+
+    /**
+     * @param array $profiles
+     * @param array $strongDescription
+     * @param array $weakDescription
+     */
+    public function __construct(array $profiles, array $strongDescription, array $weakDescription)
     {
+        $this->profiles = $profiles;
+        $this->strongDescription = $strongDescription;
+        $this->weakDescription = $weakDescription;
     }
 
     /**
@@ -20,6 +43,34 @@ final class SelfDescription implements CreatableFromArray
      */
     public static function createFromArray(array $data)
     {
-        return new self();
+        return new self(
+            $data['data']['profiles'],
+            $data['data']['description']['strong'],
+            $data['data']['description']['weak']
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getProfiles()
+    {
+        return $this->profiles;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStrongDescription()
+    {
+        return $this->strongDescription;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWeakDescription()
+    {
+        return $this->weakDescription;
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Happyr\ApiClient\Exception\Domain;
 
-use Happyr\ApiClient\Exception\DomainException;
+use Happyr\ApiClient\Exception;
 
 /**
- * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-final class UnknownErrorException extends \Exception implements DomainException
+final class UnknownErrorException extends \Exception implements Exception
 {
 }

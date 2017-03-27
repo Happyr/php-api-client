@@ -3,7 +3,7 @@
 namespace Happyr\ApiClient\Api;
 
 use Happyr\ApiClient\Assert;
-use Happyr\ApiClient\Model\Dimension\Interview as InterviewModel;
+use Happyr\ApiClient\Model\Interview\Interview as InterviewModel;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -18,7 +18,7 @@ final class Interview extends HttpApi
      *
      * @return InterviewModel|ResponseInterface
      */
-    public function show($user, array $patterns, array $params)
+    public function show($user, array $patterns, array $params = [])
     {
         Assert::stringNotEmpty($user);
         Assert::notEmpty($patterns);

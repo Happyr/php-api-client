@@ -9,8 +9,17 @@ use Happyr\ApiClient\Model\CreatableFromArray;
  */
 final class Index implements CreatableFromArray
 {
-    private function __construct()
+    /**
+     * @var array
+     */
+    private $norms;
+
+    /**
+     * @param array $norms
+     */
+    private function __construct(array $norms)
     {
+        $this->norms = $norms;
     }
 
     /**
@@ -20,6 +29,14 @@ final class Index implements CreatableFromArray
      */
     public static function createFromArray(array $data)
     {
-        return new self();
+        return new self($data['data']);
+    }
+
+    /**
+     * @return array
+     */
+    public function getNorms()
+    {
+        return $this->norms;
     }
 }

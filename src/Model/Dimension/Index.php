@@ -9,8 +9,17 @@ use Happyr\ApiClient\Model\CreatableFromArray;
  */
 final class Index implements CreatableFromArray
 {
-    private function __construct()
+    /**
+     * @var array with keys id, language and name
+     */
+    private $dimensions;
+
+    /**
+     * @param array $dimensions
+     */
+    private function __construct(array $dimensions)
     {
+        $this->dimensions = $dimensions;
     }
 
     /**
@@ -20,6 +29,14 @@ final class Index implements CreatableFromArray
      */
     public static function createFromArray(array $data)
     {
-        return new self();
+        return new self($data['data']);
+    }
+
+    /**
+     * @return array
+     */
+    public function getDimensions()
+    {
+        return $this->dimensions;
     }
 }

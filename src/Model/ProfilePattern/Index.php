@@ -9,8 +9,17 @@ use Happyr\ApiClient\Model\CreatableFromArray;
  */
 final class Index implements CreatableFromArray
 {
-    private function __construct()
+    /**
+     * @var array
+     */
+    private $profilePatterns;
+
+    /**
+     * @param array $profilePatterns
+     */
+    private function __construct(array $profilePatterns)
     {
+        $this->profilePatterns = $profilePatterns;
     }
 
     /**
@@ -20,6 +29,14 @@ final class Index implements CreatableFromArray
      */
     public static function createFromArray(array $data)
     {
-        return new self();
+        return new self($data['data']);
+    }
+
+    /**
+     * @return array
+     */
+    public function getProfilePatterns()
+    {
+        return $this->profilePatterns;
     }
 }

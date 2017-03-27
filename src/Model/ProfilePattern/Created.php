@@ -9,8 +9,38 @@ use Happyr\ApiClient\Model\CreatableFromArray;
  */
 final class Created implements CreatableFromArray
 {
-    private function __construct()
+    /**
+     * @var string
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @var string
+     */
+    private $language;
+
+    /**
+     * @param string $id
+     * @param string $name
+     * @param string $description
+     * @param string $language
+     */
+    public function __construct($id, $name, $description, $language)
     {
+        $this->id = $id;
+        $this->name = $name;
+        $this->description = $description;
+        $this->language = $language;
     }
 
     /**
@@ -20,6 +50,40 @@ final class Created implements CreatableFromArray
      */
     public static function createFromArray(array $data)
     {
-        return new self();
+        $data = $data['data'];
+
+        return new self($data['id'], $data['name'], $data['description'], $data['language']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
     }
 }
