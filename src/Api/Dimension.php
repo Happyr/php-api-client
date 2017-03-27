@@ -16,9 +16,9 @@ final class Dimension extends HttpApi
      * @param string $username
      * @param array  $params
      *
-     * @return Index|ResponseInterface
-     *
      * @throws Exception
+     *
+     * @return Index|ResponseInterface
      */
     public function index($lang)
     {

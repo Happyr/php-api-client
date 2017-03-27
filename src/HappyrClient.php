@@ -2,8 +2,8 @@
 
 namespace Happyr\ApiClient;
 
-use Happyr\ApiClient\Hydrator\ModelHydrator;
 use Happyr\ApiClient\Hydrator\Hydrator;
+use Happyr\ApiClient\Hydrator\ModelHydrator;
 use Http\Client\HttpClient;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\RequestFactory;

@@ -3,8 +3,8 @@
 namespace Happyr\ApiClient\Api;
 
 use Happyr\ApiClient\Assert;
-use Psr\Http\Message\ResponseInterface;
 use Happyr\ApiClient\Model\Statement\Statement as StatementModel;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
