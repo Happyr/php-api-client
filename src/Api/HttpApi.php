@@ -8,6 +8,7 @@ use Happyr\ApiClient\Hydrator\NoopHydrator;
 use Http\Client\HttpClient;
 use Happyr\ApiClient\Hydrator\Hydrator;
 use Happyr\ApiClient\RequestBuilder;
+use Http\Message\RequestFactory;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -26,19 +27,19 @@ abstract class HttpApi
     protected $hydrator;
 
     /**
-     * @var RequestBuilder
+     * @var RequestFactory
      */
-    protected $requestBuilder;
+    protected $requestFactory;
 
     /**
      * @param HttpClient     $httpClient
-     * @param RequestBuilder $requestBuilder
+     * @param RequestFactory $requestFactory
      * @param Hydrator       $hydrator
      */
-    public function __construct(HttpClient $httpClient, Hydrator $hydrator, RequestBuilder $requestBuilder)
+    public function __construct(HttpClient $httpClient, Hydrator $hydrator, RequestFactory $requestFactory)
     {
         $this->httpClient = $httpClient;
-        $this->requestBuilder = $requestBuilder;
+        $this->requestFactory = $requestFactory;
         if (!$hydrator instanceof NoopHydrator) {
             $this->hydrator = $hydrator;
         }
@@ -81,7 +82,7 @@ abstract class HttpApi
         }
 
         return $this->httpClient->sendRequest(
-            $this->requestBuilder->create('GET', $path, $requestHeaders)
+            $this->requestFactory->createRequest('GET', $path, $requestHeaders)
         );
     }
 
@@ -113,7 +114,7 @@ abstract class HttpApi
     protected function httpPostRaw($path, $body, array $requestHeaders = [])
     {
         return $response = $this->httpClient->sendRequest(
-            $this->requestBuilder->create('POST', $path, $requestHeaders, $body)
+            $this->requestFactory->createRequest('POST', $path, $requestHeaders, $body)
         );
     }
 
@@ -131,7 +132,7 @@ abstract class HttpApi
         $requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded';
 
         return $this->httpClient->sendRequest(
-            $this->requestBuilder->create('PUT', $path, $requestHeaders, http_build_query($params))
+            $this->requestFactory->createRequest('PUT', $path, $requestHeaders, http_build_query($params))
         );
     }
 
@@ -149,7 +150,7 @@ abstract class HttpApi
         $requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded';
 
         return $this->httpClient->sendRequest(
-            $this->requestBuilder->create('DELETE', $path, $requestHeaders, http_build_query($params))
+            $this->requestFactory->createRequest('DELETE', $path, $requestHeaders, http_build_query($params))
         );
     }
 

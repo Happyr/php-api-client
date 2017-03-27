@@ -2,6 +2,8 @@
 
 namespace Happyr\ApiClient;
 
+use Happyr\ApiClient\Exception\InvalidArgumentException;
+
 /**
  * We need to override Webmozart\Assert because we want to throw our own Exception.
  *

@@ -5,6 +5,8 @@ namespace Happyr\ApiClient;
 use Happyr\ApiClient\Hydrator\ModelHydrator;
 use Happyr\ApiClient\Hydrator\Hydrator;
 use Http\Client\HttpClient;
+use Http\Discovery\MessageFactoryDiscovery;
+use Http\Message\RequestFactory;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
@@ -22,9 +24,9 @@ final class HappyrClient
     private $hydrator;
 
     /**
-     * @var RequestBuilder
+     * @var RequestFactory
      */
-    private $requestBuilder;
+    private $requestFactory;
 
     /**
      * The constructor accepts already configured HTTP clients.
@@ -32,33 +34,33 @@ final class HappyrClient
      *
      * @param HttpClient          $httpClient
      * @param Hydrator|null       $hydrator
-     * @param RequestBuilder|null $requestBuilder
+     * @param RequestFactory|null $requestFactory
      */
     public function __construct(
         HttpClient $httpClient,
         Hydrator $hydrator = null,
-        RequestBuilder $requestBuilder = null
+        RequestFactory $requestFactory = null
     ) {
         $this->httpClient = $httpClient;
         $this->hydrator = $hydrator ?: new ModelHydrator();
-        $this->requestBuilder = $requestBuilder ?: new RequestBuilder();
+        $this->requestFactory = $requestFactory ?: MessageFactoryDiscovery::find();
     }
 
     /**
      * @param HttpClientConfigurator $httpClientConfigurator
      * @param Hydrator|null          $hydrator
-     * @param RequestBuilder|null    $requestBuilder
+     * @param RequestFactory|null    $requestFactory
      *
      * @return HappyrClient
      */
     public static function configure(
         HttpClientConfigurator $httpClientConfigurator,
         Hydrator $hydrator = null,
-        RequestBuilder $requestBuilder = null
+        RequestFactory $requestFactory = null
     ) {
         $httpClient = $httpClientConfigurator->createConfiguredClient();
 
-        return new self($httpClient, $hydrator, $requestBuilder);
+        return new self($httpClient, $hydrator, $requestFactory);
     }
 
     /**
@@ -78,7 +80,7 @@ final class HappyrClient
      */
     public function interview()
     {
-        return new Api\Interview($this->httpClient, $this->hydrator, $this->requestBuilder);
+        return new Api\Interview($this->httpClient, $this->hydrator, $this->requestFactory);
     }
 
     /**
@@ -86,7 +88,7 @@ final class HappyrClient
      */
     public function dimensions()
     {
-        return new Api\Dimension($this->httpClient, $this->hydrator, $this->requestBuilder);
+        return new Api\Dimension($this->httpClient, $this->hydrator, $this->requestFactory);
     }
 
     /**
@@ -94,7 +96,7 @@ final class HappyrClient
      */
     public function match()
     {
-        return new Api\Match($this->httpClient, $this->hydrator, $this->requestBuilder);
+        return new Api\Match($this->httpClient, $this->hydrator, $this->requestFactory);
     }
 
     /**
@@ -102,7 +104,7 @@ final class HappyrClient
      */
     public function norm()
     {
-        return new Api\Norm($this->httpClient, $this->hydrator, $this->requestBuilder);
+        return new Api\Norm($this->httpClient, $this->hydrator, $this->requestFactory);
     }
 
     /**
@@ -110,7 +112,7 @@ final class HappyrClient
      */
     public function profilePattern()
     {
-        return new Api\ProfilePattern($this->httpClient, $this->hydrator, $this->requestBuilder);
+        return new Api\ProfilePattern($this->httpClient, $this->hydrator, $this->requestFactory);
     }
 
     /**
@@ -118,7 +120,7 @@ final class HappyrClient
      */
     public function statement()
     {
-        return new Api\Statement($this->httpClient, $this->hydrator, $this->requestBuilder);
+        return new Api\Statement($this->httpClient, $this->hydrator, $this->requestFactory);
     }
 
     /**
@@ -126,6 +128,6 @@ final class HappyrClient
      */
     public function userManagement()
     {
-        return new Api\UserManagement($this->httpClient, $this->hydrator, $this->requestBuilder);
+        return new Api\UserManagement($this->httpClient, $this->hydrator, $this->requestFactory);
     }
 }
