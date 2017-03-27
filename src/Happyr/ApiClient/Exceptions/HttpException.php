@@ -5,7 +5,7 @@ namespace Happyr\ApiClient\Exceptions;
 use Happyr\ApiClient\Http\Response\Response;
 
 /**
- * Class HttpException
+ * Class HttpException.
  *
  * A Exception...
  */
@@ -13,7 +13,6 @@ class HttpException extends \Exception
 {
     /**
      * @var \Happyr\ApiClient\Http\Response\Response response
-     *
      */
     protected $response;
 
@@ -22,7 +21,7 @@ class HttpException extends \Exception
      */
     public function __construct(Response $response)
     {
-        $this->response=$response;
+        $this->response = $response;
         $message = $response->getBody();
         try {
             $xml = @simplexml_load_string($response);
@@ -37,18 +36,15 @@ class HttpException extends \Exception
     }
 
     /**
-     *
-     *
-     *
      * @return string
      */
     public function __toString()
     {
-        return $this->getHttpStatus() . ': ' . $this->getMessage();
+        return $this->getHttpStatus().': '.$this->getMessage();
     }
 
     /**
-     * Get the HTTP status code
+     * Get the HTTP status code.
      *
      * @return int
      */
@@ -58,7 +54,7 @@ class HttpException extends \Exception
     }
 
     /**
-     * Get the HTTP response body
+     * Get the HTTP response body.
      *
      * @return string
      */
@@ -68,7 +64,6 @@ class HttpException extends \Exception
     }
 
     /**
-     *
      * @return \Happyr\ApiClient\Http\Response\Response
      */
     public function getResponse()
@@ -77,7 +72,7 @@ class HttpException extends \Exception
     }
 
     /**
-     * Get an empty response
+     * Get an empty response.
      *
      *
      * @return Response
@@ -85,7 +80,7 @@ class HttpException extends \Exception
     public function getEmptyResponse()
     {
         $response = clone $this->response;
-        if ($response->getFormat()=='json') {
+        if ($response->getFormat() == 'json') {
             $response->setBody('[]');
         } else {
             $response->setBody('<?xml version="1.0" encoding="UTF-8"?><result/>');

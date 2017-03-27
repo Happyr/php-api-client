@@ -1,17 +1,16 @@
 <?php
 
-
 namespace Happyr\ApiClient\Http\Response;
 
 /**
- * Class Response
+ * Class Response.
  *
  * This is the response class you get from the API
  */
 class Response
 {
     /**
-     * @var integer code
+     * @var int code
      *
      * The HTTP response code
      */
@@ -26,13 +25,12 @@ class Response
 
     /**
      * @var string format (xml or json)
-     *
      */
     protected $format;
 
     /**
      * @param string $body
-     * @param integer $code
+     * @param int    $code
      */
     public function __construct($body, $code)
     {
@@ -41,7 +39,6 @@ class Response
     }
 
     /**
-     *
      * @param string $body
      *
      * @return $this
@@ -54,7 +51,6 @@ class Response
     }
 
     /**
-     *
      * @return string
      */
     public function getBody()
@@ -63,7 +59,6 @@ class Response
     }
 
     /**
-     *
      * @param int $code
      *
      * @return $this
@@ -76,7 +71,6 @@ class Response
     }
 
     /**
-     *
      * @return int
      */
     public function getCode()
@@ -85,7 +79,6 @@ class Response
     }
 
     /**
-     *
      * @param string $format
      *
      * @return $this
@@ -98,7 +91,6 @@ class Response
     }
 
     /**
-     *
      * @return string
      */
     public function getFormat()

@@ -3,7 +3,7 @@
 namespace Happyr\ApiClient\Http;
 
 /**
- * Class Wsse
+ * Class Wsse.
  *
  * Handle the Wsse Security headers
  */
@@ -29,7 +29,7 @@ class Wsse
     }
 
     /**
-     * Build the headers
+     * Build the headers.
      */
     protected function build()
     {
@@ -37,11 +37,11 @@ class Wsse
         $this->nonce = $this->getRandomString();
 
         // calculate the digest
-        $this->digest = base64_encode(sha1(base64_decode($this->nonce) . $this->created . $this->password, true));
+        $this->digest = base64_encode(sha1(base64_decode($this->nonce).$this->created.$this->password, true));
     }
 
     /**
-     * Returns the headers
+     * Returns the headers.
      *
      *
      * @return array
@@ -49,14 +49,14 @@ class Wsse
     public function getHeaders()
     {
         return array(
-            'Authorization'=>sprintf('WSSE profile="%s"', $this->profile),
-            'X-WSSE'=> sprintf('%s Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"', $this->profile, $this->username, $this->digest, $this->nonce, $this->created),
+            'Authorization' => sprintf('WSSE profile="%s"', $this->profile),
+            'X-WSSE' => sprintf('%s Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"', $this->profile, $this->username, $this->digest, $this->nonce, $this->created),
         );
     }
 
     /**
      * Return a random string.
-     * This must be a good non-guessable random string
+     * This must be a good non-guessable random string.
      *
      *
      * @return string
@@ -68,7 +68,7 @@ class Wsse
         $charlen = strlen($characters);
 
         $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $randomString .= $characters[mt_rand(0, $charlen - 1)];
         }
 

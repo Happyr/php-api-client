@@ -1,32 +1,29 @@
 <?php
 
-
 namespace Happyr\ApiClient\Http\Request;
 
 use Happyr\ApiClient\Http\Response\Response;
 
 /**
- * Class CurlRequest
+ * Class CurlRequest.
  *
  * This is a wrapper for curl
  */
 class CurlRequest implements RequestInterface
 {
     /**
-     *
-     *
      * @param $uri
-     * @param array $data
+     * @param array  $data
      * @param string $httpVerb
-     * @param array $headers
+     * @param array  $headers
      *
      * @return mixed
      */
     public function send($uri, array $data = array(), $httpVerb = 'GET', array $headers = array())
     {
-        $ch=curl_init();
+        $ch = curl_init();
 
-        $headers=$this->rewriteHeaders($headers);
+        $headers = $this->rewriteHeaders($headers);
 
         // Set a referrer and user agent
         if (isset($_SERVER['HTTP_HOST'])) {
@@ -76,12 +73,11 @@ class CurlRequest implements RequestInterface
         return $response;
     }
 
-
     /**
-     * Build the url with baseUrl and uri
+     * Build the url with baseUrl and uri.
      *
      * @param string $uri
-     * @param array $filters
+     * @param array  $filters
      *
      * @return string
      */
@@ -91,32 +87,30 @@ class CurlRequest implements RequestInterface
 
         //add the filter on the filter string
         if (count($filters) > 0) {
-            $filterString='?'.http_build_query($filters);
+            $filterString = '?'.http_build_query($filters);
         }
 
-        return $uri . $filterString;
+        return $uri.$filterString;
     }
 
-
     /**
-     * Load the curl object with the post data
+     * Load the curl object with the post data.
      *
      *
      * @param $ch
      * @param array $data
-     *
      */
     protected function preparePostData($ch, array $data = array())
     {
         //urlify the data for the POST
-        $dataString=http_build_query($data);
+        $dataString = http_build_query($data);
 
         curl_setopt($ch, CURLOPT_POST, count($data));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
     }
 
     /**
-     * Make sure the key of the array is moved to the value
+     * Make sure the key of the array is moved to the value.
      *
      * @param array $headers
      *
@@ -125,11 +119,10 @@ class CurlRequest implements RequestInterface
     protected function rewriteHeaders(array $headers)
     {
         $betterHeaders = array();
-        foreach ($headers as $key =>$value) {
-            $betterHeaders[]=sprintf('%s: %s', $key, $value);
+        foreach ($headers as $key => $value) {
+            $betterHeaders[] = sprintf('%s: %s', $key, $value);
         }
 
         return $betterHeaders;
     }
-
 }

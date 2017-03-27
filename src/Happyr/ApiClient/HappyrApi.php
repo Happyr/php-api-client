@@ -6,7 +6,7 @@ use Happyr\ApiClient\Http\Client;
 
 /**
  * This is the API class that should be used with every api call
- * Every public function in this class represent a end point in the API
+ * Every public function in this class represent a end point in the API.
  */
 class HappyrApi
 {
@@ -28,46 +28,42 @@ class HappyrApi
      * @var string state
      *
      * To protect us from CSRF attacks
-     *
      */
     protected $state;
 
     /**
      * A standard constructor that take some optional parameters.
      * If you don't inject a configuration class in the constructor it will use
-     * the static values written in Configuration.php
+     * the static values written in Configuration.php.
      *
      * @param Configuration $config
-     *
      */
-    public function __construct(Configuration $config=null)
+    public function __construct(Configuration $config = null)
     {
         //if we don't get a configuration object in the parameter, then create one now.
-        if ($config==null) {
-            $config=new Configuration();
+        if ($config == null) {
+            $config = new Configuration();
         }
 
-        $this->configuration=$config;
+        $this->configuration = $config;
     }
 
     /**
-     * This function sends a request to the API directly without using the helper classes in Happyr\ApiClient\Api
+     * This function sends a request to the API directly without using the helper classes in Happyr\ApiClient\Api.
      *
      * @param string $uri
-     * @param array $data
+     * @param array  $data
      * @param string $httpVerb
      *
      * @return \Happyr\ApiClient\Http\Response\Response
      */
-    public function api($uri, array $data=array(), $httpVerb='GET')
+    public function api($uri, array $data = array(), $httpVerb = 'GET')
     {
         return $this->getHttpClient()->sendRequest($uri, $data, $httpVerb);
     }
 
-
     /**
-     *
-     * Get a Http client
+     * Get a Http client.
      *
      * @param bool $forceNew if true we will create a new Client object
      *
@@ -76,14 +72,13 @@ class HappyrApi
     protected function getHttpClient($forceNew = false)
     {
         if (!$this->httpClient || $forceNew) {
-            $this->httpClient=new Client($this->configuration);
+            $this->httpClient = new Client($this->configuration);
         }
 
         return $this->httpClient;
     }
 
     /**
-     *
      * @param \Happyr\ApiClient\Configuration $configuration
      *
      * @return $this
@@ -96,7 +91,6 @@ class HappyrApi
     }
 
     /**
-     *
      * @return \Happyr\ApiClient\Configuration
      */
     public function getConfiguration()
@@ -105,7 +99,7 @@ class HappyrApi
     }
 
     /**
-     * Get the login url
+     * Get the login url.
      *
      * @param string $redirectUrl not urlencoded
      *
@@ -125,9 +119,8 @@ class HappyrApi
     }
 
     /**
-     * Get Code
+     * Get Code.
      *
-     * @return null
      * @throws \Exception
      */
     protected function getCode()
@@ -155,15 +148,14 @@ class HappyrApi
      */
     public function getUserToken()
     {
-        $code=$this->getCode();
-        $token=$this->api('user/get-token', array('code'=>$code));
+        $code = $this->getCode();
+        $token = $this->api('user/get-token', array('code' => $code));
 
         return $token->getBody();
     }
 
     /**
      * Lays down a CSRF state token for this process.
-     *
      */
     protected function establishCSRFTokenState()
     {
@@ -174,7 +166,6 @@ class HappyrApi
     }
 
     /**
-     *
      * @param string $state
      *
      * @return $this
@@ -182,7 +173,7 @@ class HappyrApi
     protected function setState($state)
     {
         if ($state === null) {
-            $_SESSION['happyr_ac_state']=null;
+            $_SESSION['happyr_ac_state'] = null;
         }
 
         $this->state = $state;
@@ -191,13 +182,12 @@ class HappyrApi
     }
 
     /**
-     *
      * @return string
      */
     protected function getState()
     {
         if ($this->state === null) {
-            $this->state = isset($_SESSION['happyr_ac_state'])?$_SESSION['happyr_ac_state']:null;
+            $this->state = isset($_SESSION['happyr_ac_state']) ? $_SESSION['happyr_ac_state'] : null;
         }
 
         return $this->state;
