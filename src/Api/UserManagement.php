@@ -15,9 +15,9 @@ final class UserManagement extends HttpApi
     /**
      * @param string $user
      *
-     * @return User|ResponseInterface
-     *
      * @throws Exception
+     *
+     * @return User|ResponseInterface
      */
     public function show($user)
     {
@@ -32,9 +32,9 @@ final class UserManagement extends HttpApi
      * @param string $user
      * @param array  $param Valid keys are email, name, gender, birthday, country
      *
-     * @return User|ResponseInterface
-     *
      * @throws Exception
+     *
+     * @return User|ResponseInterface
      */
     public function update($user, $param)
     {

@@ -4,10 +4,9 @@ namespace Happyr\ApiClient\Api;
 
 use Happyr\ApiClient\Exception\Domain as DomainExceptions;
 use Happyr\ApiClient\Exception\DomainException;
+use Happyr\ApiClient\Hydrator\Hydrator;
 use Happyr\ApiClient\Hydrator\NoopHydrator;
 use Http\Client\HttpClient;
-use Happyr\ApiClient\Hydrator\Hydrator;
-use Happyr\ApiClient\RequestBuilder;
 use Http\Message\RequestFactory;
 use Psr\Http\Message\ResponseInterface;
 
@@ -49,9 +48,9 @@ abstract class HttpApi
      * @param ResponseInterface $response
      * @param string            $class
      *
-     * @return mixed|ResponseInterface
-     *
      * @throws \Exception
+     *
+     * @return mixed|ResponseInterface
      */
     protected function hydrateResponse(ResponseInterface $response, $class)
     {
