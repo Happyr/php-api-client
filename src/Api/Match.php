@@ -96,7 +96,7 @@ final class Match extends HttpApi
     }
 
     /**
-     * @param $pattern
+     * @param string $pattern
      * @param array $params valid keys are limit, offset and norm
      *
      * @return TopUser|ResponseInterface
