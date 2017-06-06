@@ -49,7 +49,7 @@ final class Statement extends HttpApi
         $params['pattern'] = implode(',', $patterns);
         $params['answer'] = $answer;
 
-        $response = $this->httpGet(sprintf('/api/pattern/%s', $statement), $params);
+        $response = $this->httpPost(sprintf('/api/statement/%s', $statement), $params);
 
         return $this->hydrateResponse($response, StatementModel::class);
     }
