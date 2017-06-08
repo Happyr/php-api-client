@@ -58,6 +58,10 @@ abstract class HttpApi
             return $response;
         }
 
+        if ($response->getStatusCode() === 204) {
+            return null;
+        }
+
         if ($response->getStatusCode() !== 200 && $response->getStatusCode() !== 201) {
             $this->handleErrors($response);
         }
@@ -174,10 +178,12 @@ abstract class HttpApi
                 throw DomainExceptions\HttpClientException::requestFailed($response);
             case 404:
                 throw DomainExceptions\HttpClientException::notFound($response);
+            case 404 < $statusCode && $statusCode < 500:
+                throw new DomainExceptions\HttpClientException('Client error', $statusCode, $response);
             case 500 <= $statusCode:
                 throw DomainExceptions\HttpServerException::serverError($statusCode);
             default:
-                throw new DomainExceptions\UnknownErrorException();
+                throw new DomainExceptions\UnknownErrorException('Failed to hydrate response from API.', $statusCode);
         }
     }
 }
