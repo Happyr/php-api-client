@@ -20,9 +20,16 @@ final class Statement implements CreatableFromArray
     private $id;
 
     /**
-     * @var string
+     * Has a value if $type="text"
+     * @var string|null
      */
     private $sentence;
+
+    /**
+     * Has a value if $type="image"
+     * @var string|null
+     */
+    private $image;
 
     /**
      * @var array
@@ -75,7 +82,8 @@ final class Statement implements CreatableFromArray
         }
 
         $statement = new self($data['id']);
-        $statement->setSentence($data['sentence']);
+        $statement->setSentence(isset($data['sentence']) ? $data['sentence'] : null);
+        $statement->setImage(isset($data['image']) ? $data['image'] : null);
         $statement->setAssessments($data['assessments']);
         $statement->setProgress($data['progress']);
         $statement->setPostUrl($data['post_url']);
@@ -108,6 +116,22 @@ final class Statement implements CreatableFromArray
     private function setSentence($sentence)
     {
         $this->sentence = $sentence;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param null|string $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
     }
 
     /**
