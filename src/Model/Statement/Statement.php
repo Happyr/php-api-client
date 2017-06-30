@@ -76,7 +76,7 @@ final class Statement implements CreatableFromArray
      */
     public static function createFromArray(array $data)
     {
-        $data = $data['data'];
+        $data = isset($data['data']) ? $data['data'] : [];
         if (empty($data)) {
             return null;
         }
