@@ -45,11 +45,13 @@ final class Statement extends HttpApi
         Assert::stringNotEmpty($user);
         Assert::notEmpty($patterns);
 
-        $params['user'] = $user;
-        $params['pattern'] = implode(',', $patterns);
-        $params['answer'] = $answer;
+        $postBody = [
+            'user' => $user,
+            'pattern' => implode(',', $patterns),
+            'answer' => $answer,
+        ];
 
-        $response = $this->httpPost(sprintf('/api/statement/%s', $statement), $params);
+        $response = $this->httpPost(sprintf('/api/statement/%s?%s', $statement, http_build_query($params)), $postBody);
 
         return $this->hydrateResponse($response, StatementModel::class);
     }
