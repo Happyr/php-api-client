@@ -20,13 +20,15 @@ final class Statement implements CreatableFromArray
     private $id;
 
     /**
-     * Has a value if $type="text"
+     * Has a value if $type="text".
+     *
      * @var string|null
      */
     private $sentence;
 
     /**
-     * Has a value if $type="image"
+     * Has a value if $type="image".
+     *
      * @var string|null
      */
     private $image;
