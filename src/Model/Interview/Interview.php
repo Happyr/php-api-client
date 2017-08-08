@@ -43,7 +43,10 @@ final class Interview implements CreatableFromArray
      */
     public static function createFromArray(array $data)
     {
-        return new self($data['data']['profiles'], $data['data']['description'], $data['data']['complete']);
+        $profiles = isset($data['data']['profiles']) ? $data['data']['profiles'] : [];
+        $description = isset($data['data']['description']) ? $data['data']['description'] : '';
+
+        return new self($profiles, $description, $data['data']['complete']);
     }
 
     /**

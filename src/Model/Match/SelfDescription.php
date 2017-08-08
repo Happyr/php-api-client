@@ -43,11 +43,11 @@ final class SelfDescription implements CreatableFromArray
      */
     public static function createFromArray(array $data)
     {
-        return new self(
-            $data['data']['profiles'],
-            $data['data']['description']['strong'],
-            $data['data']['description']['weak']
-        );
+        $profiles = isset($data['data']['profiles']) ? $data['data']['profiles'] : [];
+        $strong = isset($data['data']['description']['strong']) ? $data['data']['description']['strong'] : [];
+        $week = isset($data['data']['description']['weak']) ? $data['data']['description']['weak'] : [];
+
+        return new self($profiles, $strong, $week);
     }
 
     /**

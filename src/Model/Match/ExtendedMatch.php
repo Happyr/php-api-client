@@ -36,7 +36,9 @@ final class ExtendedMatch implements CreatableFromArray
      */
     public static function createFromArray(array $data)
     {
-        return new self($data['data']['profiles'], $data['data']['complete']);
+        $profiles = isset($data['data']['profiles']) ? $data['data']['profiles'] : [];
+
+        return new self($profiles, $data['data']['complete']);
     }
 
     /**
