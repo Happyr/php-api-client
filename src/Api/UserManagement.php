@@ -45,4 +45,23 @@ final class UserManagement extends HttpApi
 
         return $this->hydrateResponse($response, User::class);
     }
+    /**
+     * @param string $user the user ID we should merge personality data to.
+     * @param string $from the user ID we should merge personality data from.
+     *
+     * @throws Exception
+     *
+     * @return User|ResponseInterface
+     */
+    public function merge($user, $from)
+    {
+        Assert::stringNotEmpty($user);
+        Assert::stringNotEmpty($from);
+        $param['user'] = $user;
+        $param['from'] = $from;
+
+        $response = $this->httpPost('/api/user/merge', $param);
+
+        return $this->hydrateResponse($response, User::class);
+    }
 }
