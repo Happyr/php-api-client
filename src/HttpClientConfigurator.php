@@ -72,6 +72,7 @@ final class HttpClientConfigurator
         $plugins = $this->prependPlugins;
 
         $plugins[] = new Plugin\AddHostPlugin($this->uriFactory->createUri($this->endpoint));
+        $plugins[] = new Plugin\RetryPlugin(['retries' => 2]);
         $plugins[] = new Plugin\HeaderDefaultsPlugin([
             'User-Agent' => 'Happyr/api-client (https://github.com/Happyr/php-api-client)',
         ]);
